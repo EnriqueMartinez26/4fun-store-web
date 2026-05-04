@@ -414,7 +414,7 @@ function EditDialog({ itemId, type, onUpdate }: { itemId: string, type: VisualTy
                     <div className="grid gap-4 py-4">
                         <div className="grid grid-cols-4 items-center gap-4">
                             <Label className="text-right text-xs uppercase font-bold tracking-widest text-muted-foreground">ID Técnico</Label>
-                            <Input value={newId} onChange={(e) => setNewId(e.target.value)} className="col-span-3 bg-background/50 border-white/10 text-white" />
+                            <Input value={newId} readOnly className="col-span-3 bg-background/20 border-white/5 text-muted-foreground cursor-not-allowed opacity-70" />
                         </div>
                         <div className="grid grid-cols-4 items-center gap-4">
                             <Label htmlFor="edit-name" className="text-right text-xs uppercase font-bold tracking-widest text-muted-foreground">Nombre</Label>

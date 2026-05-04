@@ -75,9 +75,15 @@ export class HttpTransport {
     formData.append('file', file);
     
     // RN - Infraestructura: Recuperamos configuración de Cloudinary desde variables de entorno.
-    // El error 400 suele ocurrir si el Cloud Name o el Upload Preset son incorrectos.
-    const cloudName = process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME || 'demo';
-    const uploadPreset = process.env.NEXT_PUBLIC_CLOUDINARY_UPLOAD_PRESET || 'ml_default';
+    const cloudName = process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME;
+    const uploadPreset = process.env.NEXT_PUBLIC_CLOUDINARY_UPLOAD_PRESET;
+
+    if (!cloudName || !uploadPreset) {
+      throw new ApiError(
+        'Configuración de Cloudinary incompleta. Verificá que NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME y NEXT_PUBLIC_CLOUDINARY_UPLOAD_PRESET estén configuradas (especialmente en Vercel).',
+        400
+      );
+    }
 
     formData.append('upload_preset', uploadPreset);
     
