@@ -14,13 +14,18 @@ import Image from "next/image";
 import Link from "next/link";
 import { AboutDialog } from "@/components/about-dialog";
 import { FaqDialog } from "@/components/faq-dialog";
+import { usePathname } from "next/navigation";
 
 export function Footer() {
+  const pathname = usePathname();
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
     setMounted(true);
   }, []);
+
+  // RN - Estrategia de Tunneling: Ocultar footer en el flujo de conversión (Carrito)
+  if (pathname === "/cart") return null;
 
   // RN - Estabilidad: Si no ha montado, no renderizamos estructura compleja
   // para evitar el mismatch de hidratación con el servidor.

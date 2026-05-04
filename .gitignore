@@ -52,6 +52,7 @@ tmpclaude-*
 **/*.test.ts
 **/*.test.tsx
 
-# documentation
-*.md
-docs/
+# documentation (reports only)
+qa_report_*.md
+diagnostic_*.md
+diagnostics_*.md

@@ -37,19 +37,19 @@ export default function Error({
             
             {/* Componente Visual de Excepción Técnica */}
             <div className="relative group">
-                <div className="absolute inset-0 bg-destructive/20 blur-3xl rounded-full opacity-50" />
-                <div className="relative bg-card/40 backdrop-blur-2xl border border-destructive/20 p-12 rounded-[3.5rem] shadow-3xl">
-                    <ShieldAlert className="h-20 w-20 text-destructive relative z-10 mx-auto animate-pulse" />
+                <div className="absolute inset-0 bg-red-500/20 blur-3xl rounded-full opacity-50" />
+                <div className="relative bg-card/40 backdrop-blur-2xl border border-red-500/20 p-12 rounded-[3.5rem] shadow-3xl">
+                    <ShieldAlert className="h-20 w-20 text-red-500 relative z-10 mx-auto animate-pulse" />
                     <div className="mt-8 space-y-2">
                         <h2 className="text-3xl font-bold text-white/60 tracking-tighter italic">Anomalía del Sistema</h2>
-                        <p className="text-[10px] font-bold uppercase tracking-[0.4em] text-destructive/60">Excepción en Ciclo de Renderizado</p>
+                        <p className="text-[10px] font-bold uppercase tracking-[0.4em] text-red-500/60">Excepción en Ciclo de Renderizado</p>
                     </div>
                 </div>
             </div>
 
             <div className="max-w-md space-y-8">
                 <p className="text-muted-foreground text-sm leading-relaxed">
-                    Se ha detectado una interrupción inesperada en la ejecución del hilo principal. El sistema ha aislado la excepción para prevenir la degradación total de la aplicación.
+                    ¡Uy! Parece que algo no salió como esperábamos. Tuvimos un pequeño problema técnico, pero no te preocupes: ya estamos al tanto para que todo vuelva a la normalidad lo antes posible.
                 </p>
 
                 {error.digest && (
@@ -61,23 +61,18 @@ export default function Error({
                 <div className="flex flex-col sm:flex-row gap-4 justify-center pt-4">
                     <Button 
                         onClick={() => reset()} 
-                        className="h-14 px-8 rounded-xl font-black uppercase tracking-widest text-[10px] bg-white text-black hover:bg-white/90 shadow-xl transition-all"
+                        className="h-14 px-8 rounded-xl font-bold uppercase tracking-widest text-[10px] bg-white text-black hover:bg-white/90 shadow-xl transition-all"
                     >
                         <RefreshCw className="mr-2 h-4 w-4" /> Reintentar Operación
                     </Button>
                     <Button 
                         variant="outline" 
                         onClick={() => window.location.href = '/'} 
-                        className="h-14 px-8 rounded-xl border-white/10 text-white font-black uppercase tracking-widest text-[10px] hover:bg-white/5 transition-all"
+                        className="h-14 px-8 rounded-xl border-white/10 text-white font-bold uppercase tracking-widest text-[10px] hover:bg-white/5 transition-all"
                     >
                         <Home className="mr-2 h-4 w-4" /> Finalizar Sesión
                     </Button>
                 </div>
-            </div>
-
-            {/* Footer de Capa de Error */}
-            <div className="fixed bottom-10 opacity-20 select-none">
-                <span className="text-[9px] font-bold uppercase tracking-[0.6em] text-white/20">Critical Error Boundary Protocol v3.0</span>
             </div>
         </div>
     );

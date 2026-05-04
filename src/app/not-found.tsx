@@ -47,11 +47,6 @@ export default function NotFound() {
                     </Button>
                 </div>
             </div>
-
-            {/* Footer de Capa de Error */}
-            <div className="fixed bottom-10 opacity-20 select-none">
-                <span className="text-[9px] font-bold uppercase tracking-[0.6em] text-white/40">Error 404 Protocol</span>
-            </div>
         </div>
     );
 }

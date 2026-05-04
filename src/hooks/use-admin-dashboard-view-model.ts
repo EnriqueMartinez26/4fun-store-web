@@ -30,6 +30,14 @@ export interface TopProduct {
     revenueGenerated: number;
 }
 
+export interface RecentActivity {
+    id: string;
+    user: { name: string; email: string };
+    amount: number;
+    status: string;
+    date: string;
+}
+
 /**
  * ViewModel del Panel de Control Administrador (Dashboard)
  * --------------------------------------------------------------------------
@@ -42,13 +50,15 @@ export function useAdminDashboardViewModel() {
     const [stats, setStats] = useState<DashboardStats | null>(null);
     const [chartData, setChartData] = useState<ChartItem[]>([]);
     const [topProducts, setTopProducts] = useState<TopProduct[]>([]);
+    const [recentActivity, setRecentActivity] = useState<RecentActivity[]>([]);
 
     const fetchData = useCallback(async () => {
         try {
-            const [statsData, chartRes, topRes] = await Promise.all([
+            const [statsData, chartRes, topRes, recentRes] = await Promise.all([
                 DashboardApiService.getStats(),
                 DashboardApiService.getSalesChart(),
-                DashboardApiService.getTopProducts()
+                DashboardApiService.getTopProducts(),
+                DashboardApiService.getRecentActivity()
             ]);
 
             setStats(statsData);
@@ -61,6 +71,7 @@ export function useAdminDashboardViewModel() {
             })));
             
             setTopProducts(Array.isArray(topRes) ? topRes : []);
+            setRecentActivity(Array.isArray(recentRes) ? recentRes : []);
         } catch (error: any) {
             console.error("[AdminDashboardViewModel] Falla de analítica:", error);
             
@@ -155,6 +166,7 @@ export function useAdminDashboardViewModel() {
         stats,
         chartData,
         topProducts,
+        recentActivity,
         loading,
         handleExportPDF,
         handleExportExcel

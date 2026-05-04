@@ -368,7 +368,7 @@ export function Header() {
             ) : (
               <Button
                 asChild
-                className="ml-2 h-12 px-6 rounded-xl bg-gradient-to-r from-primary to-primary/80 hover:from-primary/90 hover:to-primary text-black font-bold text-base transition-all duration-300 shadow-lg hover:shadow-xl hover:shadow-primary/20 hidden sm:inline-flex"
+                className="ml-2 h-12 px-6 rounded-xl bg-gradient-to-r from-primary to-primary/80 hover:from-primary/90 hover:to-primary text-white font-bold text-base transition-all duration-300 shadow-lg hover:shadow-xl hover:shadow-primary/20 hidden sm:inline-flex"
               >
                 <Link href={vm.auth.loginHref} aria-label="Ingresar">
                   <User className="mr-2 h-5 w-5" />
@@ -409,7 +409,7 @@ export function Header() {
             {!vm.auth.isLoggedIn && (
               <Button
                 asChild
-                className="w-full h-10 rounded-lg bg-gradient-to-r from-primary to-primary/80 text-black font-semibold text-sm mt-4"
+                className="w-full h-10 rounded-lg bg-gradient-to-r from-primary to-primary/80 text-white font-semibold text-sm mt-4"
               >
                 <Link href={vm.auth.loginHref}>
                   <User className="mr-2 h-4 w-4" />

@@ -22,4 +22,9 @@ export class DashboardApiService {
     this.logger.debug('Recuperando productos más vendidos');
     return HttpTransport.request('/dashboard/top-products');
   }
+
+  static async getRecentActivity(): Promise<any> {
+    this.logger.debug('Recuperando actividad reciente de ventas');
+    return HttpTransport.request('/dashboard/recent-sales');
+  }
 }
