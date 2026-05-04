@@ -59,7 +59,7 @@ export function GameCard({ game }: GameCardProps) {
       {/* RN - Gestión Promocional: Badge dinámico de bonificación. */}
       {vm.isOnSale() && (
         <div className="absolute left-4 top-4 z-20">
-          <Badge className="bg-green-500/10 hover:bg-green-500/20 text-white/70 font-black text-xs px-4 py-1.5 shadow-[0_0_20px_-5px_rgba(34,197,94,0.3)] border-green-500/20 backdrop-blur-md uppercase tracking-wider rounded-md">
+          <Badge className="bg-green-600 hover:bg-green-500 text-white font-black text-xs px-4 py-1.5 shadow-[0_0_20px_-5px_rgba(34,197,94,0.4)] border border-green-400/50 uppercase tracking-wider rounded-md">
             {vm.getDiscountBadge()} OFF
           </Badge>
         </div>
