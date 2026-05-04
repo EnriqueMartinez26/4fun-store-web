@@ -316,7 +316,7 @@ export default function SellerDashboardPage() {
                         Tus Best-Sellers
                     </CardTitle>
                     <CardDescription className="text-xs font-black uppercase tracking-widest text-muted-foreground/60 mt-2">
-                        Ranking de tus juegos más rentables
+                        Ranking de tus juegos mas vendidos
                     </CardDescription>
                 </CardHeader>
                 <CardContent className="px-8 py-8">

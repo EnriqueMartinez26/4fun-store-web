@@ -105,9 +105,7 @@ export default function SellerProductsPage() {
             <h1 className="text-4xl font-headline font-black italic flex items-center gap-3 justify-center md:justify-start">
               <Package className="h-8 w-8 text-primary" /> Mis Publicaciones
             </h1>
-            <CardDescription className="text-[10px] font-black uppercase tracking-widest opacity-60">
-              Gestioná tus artículos de {user?.sellerProfile?.storeName}
-            </CardDescription>
+
           </div>
           
           <div className="flex flex-wrap gap-3 justify-center">
