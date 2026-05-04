@@ -156,10 +156,7 @@ export default function EditProductPage({ params }: { params: Promise<{ id: stri
     <div className="max-w-4xl mx-auto py-8 lg:py-12 px-4 space-y-8 animate-in fade-in duration-700">
       <div className="flex items-center justify-between">
         <Button variant="ghost" asChild className="hover:bg-primary/10 hover:text-primary font-bold text-xs uppercase tracking-widest"><Link href="/admin/products"><ArrowLeft className="mr-2 h-4 w-4" /> Volver al Listado</Link></Button>
-        <div className="flex items-center gap-2 text-muted-foreground">
-          <ShieldCheck className="h-4 w-4" />
-          <span className="text-[10px] uppercase font-bold tracking-widest">Audit Mode: Active</span>
-        </div>
+
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
