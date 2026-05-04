@@ -46,7 +46,6 @@ import {
   XCircle,
   Store,
   BarChart3,
-  TrendingUp,
   Rocket,
   ShoppingBag,
   ChevronLeft,
@@ -481,56 +480,30 @@ export default function AccountPage() {
             >
               {vm.user.role === "SELLER" || vm.user.role === "ADMIN" ? (
                 /* Vista del Vendedor Activo */
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                  <Card className="border-none bg-gradient-to-br from-primary/20 to-white/[0.02] backdrop-blur-3xl rounded-[3rem] p-10 ring-1 ring-primary/30 shadow-2xl shadow-primary/10">
-                    <CardHeader className="p-0 mb-6">
+                <div className="flex justify-center">
+                  <div className="border text-card-foreground border-none bg-gradient-to-br from-primary/20 to-white/[0.02] backdrop-blur-3xl rounded-[3rem] p-10 ring-1 ring-primary/30 shadow-2xl shadow-primary/10 max-w-xl w-full">
+                    <div className="flex flex-col space-y-1.5 p-0 mb-6">
                       <div className="h-12 w-12 bg-primary/20 rounded-2xl flex items-center justify-center mb-4">
                         <Store className="h-6 w-6 text-primary" />
                       </div>
-                      <CardTitle className="text-3xl font-black italic">Centro de Ventas</CardTitle>
-                      <CardDescription className="text-[10px] font-black uppercase tracking-widest opacity-60">
+                      <div className="tracking-tight text-3xl font-black italic">Centro de Ventas</div>
+                      <div className="text-muted-foreground text-[10px] font-black uppercase tracking-widest opacity-60">
                         Estado de tus publicaciones en 4Fun
-                      </CardDescription>
-                    </CardHeader>
-                    <CardContent className="p-0 space-y-6">
+                      </div>
+                    </div>
+                    <div className="p-0 space-y-6">
                       <div className="flex items-center gap-2">
-                        {(vm.user.role === 'SELLER' || vm.user.role === 'ADMIN') ? (
-                          <Badge className="bg-green-500/10 text-green-400 border-green-500/20 px-4 py-2 rounded-xl font-black uppercase tracking-widest text-[9px]">
-                            <ShieldCheck className="h-3 w-3 mr-2" /> Vendedor Verificado
-                          </Badge>
-                        ) : (
-                          <Badge className="bg-yellow-500/10 text-yellow-500 border-yellow-500/20 px-4 py-2 rounded-xl font-black uppercase tracking-widest text-[9px]">
-                            <Loader2 className="h-3 w-3 mr-2 animate-spin" /> Pendiente de Aprobación
-                          </Badge>
-                        )}
-                      </div>
-                      <Button asChild className="w-full mt-4">
-                        <Link href="/seller/dashboard">
-                          <BarChart3 className="h-4 w-4 mr-2" /> Panel de Ventas
-                        </Link>
-                      </Button>
-                    </CardContent>
-                  </Card>
-
-                  <div className="space-y-6">
-                    <Card className="border-none bg-white/[0.04] backdrop-blur-3xl rounded-[2rem] p-8 border border-white/10 shadow-xl">
-                      <div className="flex items-center justify-between">
-                        <div>
-                          <p className="text-[10px] font-black uppercase tracking-widest opacity-40 mb-1">Mis Ventas</p>
-                          <p className="text-3xl font-black tracking-tighter italic">Próximamente</p>
+                        <div className="inline-flex items-center border transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 hover:bg-primary/80 bg-green-500/10 text-green-400 border-green-500/20 px-4 py-2 rounded-xl font-black uppercase tracking-widest text-[9px]">
+                          <ShieldCheck className="h-3 w-3 mr-2" /> Vendedor Verificado
                         </div>
-                        <TrendingUp className="h-10 w-10 text-primary opacity-20" />
                       </div>
-                    </Card>
-                    <Card className="border-none bg-white/[0.04] backdrop-blur-3xl rounded-[2rem] p-8 border border-white/10 shadow-xl">
-                      <div className="flex items-center justify-between">
-                        <div>
-                          <p className="text-[10px] font-black uppercase tracking-widest opacity-40 mb-1">Nivel de Stock</p>
-                          <p className="text-3xl font-black tracking-tighter italic">Optimizado</p>
-                        </div>
-                        <Package className="h-10 w-10 text-primary opacity-20" />
-                      </div>
-                    </Card>
+                      <Link 
+                        className="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 bg-primary text-primary-foreground hover:bg-primary/90 h-10 px-4 py-2 w-full mt-4" 
+                        href="/seller/dashboard"
+                      >
+                        <BarChart3 className="h-4 w-4 mr-2" /> Panel de Ventas
+                      </Link>
+                    </div>
                   </div>
                 </div>
               ) : (
