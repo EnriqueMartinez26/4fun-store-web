@@ -69,7 +69,7 @@ export default function EditProductPage({ params }: { params: Promise<{ id: stri
     resolver: zodResolver(productSchema),
     defaultValues: {
       name: "", description: "", price: 0, stock: 0, platformId: "", genreId: "", type: "Digital", developer: "Nintendo", specPreset: "Mid", imageId: "", trailerUrl: "",
-      isDiscounted: false, discountPercentage: 0, discountEndDate: "",
+      isDiscounted: false, discountPercentage: 0, discountEndDate: "", active: false,
     },
   });
 
@@ -115,7 +115,8 @@ export default function EditProductPage({ params }: { params: Promise<{ id: stri
               isDiscounted: (p.discountPercentage ?? 0) > 0,
               discountPercentage: p.discountPercentage || 0,
               discountEndDate: p.discountEndDate ? new Date(p.discountEndDate).toISOString().split('T')[0] : "",
-              price: p.price
+              price: p.price,
+              active: p.active ?? false,
             });
           }
         }
@@ -339,6 +340,26 @@ export default function EditProductPage({ params }: { params: Promise<{ id: stri
                       <FormLabel className="text-xs font-black uppercase tracking-[0.2em] text-muted-foreground">URL Multimedia (Trailer)</FormLabel>
                       <FormControl><Input placeholder="https://www.youtube.com/watch?v=..." className="h-12 bg-background/50 border-white/10" {...field} /></FormControl>
                       <FormMessage />
+                    </FormItem>
+                  )} />
+
+
+                  {/* Control de Visibilidad de Producto */}
+                  <FormField control={form.control} name="active" render={({ field }) => (
+                    <FormItem className="flex flex-row items-center space-x-4 space-y-0 rounded-2xl border border-green-500/20 p-5 bg-green-500/5 transition-all hover:border-green-500/40">
+                      <FormControl>
+                        <Checkbox
+                          checked={field.value}
+                          onCheckedChange={field.onChange}
+                          className="h-6 w-6 border-green-500/50 data-[state=checked]:bg-green-500 data-[state=checked]:text-black"
+                        />
+                      </FormControl>
+                      <div className="space-y-1">
+                        <FormLabel className="text-sm font-black text-white uppercase tracking-tighter">Publicar Producto en Tienda</FormLabel>
+                        <FormDescription className="text-[10px] text-muted-foreground uppercase font-bold tracking-widest">
+                          Si está activo y hay stock disponible, el producto será visible al público (ACTIVE). Sin stock quedará en OUT_OF_STOCK.
+                        </FormDescription>
+                      </div>
                     </FormItem>
                   )} />
 
