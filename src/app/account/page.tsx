@@ -481,8 +481,8 @@ export default function AccountPage() {
               {vm.user.role === "SELLER" || vm.user.role === "ADMIN" ? (
                 /* Vista del Vendedor Activo */
                 <div className="flex justify-center">
-                  <div className="border text-card-foreground border-none bg-gradient-to-br from-primary/20 to-white/[0.02] backdrop-blur-3xl rounded-[3rem] p-10 ring-1 ring-primary/30 shadow-2xl shadow-primary/10 max-w-xl w-full">
-                    <div className="flex flex-col space-y-1.5 p-0 mb-6">
+                  <div className="border text-card-foreground border-none bg-gradient-to-br from-primary/20 to-white/[0.02] backdrop-blur-3xl rounded-[3rem] p-10 ring-1 ring-primary/30 shadow-2xl shadow-primary/10 max-w-md w-full flex flex-col items-center text-center">
+                    <div className="flex flex-col items-center space-y-1.5 p-0 mb-6">
                       <div className="h-12 w-12 bg-primary/20 rounded-2xl flex items-center justify-center mb-4">
                         <Store className="h-6 w-6 text-primary" />
                       </div>
@@ -491,8 +491,8 @@ export default function AccountPage() {
                         Estado de tus publicaciones en 4Fun
                       </div>
                     </div>
-                    <div className="p-0 space-y-6">
-                      <div className="flex items-center gap-2">
+                    <div className="p-0 space-y-6 w-full">
+                      <div className="flex items-center justify-center gap-2">
                         <div className="inline-flex items-center border transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 hover:bg-primary/80 bg-green-500/10 text-green-400 border-green-500/20 px-4 py-2 rounded-xl font-black uppercase tracking-widest text-[9px]">
                           <ShieldCheck className="h-3 w-3 mr-2" /> Vendedor Verificado
                         </div>
