@@ -41,6 +41,10 @@ export function VisualsManager() {
     /**
      * RN - Sincronización de Datos: Recupera la taxonomía completa del API.
      */
+    const revalidateHome = useCallback(async () => {
+        try { await fetch('/api/revalidate', { method: 'POST' }); } catch (_) {}
+    }, []);
+
     const fetchData = useCallback(async () => {
         setLoading(true);
         try {
@@ -298,6 +302,7 @@ function CreateDialog({ type, onUpdate, label }: { type: VisualType, onUpdate: (
             toast({ title: "Alta Exitosa", description: "Entidad integrada a la taxonomía." });
             setOpen(false);
             onUpdate();
+            await fetch('/api/revalidate', { method: 'POST' });
         } catch (error) {
             toast({ variant: "destructive", title: "Error en Alta", description: "No se pudo crear el elemento." });
         } finally {
@@ -394,6 +399,7 @@ function EditDialog({ itemId, type, onUpdate }: { itemId: string, type: VisualTy
             toast({ title: "Sincronización Exitosa", description: "Entidad actualizada correctamente." });
             setOpen(false);
             onUpdate();
+            await fetch('/api/revalidate', { method: 'POST' });
         } catch (error: any) {
             toast({ variant: "destructive", title: "Fallo en Persistencia", description: error.message || "No se pudo salvar." });
         } finally { setLoading(false); }

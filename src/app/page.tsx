@@ -12,6 +12,11 @@ import { TaxonomyApiService } from '@/lib/services/TaxonomyApiService';
  * el SEO y la velocidad de carga inicial. (MVC / View-Controller)
  */
 
+// RN - Infraestructura: Forzamos renderizado dinámico para que las
+// actualizaciones de taxonomías (géneros/plataformas) se reflejen 
+// en tiempo real sin depender del ciclo de caché de Next.js.
+export const dynamic = 'force-dynamic';
+
 // RN - Infraestructura: Imagen de respaldo en caso de fallo de sincronización de assets.
 const defaultImage = "https://images.unsplash.com/photo-1550745165-9bc0b252726f?q=80&w=600";
 
