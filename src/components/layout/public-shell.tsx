@@ -10,13 +10,11 @@ export function PublicShell({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
   const isPanel = PANEL_PREFIXES.some((p) => pathname.startsWith(p));
 
-  if (isPanel) return <>{children}</>;
-
   return (
     <div className="relative flex min-h-dvh flex-col bg-background">
       <Header />
       <main className="flex-1">{children}</main>
-      <Footer />
+      {!isPanel && <Footer />}
     </div>
   );
 }
