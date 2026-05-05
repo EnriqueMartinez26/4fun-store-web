@@ -136,11 +136,11 @@ export default function SellerDashboardPage() {
                             <Store className="h-7 w-7 text-primary" />
                         </div>
                         <h1 className="text-4xl font-headline font-bold tracking-tight italic opacity-60">
-                            Centro de Ventas
+                            Tu Tienda
                         </h1>
                     </div>
                     <p className="text-[11px] text-muted-foreground uppercase tracking-[0.22em] font-bold pl-1 opacity-70">
-                        Gestión de Publicaciones y Ventas · {new Date().toLocaleDateString('es-AR', { weekday: 'long', day: 'numeric', month: 'long' })}
+                        Tus juegos y ventas · {new Date().toLocaleDateString('es-AR', { weekday: 'long', day: 'numeric', month: 'long' })}
                     </p>
                 </div>
 
@@ -156,9 +156,9 @@ export default function SellerDashboardPage() {
                         </DialogTrigger>
                         <DialogContent className="bg-card/95 backdrop-blur-xl border-white/10 p-8">
                             <DialogHeader>
-                                <DialogTitle className="text-2xl font-headline italic">Exportar Mis Reportes</DialogTitle>
-                                <DialogDescription className="text-xs font-black uppercase tracking-widest text-muted-foreground mt-2">
-                                    Auditoría de ingresos propios
+                                <DialogTitle className="text-2xl font-headline italic">Bajar Reportes</DialogTitle>
+                                <DialogDescription className="text-xs font-bold uppercase tracking-widest text-muted-foreground mt-2">
+                                    Tus finanzas personales
                                 </DialogDescription>
                             </DialogHeader>
                             <div className="grid gap-4 py-8">
@@ -171,8 +171,8 @@ export default function SellerDashboardPage() {
                                         <FileSpreadsheet className="h-6 w-6 text-green-500" />
                                     </div>
                                     <div className="text-left">
-                                        <p className="font-bold text-base text-white">Excel de Ventas</p>
-                                        <p className="text-xs text-muted-foreground">Datos brutos filtrados por tu ID</p>
+                                        <p className="font-bold text-base text-white">Ventas en Excel</p>
+                                        <p className="text-xs text-muted-foreground">Detalle de tus ventas</p>
                                     </div>
                                 </Button>
                                 <Button
@@ -184,8 +184,8 @@ export default function SellerDashboardPage() {
                                         <FilePieChart className="h-6 w-6 text-destructive" />
                                     </div>
                                     <div className="text-left">
-                                        <p className="font-bold text-base text-white">Informe PDF Premium</p>
-                                        <p className="text-xs text-muted-foreground">Resumen visual de performance</p>
+                                        <p className="font-bold text-base text-white">Resumen en PDF</p>
+                                        <p className="text-xs text-muted-foreground">Cómo van tus ventas</p>
                                     </div>
                                 </Button>
                             </div>
@@ -193,7 +193,7 @@ export default function SellerDashboardPage() {
                     </Dialog>
                     
                     <Button asChild className="px-8">
-                        <Link href="/seller/products">Gestionar Publicaciones</Link>
+                        <Link href="/seller/products">Mis Juegos</Link>
                     </Button>
                 </div>
             </div>
@@ -201,9 +201,9 @@ export default function SellerDashboardPage() {
             {/* KPI CARDS */}
             <div className="grid gap-5 md:grid-cols-2 lg:grid-cols-4">
                 <KpiCard
-                    title="Mis Ingresos"
+                    title="Lo que ganaste"
                     value={formatCurrency(stats?.totalRevenue || 0)}
-                    subtitle="Ventas registradas"
+                    subtitle="Ingresos totales"
                     icon={DollarSign}
                     iconBg="bg-primary/20"
                     iconColor="text-primary"
@@ -211,17 +211,17 @@ export default function SellerDashboardPage() {
                     trendValue={`${Math.abs(stats?.monthlyGrowth || 0)}%`}
                 />
                 <KpiCard
-                    title="Mis Ventas"
+                    title="Ventas hechas"
                     value={stats?.totalOrders || 0}
-                    subtitle="Órdenes completadas"
+                    subtitle="Pedidos cerrados"
                     icon={ShoppingBag}
                     iconBg="bg-blue-500/15"
                     iconColor="text-blue-400"
                 />
                 <KpiCard
-                    title="Mi Catálogo"
+                    title="Tus Juegos"
                     value={stats?.activeProducts || 0}
-                    subtitle="Juegos publicados"
+                    subtitle="En la tienda"
                     icon={Package}
                     iconBg="bg-violet-500/15"
                     iconColor="text-violet-400"
@@ -237,10 +237,10 @@ export default function SellerDashboardPage() {
                             <div>
                                 <CardTitle className="text-2xl font-headline font-bold italic flex items-center gap-3 opacity-60">
                                     <BarChart3 className="h-6 w-6 text-primary" />
-                                    Ventas · Últimos 30 días
+                                    Tus ventas del mes
                                 </CardTitle>
-                                <CardDescription className="text-xs font-black uppercase tracking-widest text-muted-foreground/60 mt-2">
-                                    Evolución de tus ingresos privados
+                                <CardDescription className="text-xs font-bold uppercase tracking-widest text-muted-foreground/60 mt-2">
+                                    Tu progreso este mes
                                 </CardDescription>
                             </div>
                         </div>
@@ -313,10 +313,10 @@ export default function SellerDashboardPage() {
                 <CardHeader className="px-8 pt-8 pb-4 border-b border-white/5">
                     <CardTitle className="text-2xl font-headline font-bold italic flex items-center gap-3 opacity-60">
                         <Zap className="h-6 w-6 text-primary" />
-                        Tus Best-Sellers
+                        Tus preferidos
                     </CardTitle>
-                    <CardDescription className="text-xs font-black uppercase tracking-widest text-muted-foreground/60 mt-2">
-                        Ranking de tus juegos mas vendidos
+                    <CardDescription className="text-xs font-bold uppercase tracking-widest text-muted-foreground/60 mt-2">
+                        Los juegos que más gustan
                     </CardDescription>
                 </CardHeader>
                 <CardContent className="px-8 py-8">
@@ -328,12 +328,12 @@ export default function SellerDashboardPage() {
                                <span className="text-4xl font-black italic text-primary/40 group-hover:text-primary transition-colors">#{i+1}</span>
                                <div className="flex-1 min-w-0">
                                  <p className="font-bold text-lg truncate">{p.name}</p>
-                                 <p className="text-[10px] font-black uppercase tracking-widest opacity-40">{p.totalSold} vendidos</p>
+                                 <p className="text-[10px] font-bold uppercase tracking-widest opacity-40">{p.totalSold} vendidos</p>
                                </div>
                              </div>
                              <div className="pt-4 border-t border-white/5 flex justify-between items-center">
-                               <p className="text-[10px] font-black uppercase tracking-widest opacity-40">Ingresos</p>
-                               <p className="text-xl font-black text-white">{formatCurrency(p.revenueGenerated)}</p>
+                               <p className="text-[10px] font-bold uppercase tracking-widest opacity-40">Ganancia</p>
+                               <p className="text-xl font-bold text-white">{formatCurrency(p.revenueGenerated)}</p>
                              </div>
                           </div>
                         ))}
@@ -341,7 +341,7 @@ export default function SellerDashboardPage() {
                     ) : (
                       <div className="py-20 text-center opacity-20">
                         <TrendingUp className="h-12 w-12 mx-auto mb-4" />
-                        <p className="font-black uppercase tracking-widest text-[10px]">Aún no tenés productos rankeados</p>
+                        <p className="font-bold uppercase tracking-widest text-[10px]">Aún no tenés productos rankeados</p>
                       </div>
                     )}
                 </CardContent>
