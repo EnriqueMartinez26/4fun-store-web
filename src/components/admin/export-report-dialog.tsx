@@ -33,11 +33,11 @@ export function ExportReportDialog({
       <DialogTrigger asChild>
         <Button
           disabled={disabled}
-          variant="ghost"
-          className="h-11 px-6 bg-white/5 hover:bg-white/10 text-white border border-white/10 hover:border-white/20 font-bold text-[10px] uppercase tracking-wide rounded-xl transition-all shadow-xl hover:shadow-primary/10 gap-2"
+          variant="outline"
+          className="h-10 px-4 py-2 border-white/10 hover:bg-white/5 font-bold bg-background text-sm rounded-md uppercase tracking-wide flex items-center gap-2 shadow-sm"
         >
-          <Download className="h-4 w-4 mr-2" />
-          {triggerLabel}
+          <Download className="h-4 w-4" />
+          DESCARGAR REPORTE
         </Button>
       </DialogTrigger>
       <DialogContent className="bg-slate-950/95 backdrop-blur-2xl border border-white/10 rounded-[2.5rem] shadow-2xl p-8 max-w-sm">
