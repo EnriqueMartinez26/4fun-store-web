@@ -79,7 +79,7 @@ export const PixelHero = () => {
 
   // 🎨 Mejora Visual aidesigner: Viñeteado profundo, brillos y layout Premium
   return (
-    <section className="relative w-full overflow-hidden bg-background py-12 md:py-16 lg:py-20 border-b border-white/5">
+    <section className="relative w-full overflow-hidden bg-background py-6 md:py-8 lg:py-10 border-b border-white/5">
       
       {/* Background Ambiental: Mezcla de Grid Holográfico + Radial Gradient Focus */}
       <div className="absolute inset-0 z-0 select-none pointer-events-none">
