@@ -113,7 +113,7 @@ export function ProductDetailView({ game }: ProductDetailViewProps) {
                         </div>
 
                         {/* RN - Requisitos de Sistema */}
-                        {game.requirements && (
+                        {(game.requirements || game.specPreset) && (
                             <Card className="bg-card/30 backdrop-blur-xl border-white/5 overflow-hidden">
                                 <CardHeader className="bg-muted/20 border-b border-white/5">
                                         <CardTitle className="text-lg font-headline font-bold flex items-center gap-3 text-white/60">
@@ -123,11 +123,34 @@ export function ProductDetailView({ game }: ProductDetailViewProps) {
                                 </CardHeader>
                                 <CardContent className="pt-6">
                                     <div className="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-4">
-                                        <SpecItem label="Sistema Operativo" value={game.requirements.os} />
-                                        <SpecItem label="Procesador" value={game.requirements.processor} />
-                                        <SpecItem label="Memoria RAM" value={game.requirements.memory} />
-                                        <SpecItem label="Gráficos" value={game.requirements.graphics} />
-                                        <SpecItem label="Espacio en Disco" value={game.requirements.storage} />
+                                        {game.requirements ? (
+                                            <>
+                                                <SpecItem label="Sistema Operativo" value={game.requirements.os} />
+                                                <SpecItem label="Procesador" value={game.requirements.processor} />
+                                                <SpecItem label="Memoria RAM" value={game.requirements.memory} />
+                                                <SpecItem label="Gráficos" value={game.requirements.graphics} />
+                                                <SpecItem label="Espacio en Disco" value={game.requirements.storage} />
+                                            </>
+                                        ) : (
+                                            <>
+                                                <SpecItem label="Procesador (CPU)" value={
+                                                    game.specPreset?.toLowerCase() === 'high' ? 'Ryzen 7 7700X / i7-13700K' :
+                                                    game.specPreset?.toLowerCase() === 'mid' ? 'Ryzen 5 7600X / i5-13600K' :
+                                                    'Ryzen 5 5600X / i5-12400'
+                                                } />
+                                                <SpecItem label="Memoria RAM" value={
+                                                    game.specPreset?.toLowerCase() === 'high' ? '32 GB DDR5' :
+                                                    '16 GB'
+                                                } />
+                                                <SpecItem label="Gráficos (GPU)" value={
+                                                    game.specPreset?.toLowerCase() === 'high' ? 'RTX 4080 / RX 7900 XT' :
+                                                    game.specPreset?.toLowerCase() === 'mid' ? 'RTX 4070 / RX 7800 XT' :
+                                                    'RTX 4060 / RX 6700'
+                                                } />
+                                                <SpecItem label="Sistema Operativo" value="Windows 10/11 64-bit" />
+                                                <SpecItem label="Almacenamiento" value="SSD Recomendado" />
+                                            </>
+                                        )}
                                         <SpecItem label="Perfil de Hardware" value={game.specPreset ?? undefined} highlight />
                                     </div>
                                 </CardContent>
