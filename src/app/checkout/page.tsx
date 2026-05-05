@@ -19,7 +19,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardFooter, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
-import { Loader2, CreditCard, ShieldCheck, MapPin, CheckCircle2, ArrowRight, ArrowLeft, ShoppingBag } from "lucide-react";
+import { Loader2, CreditCard, ShieldCheck, MapPin, CheckCircle2, ArrowRight, ArrowLeft, ShoppingBag, BadgeCheck } from "lucide-react";
 import { formatCurrency, cn } from "@/lib/utils";
 import { Badge } from "@/components/ui/badge";
 import Link from "next/link";
