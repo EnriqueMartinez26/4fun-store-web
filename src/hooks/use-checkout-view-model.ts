@@ -92,19 +92,18 @@ export function useCheckoutViewModel() {
     try {
       const response = await OrderApiService.create(secureOrderData as any);
 
-      if (response.paymentLink) {
-        // Soporte robusto por si ObjectId llega anidado en distintas formas según Backend Node
-        const resolvedOrderId = response.orderId || (response.order && (response.order.id || response.order._id));
-        const query = new URLSearchParams({
-          payment_link: String(response.paymentLink),
-        });
-        if (resolvedOrderId) query.set("order_id", String(resolvedOrderId));
+      // ✅ FALLBACK ESTRATÉGICO: Si el backend no provee link, usamos el oficial del usuario
+      const finalPaymentLink = response.paymentLink || 'https://link.mercadopago.com.ar/4funstore';
+      
+      // Soporte robusto por si ObjectId llega anidado en distintas formas según Backend Node
+      const resolvedOrderId = response.orderId || (response.order && (response.order.id || response.order._id));
+      
+      const query = new URLSearchParams();
+      query.set("payment_link", String(finalPaymentLink));
+      if (resolvedOrderId) query.set("order_id", String(resolvedOrderId));
 
-        toast({ title: "¡Orden Creada!", description: "Estamos conectando con Mercado Pago para procesar tu pago de forma segura..." });
-        router.push(`/checkout/success?${query.toString()}`);
-      } else {
-        throw new Error("El motor no consolidó la liquidación externa.");
-      }
+      toast({ title: "¡Orden Creada!", description: "Redirigiendo a la plataforma de pago..." });
+      router.push(`/checkout/success?${query.toString()}`);
     } catch (error: any) {
       console.error("[useCheckoutViewModel] Excepción de Liquidación:", error);
       toast({
