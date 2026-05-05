@@ -70,10 +70,7 @@ export default function CheckoutPage() {
   }
 
   return (
-    <div className="container mx-auto max-w-screen-xl px-4 py-16 animate-in fade-in duration-1000">
-      <div className="flex flex-col items-center mb-16 text-center sticky top-[4.5rem] z-30 bg-background/90 backdrop-blur-xl pt-6 pb-6 -mt-6 border-b border-white/5 shadow-sm">
-        <h1 className="text-5xl font-semibold font-headline text-white tracking-tighter italic uppercase drop-shadow-md">Finalizar Compra</h1>
-      </div>
+    <div className="container mx-auto max-w-screen-xl px-4 pt-24 pb-16 animate-in fade-in duration-1000">
 
       {/* Stepper Dinámico (UX Premium) */}
       <div className="flex justify-center mb-16 px-4">
