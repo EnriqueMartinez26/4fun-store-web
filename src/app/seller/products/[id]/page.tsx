@@ -27,9 +27,10 @@ import {
   FormMessage,
   FormDescription,
 } from "@/components/ui/form";
-import { DEVELOPERS } from "@/lib/constants";
+import { DEVELOPERS, SPEC_PRESETS } from "@/lib/constants";
 import { KeyManager } from "@/components/admin/key-manager";
 import { useSellerProductEditViewModel } from "@/hooks/use-seller-product-edit-view-model";
+import { SpecReferenceTable } from "@/components/admin/spec-reference-table";
 
 export default function SellerEditProductPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = use(params);
@@ -147,6 +148,20 @@ export default function SellerEditProductPage({ params }: { params: Promise<{ id
                       </div>
                     </div>
                   )}
+
+                  <FormField control={vm.form.control} name="specPreset" render={({ field }) => (
+                    <FormItem className="space-y-3">
+                      <FormLabel className="text-xs font-bold uppercase tracking-widest opacity-60">Requisitos del Sistema</FormLabel>
+                      <Select onValueChange={field.onChange} defaultValue={field.value || ""}>
+                        <FormControl><SelectTrigger className="h-14 bg-white/5 border-white/10 rounded-2xl font-bold"><SelectValue placeholder="Seleccionar nivel" /></SelectTrigger></FormControl>
+                        <SelectContent className="bg-card/95 backdrop-blur-3xl border-white/10 rounded-2xl">
+                          {SPEC_PRESETS.map((preset) => (<SelectItem key={preset} value={preset}>{preset}</SelectItem>))}
+                        </SelectContent>
+                      </Select>
+                      <SpecReferenceTable />
+                      <FormMessage />
+                    </FormItem>
+                  )} />
 
                   <FormField control={vm.form.control} name="active" render={({ field }) => (
                     <FormItem className="flex flex-row items-center space-x-4 space-y-0 rounded-[2rem] border border-primary/20 p-6 bg-primary/5">

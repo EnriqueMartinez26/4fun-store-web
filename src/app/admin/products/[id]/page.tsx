@@ -16,6 +16,9 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import { Checkbox } from "@/components/ui/checkbox";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { SPEC_PRESETS } from "@/lib/constants";
+import { SpecReferenceTable } from "@/components/admin/spec-reference-table";
 import {
   Form,
   FormControl,
@@ -178,6 +181,20 @@ export default function EditProductPage({ params }: { params: Promise<{ id: stri
                       </FormItem>
                     )} />
                   </div>
+
+                  <FormField control={form.control} name="specPreset" render={({ field }) => (
+                    <FormItem className="space-y-3">
+                      <FormLabel className="text-xs font-bold uppercase tracking-widest opacity-60">Requisitos del Sistema</FormLabel>
+                      <Select onValueChange={field.onChange} defaultValue={field.value || ""}>
+                        <FormControl><SelectTrigger className="h-14 bg-white/5 border-white/10 rounded-2xl font-bold"><SelectValue placeholder="Seleccionar nivel" /></SelectTrigger></FormControl>
+                        <SelectContent className="bg-card/95 backdrop-blur-3xl border-white/10 rounded-2xl">
+                          {SPEC_PRESETS.map((preset) => (<SelectItem key={preset} value={preset}>{preset}</SelectItem>))}
+                        </SelectContent>
+                      </Select>
+                      <SpecReferenceTable />
+                      <FormMessage />
+                    </FormItem>
+                  )} />
 
                   <FormField control={form.control} name="isDiscounted" render={({ field }) => (
                     <FormItem className="flex flex-row items-center space-x-4 space-y-0 rounded-[2rem] border border-white/5 p-6 bg-white/5">

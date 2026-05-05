@@ -26,6 +26,7 @@ import {
 } from "@/components/ui/form";
 import { adminProductBaseSchema, type AdminProductBaseValues } from "@/lib/schemas";
 import { DEVELOPERS, SPEC_PRESETS } from "@/lib/constants";
+import { SpecReferenceTable } from "@/components/admin/spec-reference-table";
 import { useImageUpload } from "@/hooks/use-image-upload";
 
 export default function NewProductPage() {
@@ -195,6 +196,7 @@ export default function NewProductPage() {
                         <FormControl><SelectTrigger className="h-14 bg-white/5 border-white/10 rounded-2xl font-bold"><SelectValue placeholder="Seleccionar nivel" /></SelectTrigger></FormControl>
                         <SelectContent className="bg-card/95 backdrop-blur-3xl border-white/10 rounded-2xl">{SPEC_PRESETS.map((preset) => (<SelectItem key={preset} value={preset}>{preset}</SelectItem>))}</SelectContent>
                       </Select>
+                      <SpecReferenceTable />
                       <FormMessage />
                     </FormItem>
                   )} />
