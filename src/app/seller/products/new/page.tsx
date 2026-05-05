@@ -24,7 +24,9 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
+  FormDescription,
 } from "@/components/ui/form";
+import { Checkbox } from "@/components/ui/checkbox";
 import { DEVELOPERS, SPEC_PRESETS } from "@/lib/constants";
 import { SpecReferenceTable } from "@/components/admin/spec-reference-table";
 import { useSellerProductCreationViewModel } from "@/hooks/use-seller-product-creation-view-model";
