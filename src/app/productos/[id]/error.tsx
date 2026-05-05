@@ -18,9 +18,9 @@ export default function ProductDetailError({
   return (
     <div className="container mx-auto px-4 py-24 max-w-3xl">
       <div className="rounded-2xl border border-white/10 bg-card/40 p-8 text-center space-y-5">
-        <h1 className="text-3xl font-headline font-bold text-white">No pudimos cargar este producto</h1>
+        <h1 className="text-3xl font-headline font-bold text-white">¡Uy! Algo no salió como esperábamos</h1>
         <p className="text-muted-foreground">
-          Ocurrio un problema al obtener la informacion. Podes reintentar o volver al catalogo.
+          Tuvimos un pequeño problema al cargar los detalles de este producto. No te preocupes: ya estamos trabajando para que todo vuelva a la normalidad.
         </p>
         <div className="flex flex-col sm:flex-row gap-3 justify-center">
           <Button onClick={() => reset()} className="font-semibold uppercase tracking-wider text-xs">
