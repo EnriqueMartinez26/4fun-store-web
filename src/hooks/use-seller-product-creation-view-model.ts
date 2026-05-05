@@ -8,18 +8,19 @@
  * Sigue el patrón MVVM eliminando la lógica de la vista (ProductForm).
  */
 
-import { useState, useEffect } from "react";
-import { useRouter } from "next/navigation";
-import { useForm, UseFormReturn } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { ProductApiService } from "@/lib/services/ProductApiService";
-import { TaxonomyApiService } from "@/lib/services/TaxonomyApiService";
-import { KeyApiService } from "@/lib/services/KeyApiService";
-import { useToast } from "@/hooks/use-toast";
-import { useImageUpload } from "@/hooks/use-image-upload";
-import { adminProductBaseSchema, type AdminProductBaseValues } from "@/lib/schemas";
-import { DEVELOPERS } from "@/lib/constants";
-import type { Platform, Genre } from "@/lib/types";
+import { useState, useEffect } from 'react';
+import { useRouter } from 'next/navigation';
+import { useForm, UseFormReturn } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { z } from 'zod';
+import { ProductApiService } from '@/lib/services/ProductApiService';
+import { TaxonomyApiService } from '@/lib/services/TaxonomyApiService';
+import { KeyApiService } from '@/lib/services/KeyApiService';
+import { useToast } from '@/hooks/use-toast';
+import { useImageUpload } from '@/hooks/use-image-upload';
+import { adminProductBaseSchema, type AdminProductBaseValues } from '@/lib/schemas';
+import { DEVELOPERS } from '@/lib/constants';
+import type { Platform, Genre } from '@/lib/types';
 
 // Extensión del esquema para lógica comercial de ofertas
 const productCreationSchema = adminProductBaseSchema.extend({
@@ -32,29 +33,29 @@ export type ProductCreationValues = z.infer<typeof productCreationSchema>;
 export function useSellerProductCreationViewModel() {
   const router = useRouter();
   const { toast } = useToast();
-  
+
   // -- ESTADOS DE UI & TAXONOMÍAS --
   const [isCustomDev, setIsCustomDev] = useState(false);
   const [platforms, setPlatforms] = useState<Platform[]>([]);
   const [genres, setGenres] = useState<Genre[]>([]);
   const [isLoadingTaxonomies, setIsLoadingTaxonomies] = useState(true);
-  const [keysText, setKeysText] = useState("");
+  const [keysText, setKeysText] = useState('');
 
   // -- INICIALIZACIÓN DEL FORMULARIO --
   const form = useForm<ProductCreationValues>({
     resolver: zodResolver(productCreationSchema),
     defaultValues: {
-      name: "",
-      description: "",
+      name: '',
+      description: '',
       price: 0,
       stock: 0,
-      platformId: "",
-      genreId: "",
-      type: "Digital",
-      developer: DEVELOPERS[0] || "Nintendo",
-      specPreset: "Mid",
-      imageId: "",
-      trailerUrl: "",
+      platformId: '',
+      genreId: '',
+      type: 'Digital',
+      developer: DEVELOPERS[0] || 'Nintendo',
+      specPreset: 'Mid',
+      imageId: '',
+      trailerUrl: '',
       active: false,
       isDiscounted: false,
       discountPercentage: 0,
@@ -67,14 +68,17 @@ export function useSellerProductCreationViewModel() {
    * manualmente para evitar discrepancias con el KeyManager.
    */
   useEffect(() => {
-    const keys = keysText.split("\n").map(k => k.trim()).filter(k => k !== "");
-    form.setValue("stock", keys.length);
+    const keys = keysText
+      .split('\n')
+      .map((k) => k.trim())
+      .filter((k) => k !== '');
+    form.setValue('stock', keys.length);
   }, [keysText, form]);
 
   // -- LOGICA DE IMÁGENES --
   const { isUploading, handleImageUpload } = useImageUpload({
-    onSuccess: (url) => form.setValue("imageId", url),
-    successMessage: "Portada cargada correctamente."
+    onSuccess: (url) => form.setValue('imageId', url),
+    successMessage: 'Portada cargada correctamente.',
   });
 
   /**
@@ -87,17 +91,17 @@ export function useSellerProductCreationViewModel() {
         setIsLoadingTaxonomies(true);
         const [pData, gData] = await Promise.all([
           TaxonomyApiService.getPlatforms(),
-          TaxonomyApiService.getGenres()
+          TaxonomyApiService.getGenres(),
         ]);
-        
+
         // Normalización de datos para evitar 'any'
-        setPlatforms(Array.isArray(pData) ? pData : (pData?.data || []));
-        setGenres(Array.isArray(gData) ? gData : (gData?.data || []));
+        setPlatforms(Array.isArray(pData) ? pData : pData?.data || []);
+        setGenres(Array.isArray(gData) ? gData : gData?.data || []);
       } catch (err) {
-        toast({ 
-          variant: "destructive", 
-          title: "Error de Sistema", 
-          description: "No se pudieron cargar las categorías. Reintente." 
+        toast({
+          variant: 'destructive',
+          title: 'Error de Sistema',
+          description: 'No se pudieron cargar las categorías. Reintente.',
         });
       } finally {
         setIsLoadingTaxonomies(false);
@@ -113,10 +117,13 @@ export function useSellerProductCreationViewModel() {
    */
   const onSubmit = async (data: ProductCreationValues) => {
     try {
-      const keys = keysText.split("\n").map(k => k.trim()).filter(k => k !== "");
-      
+      const keys = keysText
+        .split('\n')
+        .map((k) => k.trim())
+        .filter((k) => k !== '');
+
       if (keys.length === 0) {
-        throw new Error("Debes agregar al menos una Clave Digital para publicar el producto.");
+        throw new Error('Debes agregar al menos una Clave Digital para publicar el producto.');
       }
 
       const payload = { ...data };
@@ -124,33 +131,33 @@ export function useSellerProductCreationViewModel() {
 
       // 1. Crear el producto base
       // RN: Ya usamos imageId consistentemente con el backend
-      const response = await ProductApiService.create({ 
-        ...payload, 
+      const response = await ProductApiService.create({
+        ...payload,
         stock: keys.length,
-        developer: data.developer || '' 
+        developer: data.developer || '',
       });
 
       // 2. Orquestar la carga de licencias (KeyManager Integration)
       // Ajuste: El backend devuelve un envelope { success: true, data: Product }
       const newProduct = (response as any).data || response;
-      
+
       if (newProduct && newProduct.id) {
         await KeyApiService.addBulk(newProduct.id, keys);
       }
 
-      toast({ 
-        title: "Publicación Exitosa", 
-        description: `Se han cargado ${keys.length} claves para "${data.name}".` 
+      toast({
+        title: 'Publicación Exitosa',
+        description: `Se han cargado ${keys.length} claves para "${data.name}".`,
       });
 
-      router.push("/seller/products");
+      router.push('/seller/products');
       router.refresh();
     } catch (error: unknown) {
-      const errorMessage = error instanceof Error ? error.message : "Error fatal en el alta.";
-      toast({ 
-        variant: "destructive", 
-        title: "Fallo en Publicación", 
-        description: errorMessage 
+      const errorMessage = error instanceof Error ? error.message : 'Error fatal en el alta.';
+      toast({
+        variant: 'destructive',
+        title: 'Fallo en Publicación',
+        description: errorMessage,
       });
     }
   };
@@ -186,6 +193,6 @@ export function useSellerProductCreationViewModel() {
     onSubmit: form.handleSubmit(onSubmit),
     toggleCustomDeveloper,
     cancelCustomDeveloper,
-    isSubmitting: form.formState.isSubmitting
+    isSubmitting: form.formState.isSubmitting,
   };
 }
