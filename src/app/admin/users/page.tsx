@@ -1,413 +1,512 @@
-"use client";
+'use client';
 
 /**
  * Capa de Administración: Gestión de Usuarios y Permisos (Admin Users)
  * --------------------------------------------------------------------------
- * Orquesta la administración de cuentas y el control de acceso (RBAC). 
- * Provee herramientas para la moderación de roles, auditoría de perfiles y 
+ * Orquesta la administración de cuentas y el control de acceso (RBAC).
+ * Provee herramientas para la moderación de roles, auditoría de perfiles y
  * exportación de registros registrales para fines contables y de seguridad.
  * (MVC / Page)
  */
 
-import { useCallback, useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
-import { UserApiService } from "@/lib/services/UserApiService";
-import { useToast } from "@/hooks/use-toast";
-import { useDebounce } from "@/hooks/use-debounce";
+import { useCallback, useEffect, useState } from 'react';
+import { useRouter } from 'next/navigation';
+import { UserApiService } from '@/lib/services/UserApiService';
+import { useToast } from '@/hooks/use-toast';
+import { useDebounce } from '@/hooks/use-debounce';
 import {
-    Table,
-    TableBody,
-    TableCell,
-    TableHead,
-    TableHeader,
-    TableRow,
-} from "@/components/ui/table";
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from '@/components/ui/table';
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
+import { Input } from '@/components/ui/input';
+import { Button } from '@/components/ui/button';
 import {
-    DropdownMenu,
-    DropdownMenuContent,
-    DropdownMenuItem,
-    DropdownMenuLabel,
-    DropdownMenuSeparator,
-    DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu';
 import {
-    Dialog,
-    DialogContent,
-    DialogDescription,
-    DialogHeader,
-    DialogTitle,
-    DialogTrigger,
-} from "@/components/ui/dialog";
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from '@/components/ui/dialog';
 import {
-    Loader2,
-    Search,
-    MoreVertical,
-    Shield,
-    User as UserIcon,
-    Trash2,
-    Filter,
-    Download,
-    FileSpreadsheet,
-    FilePieChart,
-    Users,
-    ShieldAlert,
-    RefreshCw
-} from "lucide-react";
-import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
-import { Badge } from "@/components/ui/badge";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import jsPDF from "jspdf";
-import autoTable from "jspdf-autotable";
-import { cn } from "@/lib/utils";
+  Loader2,
+  Search,
+  MoreVertical,
+  Shield,
+  User as UserIcon,
+  Trash2,
+  Filter,
+  Download,
+  FileSpreadsheet,
+  FilePieChart,
+  Users,
+  ShieldAlert,
+  RefreshCw,
+} from 'lucide-react';
+import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
+import { Badge } from '@/components/ui/badge';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
+import jsPDF from 'jspdf';
+import autoTable from 'jspdf-autotable';
+import { ExportReportDialog } from '@/components/admin/export-report-dialog';
+import { cn } from '@/lib/utils';
 
 // RN - Tipografía de Dominio: Definición local para la auditoría de usuarios.
 interface User {
-    id?: string;
-    _id: string;
-    name: string;
-    email: string;
-    role: 'USER' | 'ADMIN';
-    isVerified: boolean;
-    avatar?: string | null;
-    createdAt: string;
-    sellerProfile?: {
-        storeName: string;
-        isApproved: boolean;
-        storeDescription?: string;
-    } | null;
+  id?: string;
+  _id: string;
+  name: string;
+  email: string;
+  role: 'USER' | 'ADMIN';
+  isVerified: boolean;
+  avatar?: string | null;
+  createdAt: string;
+  sellerProfile?: {
+    storeName: string;
+    isApproved: boolean;
+    storeDescription?: string;
+  } | null;
 }
 
 export default function UsersPage() {
-    const router = useRouter();
-    const { toast } = useToast();
+  const router = useRouter();
+  const { toast } = useToast();
 
-    const [users, setUsers] = useState<User[]>([]);
-    const [loading, setLoading] = useState(true);
+  const [users, setUsers] = useState<User[]>([]);
+  const [loading, setLoading] = useState(true);
 
-    const [searchTerm, setSearchTerm] = useState("");
-    const [roleFilter, setRoleFilter] = useState("all");
-    const [page, setPage] = useState(1);
-    const [totalPages, setTotalPages] = useState(1);
-    const [actionLoading, setActionLoading] = useState<string | null>(null);
+  const [searchTerm, setSearchTerm] = useState('');
+  const [roleFilter, setRoleFilter] = useState('all');
+  const [page, setPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
+  const [actionLoading, setActionLoading] = useState<string | null>(null);
 
-    const debouncedSearch = useDebounce(searchTerm);
+  const debouncedSearch = useDebounce(searchTerm);
 
-    /**
-     * Búsqueda de Usuarios: Recupera el listado con filtros aplicados.
-     */
-    const fetchUsers = useCallback(async () => {
-        setLoading(true);
-        try {
-            const res = await UserApiService.getUsers({
-                page,
-                limit: 10,
-                search: debouncedSearch,
-                role: roleFilter
-            });
+  /**
+   * Búsqueda de Usuarios: Recupera el listado con filtros aplicados.
+   */
+  const fetchUsers = useCallback(async () => {
+    setLoading(true);
+    try {
+      const res = await UserApiService.getUsers({
+        page,
+        limit: 10,
+        search: debouncedSearch,
+        role: roleFilter,
+      });
 
-            if (res.success) {
-                setUsers((Array.isArray(res.data) ? res.data : []) as any[]);
-                setTotalPages(res.totalPages || 1);
-            }
-        } catch (error) {
-            console.error("[UsersAdmin] Error synchronization:", error);
-            toast({ title: "Fallo de Carga", description: "No se pudo recuperar la nómina de usuarios.", variant: "destructive" });
-        } finally {
-            setLoading(false);
-        }
-    }, [page, debouncedSearch, roleFilter, toast]);
+      if (res.success) {
+        setUsers((Array.isArray(res.data) ? res.data : []) as any[]);
+        setTotalPages(res.totalPages || 1);
+      }
+    } catch (error) {
+      console.error('[UsersAdmin] Error synchronization:', error);
+      toast({
+        title: 'Fallo de Carga',
+        description: 'No se pudo recuperar la nómina de usuarios.',
+        variant: 'destructive',
+      });
+    } finally {
+      setLoading(false);
+    }
+  }, [page, debouncedSearch, roleFilter, toast]);
 
-    useEffect(() => {
-        fetchUsers();
-    }, [fetchUsers]);
+  useEffect(() => {
+    fetchUsers();
+  }, [fetchUsers]);
 
-    /**
-     * Gestión de Roles: Permite cambiar los permisos de acceso del usuario.
-     */
-    const handleRoleUpdate = async (userId: string, currentRole: string) => {
-        const newRole = currentRole === 'ADMIN' ? 'USER' : 'ADMIN';
-        setActionLoading(userId);
-        try {
-            await UserApiService.updateUser(userId, { role: newRole });
-            toast({ title: "Jerarquía Actualizada", description: `El usuario ha sido transicionado al rol: ${newRole.toUpperCase()}` });
-            fetchUsers();
-        } catch (err: any) {
-            toast({ title: "Fallo en Moderación", description: err.message, variant: "destructive" });
-        } finally {
-            setActionLoading(null);
-        }
-    };
+  /**
+   * Gestión de Roles: Permite cambiar los permisos de acceso del usuario.
+   */
+  const handleRoleUpdate = async (userId: string, currentRole: string) => {
+    const newRole = currentRole === 'ADMIN' ? 'USER' : 'ADMIN';
+    setActionLoading(userId);
+    try {
+      await UserApiService.updateUser(userId, { role: newRole });
+      toast({
+        title: 'Jerarquía Actualizada',
+        description: `El usuario ha sido transicionado al rol: ${newRole.toUpperCase()}`,
+      });
+      fetchUsers();
+    } catch (err: any) {
+      toast({ title: 'Fallo en Moderación', description: err.message, variant: 'destructive' });
+    } finally {
+      setActionLoading(null);
+    }
+  };
 
-    /**
-     * Gestión de Cuentas: Permite eliminar perfiles de usuario.
-     */
-    const handleDelete = async (userId: string, name: string) => {
-        if (!confirm(`¿Estás seguro de que deseas eliminar permanentemente al usuario: ${name}?`)) return;
+  /**
+   * Gestión de Cuentas: Permite eliminar perfiles de usuario.
+   */
+  const handleDelete = async (userId: string, name: string) => {
+    if (!confirm(`¿Estás seguro de que deseas eliminar permanentemente al usuario: ${name}?`))
+      return;
 
-        setActionLoading(userId);
-        try {
-            await UserApiService.deleteUser(userId);
-            toast({ title: "Cuenta Eliminada", description: "El usuario ha sido removido del sistema." });
-            fetchUsers();
-        } catch (err: any) {
-            toast({ title: "Error en Operación", description: err.message, variant: "destructive" });
-        } finally {
-            setActionLoading(null);
-        }
-    };
-    
-    /**
-     * RN - Marketplace Approval: Habilita formalmente un perfil de tienda.
-     */
-    const handleApproveSeller = async (userId: string) => {
-        setActionLoading(userId);
-        try {
-            await UserApiService.approveSeller(userId);
-            toast({ 
-                title: "Tienda Aprobada", 
-                description: "El usuario ya puede empezar a publicar productos.",
-                className: "bg-green-500/20 border-green-500/20 text-white"
-            });
-            fetchUsers();
-        } catch (err: any) {
-            toast({ title: "Error en Aprobación", description: err.message, variant: "destructive" });
-        } finally {
-            setActionLoading(null);
-        }
-    };
+    setActionLoading(userId);
+    try {
+      await UserApiService.deleteUser(userId);
+      toast({ title: 'Cuenta Eliminada', description: 'El usuario ha sido removido del sistema.' });
+      fetchUsers();
+    } catch (err: any) {
+      toast({ title: 'Error en Operación', description: err.message, variant: 'destructive' });
+    } finally {
+      setActionLoading(null);
+    }
+  };
 
-    // ─── DESCARGA DE REPORTES ───
+  /**
+   * RN - Marketplace Approval: Habilita formalmente un perfil de tienda.
+   */
+  const handleApproveSeller = async (userId: string) => {
+    setActionLoading(userId);
+    try {
+      await UserApiService.approveSeller(userId);
+      toast({
+        title: 'Tienda Aprobada',
+        description: 'El usuario ya puede empezar a publicar productos.',
+        className: 'bg-green-500/20 border-green-500/20 text-white',
+      });
+      fetchUsers();
+    } catch (err: any) {
+      toast({ title: 'Error en Aprobación', description: err.message, variant: 'destructive' });
+    } finally {
+      setActionLoading(null);
+    }
+  };
 
-    const handleExportCSV = () => {
-        if (!users.length) return;
-        const headers = ["Nombre", "Email", "Rol", "Verificado", "Registrado"];
-        const rows = users.map(u => [
-            u.name, u.email, u.role, u.isVerified ? "Sí" : "No", new Date(u.createdAt).toLocaleDateString("es-AR")
-        ]);
-        const csvContent = [headers.join(","), ...rows.map(r => r.join(","))].join("\n");
-        const blob = new Blob(["\uFEFF" + csvContent], { type: "text/csv;charset=utf-8;" });
-        const url = URL.createObjectURL(blob);
-        const link = Object.assign(document.createElement("a"), {
-            href: url,
-            download: `auditoria_usuarios_${new Date().getTime()}.csv`,
-        });
-        link.click();
-    };
+  // ─── DESCARGA DE REPORTES ───
 
-    const handleExportPDF = () => {
-        if (!users.length) return;
-        const doc = new jsPDF();
-        doc.setFontSize(22);
-        doc.text("Reporte de Usuarios Registrados", 14, 22);
-        doc.setFontSize(10);
-        doc.setTextColor(100);
-        doc.text(`Fecha: ${new Date().toLocaleString("es-AR")} | 4Fun Marketplace`, 14, 30);
-        doc.setTextColor(0);
+  const handleExportCSV = () => {
+    if (!users.length) return;
+    const headers = ['Nombre', 'Email', 'Rol', 'Verificado', 'Registrado'];
+    const rows = users.map((u) => [
+      u.name,
+      u.email,
+      u.role,
+      u.isVerified ? 'Sí' : 'No',
+      new Date(u.createdAt).toLocaleDateString('es-AR'),
+    ]);
+    const csvContent = [headers.join(','), ...rows.map((r) => r.join(','))].join('\n');
+    const blob = new Blob(['\uFEFF' + csvContent], { type: 'text/csv;charset=utf-8;' });
+    const url = URL.createObjectURL(blob);
+    const link = Object.assign(document.createElement('a'), {
+      href: url,
+      download: `auditoria_usuarios_${new Date().getTime()}.csv`,
+    });
+    link.click();
+  };
 
-        autoTable(doc, {
-            startY: 40,
-            head: [["NOMBRE", "CORREO ELECTRÓNICO", "TIPO DE CUENTA", "ESTADO", "FECHA DE REGISTRO"]],
-            body: users.map(u => [
-                u.name,
-                u.email,
-                u.role === "ADMIN" ? "ADMINISTRADOR" : "CLIENTE",
-                u.isVerified ? "ACTIVO" : "PENDIENTE",
-                new Date(u.createdAt).toLocaleDateString("es-AR"),
-            ]),
-            styles: { fontSize: 8, cellPadding: 4 },
-            headStyles: { fillColor: [45, 45, 55], textColor: [255, 255, 255] },
-            alternateRowStyles: { fillColor: [245, 245, 250] }
-        });
-        doc.save(`auditoria_usuarios_${new Date().getTime()}.pdf`);
-    };
+  const handleExportPDF = () => {
+    if (!users.length) return;
+    const doc = new jsPDF();
+    doc.setFontSize(22);
+    doc.text('Reporte de Usuarios Registrados', 14, 22);
+    doc.setFontSize(10);
+    doc.setTextColor(100);
+    doc.text(`Fecha: ${new Date().toLocaleString('es-AR')} | 4Fun Marketplace`, 14, 30);
+    doc.setTextColor(0);
 
-    return (
-        <div className="space-y-6 animate-in fade-in duration-700">
-            <Card className="border-none bg-card/40 backdrop-blur-md shadow-2xl">
-                <CardHeader className="flex flex-col md:flex-row items-start md:items-center justify-between gap-6 border-b border-white/5 pb-8">
-                    <div className="space-y-1">
-                        <CardTitle className="text-3xl font-headline font-bold text-white flex items-center gap-3">
-                            <Users className="h-8 w-8 text-primary" />
-                            Usuarios
-                        </CardTitle>
-                        <CardDescription className="text-muted-foreground uppercase tracking-widest text-[10px] font-bold">
-                            Administración de usuarios y perfiles
-                        </CardDescription>
-                    </div>
-                    
-                    <div className="flex flex-wrap gap-2 w-full md:w-auto">
-                        <Dialog>
-                            <DialogTrigger asChild>
-                                <Button variant="outline" className="border-white/10 hover:bg-white/5 font-bold" disabled={loading || users.length === 0}>
-                                    <Download className="mr-2 h-4 w-4" /> DESCARGAR REPORTE
-                                </Button>
-                            </DialogTrigger>
-                            <DialogContent className="bg-card/95 backdrop-blur-xl border-white/10 sm:max-w-[400px]">
-                                <DialogHeader>
-                                    <DialogTitle className="text-xl font-headline text-white">Exportar Listado de Usuarios</DialogTitle>
-                                    <DialogDescription className="text-xs uppercase font-bold tracking-widest text-muted-foreground mt-1">Seleccionar formato de descarga</DialogDescription>
-                                </DialogHeader>
-                                <div className="grid gap-3 py-6">
-                                    <Button variant="outline" className="h-16 justify-between px-6 border-white/10 hover:border-primary/50" onClick={handleExportCSV}>
-                                        <div className="flex items-center gap-4">
-                                            <FileSpreadsheet className="h-6 w-6 text-green-500" />
-                                            <p className="font-bold text-white uppercase text-xs">DESCARGAR REPORTE</p>
-                                        </div>
-                                    </Button>
-                                    <Button variant="outline" className="h-16 justify-between px-6 border-white/10 hover:border-primary/50" onClick={handleExportPDF}>
-                                        <div className="flex items-center gap-4">
-                                            <FilePieChart className="h-6 w-6 text-destructive" />
-                                            <p className="font-bold text-white uppercase text-xs">DESCARGAR REPORTE</p>
-                                        </div>
-                                    </Button>
-                                </div>
-                            </DialogContent>
-                        </Dialog>
-                    </div>
-                </CardHeader>
-                
-                <CardContent className="pt-8">
-                    {/* Barra de Búsqueda y Filtrado */}
-                    <div className="flex flex-col md:flex-row items-center gap-4 mb-8">
-                        <div className="relative flex-1 w-full">
-                            <Search className="absolute left-3 top-3 h-5 w-5 text-muted-foreground opacity-50" />
-                            <input
-                                className="w-full bg-muted/20 border border-white/10 rounded-xl h-12 pl-12 pr-4 text-base text-white placeholder:text-muted-foreground outline-none focus:ring-2 focus:ring-primary/50 transition-all font-medium"
-                                placeholder="Localizar por ID, Nombre o E-mail..."
-                                value={searchTerm}
-                                onChange={(e) => setSearchTerm(e.target.value)}
-                            />
+    autoTable(doc, {
+      startY: 40,
+      head: [['NOMBRE', 'CORREO ELECTRÓNICO', 'TIPO DE CUENTA', 'ESTADO', 'FECHA DE REGISTRO']],
+      body: users.map((u) => [
+        u.name,
+        u.email,
+        u.role === 'ADMIN' ? 'ADMINISTRADOR' : 'CLIENTE',
+        u.isVerified ? 'ACTIVO' : 'PENDIENTE',
+        new Date(u.createdAt).toLocaleDateString('es-AR'),
+      ]),
+      styles: { fontSize: 8, cellPadding: 4 },
+      headStyles: { fillColor: [45, 45, 55], textColor: [255, 255, 255] },
+      alternateRowStyles: { fillColor: [245, 245, 250] },
+    });
+    doc.save(`auditoria_usuarios_${new Date().getTime()}.pdf`);
+  };
+
+  return (
+    <div className="space-y-6 animate-in fade-in duration-700">
+      <Card className="border-none bg-card/40 backdrop-blur-md shadow-2xl">
+        <CardHeader className="flex flex-col md:flex-row items-start md:items-center justify-between gap-6 border-b border-white/5 pb-8">
+          <div className="space-y-1">
+            <CardTitle className="text-3xl font-headline font-bold text-white flex items-center gap-3">
+              <Users className="h-8 w-8 text-primary" />
+              Usuarios
+            </CardTitle>
+            <CardDescription className="text-muted-foreground uppercase tracking-widest text-[10px] font-bold">
+              Administración de usuarios y perfiles
+            </CardDescription>
+          </div>
+
+          <div className="flex flex-wrap gap-2 w-full md:w-auto">
+            <ExportReportDialog
+              onExportExcel={handleExportCSV}
+              onExportPDF={handleExportPDF}
+              title="Exportar Listado de Usuarios"
+              description="Seleccionar formato de descarga"
+              disabled={loading || users.length === 0}
+            />
+          </div>
+        </CardHeader>
+
+        <CardContent className="pt-8">
+          {/* Barra de Búsqueda y Filtrado */}
+          <div className="flex flex-col md:flex-row items-center gap-4 mb-8">
+            <div className="relative flex-1 w-full">
+              <Search className="absolute left-3 top-3 h-5 w-5 text-muted-foreground opacity-50" />
+              <input
+                className="w-full bg-muted/20 border border-white/10 rounded-xl h-12 pl-12 pr-4 text-base text-white placeholder:text-muted-foreground outline-none focus:ring-2 focus:ring-primary/50 transition-all font-medium"
+                placeholder="Localizar por ID, Nombre o E-mail..."
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+              />
+            </div>
+
+            <div className="flex items-center gap-2 w-full md:w-auto">
+              <Select value={roleFilter} onValueChange={setRoleFilter}>
+                <SelectTrigger className="w-full md:w-[220px] h-12 bg-muted/20 border-white/10 rounded-xl text-white font-bold text-sm uppercase tracking-widest">
+                  <div className="flex items-center gap-2">
+                    <Filter className="h-4 w-4" />
+                    <SelectValue placeholder="FILTRAR ROL" />
+                  </div>
+                </SelectTrigger>
+                <SelectContent className="bg-card/95 backdrop-blur-xl border-white/10 text-white">
+                  <SelectItem value="all">TODOS LOS PERFILES</SelectItem>
+                  <SelectItem value="ADMIN">ADMINISTRADORES</SelectItem>
+                  <SelectItem value="USER">SOLO USUARIOS</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+          </div>
+
+          <div className="rounded-2xl border border-white/5 overflow-hidden">
+            <Table>
+              <TableHeader className="bg-muted/30">
+                <TableRow className="hover:bg-transparent border-white/5">
+                  <TableHead className="w-[80px] font-bold uppercase tracking-widest text-[11px] text-muted-foreground">
+                    Foto
+                  </TableHead>
+                  <TableHead className="font-bold uppercase tracking-widest text-[11px] text-muted-foreground">
+                    Usuario
+                  </TableHead>
+                  <TableHead className="font-bold uppercase tracking-widest text-[11px] text-muted-foreground text-center">
+                    Tipo de Cuenta
+                  </TableHead>
+                  <TableHead className="font-bold uppercase tracking-widest text-[11px] text-muted-foreground text-center">
+                    Estado
+                  </TableHead>
+                  <TableHead className="font-bold uppercase tracking-widest text-[11px] text-muted-foreground text-center">
+                    Registro
+                  </TableHead>
+                  <TableHead className="text-right font-bold uppercase tracking-widest text-[11px] text-muted-foreground">
+                    Acciones
+                  </TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {loading ? (
+                  Array.from({ length: 5 }).map((_, i) => (
+                    <TableRow key={i} className="border-white/5">
+                      <TableCell colSpan={6}>
+                        <div className="h-14 bg-muted/10 animate-pulse rounded-lg" />
+                      </TableCell>
+                    </TableRow>
+                  ))
+                ) : users.length === 0 ? (
+                  <TableRow>
+                    <TableCell
+                      colSpan={6}
+                      className="h-32 text-center text-muted-foreground italic"
+                    >
+                      No se hallaron registros en el padrón.
+                    </TableCell>
+                  </TableRow>
+                ) : (
+                  users.map((user) => (
+                    <TableRow
+                      key={user.id || user._id}
+                      className="border-white/5 hover:bg-white/5 transition-colors group"
+                    >
+                      <TableCell>
+                        <Avatar className="h-10 w-10 ring-2 ring-white/5">
+                          {user.avatar && <AvatarImage src={user.avatar} alt={user.name} />}
+                          <AvatarFallback className="bg-primary/10 text-primary font-black text-xs">
+                            {(user.name || 'U').substring(0, 2).toUpperCase()}
+                          </AvatarFallback>
+                        </Avatar>
+                      </TableCell>
+                      <TableCell>
+                        <div className="flex flex-col">
+                          <span className="font-bold text-white text-base group-hover:text-primary transition-colors">
+                            {user.name}
+                          </span>
+                          <span className="text-xs text-muted-foreground opacity-70 italic truncate max-w-[200px]">
+                            {user.email}
+                          </span>
                         </div>
+                      </TableCell>
+                      <TableCell className="text-center">
+                        {user.role === 'ADMIN' ? (
+                          <Badge
+                            variant="default"
+                            className="bg-destructive text-white border-none gap-1 py-0 font-black text-[10px] uppercase tracking-tighter"
+                          >
+                            <ShieldAlert className="h-3 w-3" /> Admin
+                          </Badge>
+                        ) : (
+                          <Badge
+                            variant="secondary"
+                            className="gap-1 py-0 font-bold text-[10px] uppercase tracking-tighter bg-muted/30"
+                          >
+                            <UserIcon className="h-3 w-3" /> Usuario
+                          </Badge>
+                        )}
+                      </TableCell>
+                      <TableCell className="text-center">
+                        {user.isVerified ? (
+                          <Badge
+                            variant="outline"
+                            className="border-green-500/30 text-green-500 font-bold text-[10px] py-0 bg-green-500/5 uppercase"
+                          >
+                            Verificado
+                          </Badge>
+                        ) : (
+                          <Badge
+                            variant="outline"
+                            className="border-yellow-500/30 text-yellow-500 font-bold text-[10px] py-0 bg-yellow-500/5 uppercase"
+                          >
+                            Pendiente
+                          </Badge>
+                        )}
 
-                        <div className="flex items-center gap-2 w-full md:w-auto">
-                            <Select value={roleFilter} onValueChange={setRoleFilter}>
-                                <SelectTrigger className="w-full md:w-[220px] h-12 bg-muted/20 border-white/10 rounded-xl text-white font-bold text-sm uppercase tracking-widest">
-                                    <div className="flex items-center gap-2">
-                                        <Filter className="h-4 w-4" />
-                                        <SelectValue placeholder="FILTRAR ROL" />
-                                    </div>
-                                </SelectTrigger>
-                                <SelectContent className="bg-card/95 backdrop-blur-xl border-white/10 text-white">
-                                    <SelectItem value="all">TODOS LOS PERFILES</SelectItem>
-                                    <SelectItem value="ADMIN">ADMINISTRADORES</SelectItem>
-                                    <SelectItem value="USER">SOLO USUARIOS</SelectItem>
-                                </SelectContent>
-                            </Select>
-                        </div>
-                    </div>
+                        {user.sellerProfile && !user.sellerProfile.isApproved && (
+                          <Badge
+                            variant="outline"
+                            className="ml-1 border-primary/30 text-primary font-bold text-[10px] py-0 bg-primary/5 uppercase animate-pulse"
+                          >
+                            Tienda Pendiente
+                          </Badge>
+                        )}
+                      </TableCell>
+                      <TableCell className="text-center text-sm font-mono text-muted-foreground opacity-60 italic">
+                        {new Date(user.createdAt).toLocaleDateString('es-AR')}
+                      </TableCell>
+                      <TableCell className="text-right">
+                        <DropdownMenu>
+                          <DropdownMenuTrigger asChild>
+                            <Button
+                              variant="ghost"
+                              size="icon"
+                              className="hover:bg-white/5"
+                              disabled={actionLoading === (user.id || user._id)}
+                            >
+                              {actionLoading === (user.id || user._id) ? (
+                                <Loader2 className="h-4 w-4 animate-spin text-primary" />
+                              ) : (
+                                <MoreVertical className="h-4 w-4 text-muted-foreground" />
+                              )}
+                            </Button>
+                          </DropdownMenuTrigger>
+                          <DropdownMenuContent
+                            align="end"
+                            className="bg-card/95 backdrop-blur-xl border-white/10 text-white min-w-[200px] p-2"
+                          >
+                            <DropdownMenuLabel className="font-black text-xs uppercase tracking-[0.15em] text-muted-foreground/60 px-3 py-2">
+                              Moderación de Perfil
+                            </DropdownMenuLabel>
+                            <DropdownMenuSeparator className="bg-white/5" />
+                            <DropdownMenuItem
+                              onClick={() => router.push(`/admin/users/${user.id || user._id}`)}
+                              className="text-sm font-bold hover:bg-primary/10 hover:text-primary cursor-pointer px-3 py-2.5"
+                            >
+                              Ver Detalles
+                            </DropdownMenuItem>
+                            <DropdownMenuItem
+                              onClick={() => handleRoleUpdate(user.id || user._id, user.role)}
+                              className={cn(
+                                'text-sm font-bold hover:bg-primary/10 hover:text-primary cursor-pointer px-3 py-2.5',
+                                user.role === 'ADMIN' ? 'text-destructive' : 'text-green-400'
+                              )}
+                            >
+                              <RefreshCw className="mr-3 h-5 w-5" />{' '}
+                              {user.role === 'ADMIN'
+                                ? 'Degradar a Cliente'
+                                : 'Elevar a Administrador'}
+                            </DropdownMenuItem>
 
-                    <div className="rounded-2xl border border-white/5 overflow-hidden">
-                        <Table>
-                            <TableHeader className="bg-muted/30">
-                                <TableRow className="hover:bg-transparent border-white/5">
-                                    <TableHead className="w-[80px] font-bold uppercase tracking-widest text-[11px] text-muted-foreground">Foto</TableHead>
-                                    <TableHead className="font-bold uppercase tracking-widest text-[11px] text-muted-foreground">Usuario</TableHead>
-                                    <TableHead className="font-bold uppercase tracking-widest text-[11px] text-muted-foreground text-center">Tipo de Cuenta</TableHead>
-                                    <TableHead className="font-bold uppercase tracking-widest text-[11px] text-muted-foreground text-center">Estado</TableHead>
-                                    <TableHead className="font-bold uppercase tracking-widest text-[11px] text-muted-foreground text-center">Registro</TableHead>
-                                    <TableHead className="text-right font-bold uppercase tracking-widest text-[11px] text-muted-foreground">Acciones</TableHead>
-                                </TableRow>
-                            </TableHeader>
-                            <TableBody>
-                                {loading ? (
-                                    Array.from({ length: 5 }).map((_, i) => (
-                                        <TableRow key={i} className="border-white/5"><TableCell colSpan={6}><div className="h-14 bg-muted/10 animate-pulse rounded-lg" /></TableCell></TableRow>
-                                    ))
-                                ) : users.length === 0 ? (
-                                    <TableRow>
-                                        <TableCell colSpan={6} className="h-32 text-center text-muted-foreground italic">No se hallaron registros en el padrón.</TableCell>
-                                    </TableRow>
-                                ) : (
-                                    users.map((user) => (
-                                        <TableRow key={user.id || user._id} className="border-white/5 hover:bg-white/5 transition-colors group">
-                                            <TableCell>
-                                                <Avatar className="h-10 w-10 ring-2 ring-white/5">
-                                                    {user.avatar && <AvatarImage src={user.avatar} alt={user.name} />}
-                                                    <AvatarFallback className="bg-primary/10 text-primary font-black text-xs">{(user.name || 'U').substring(0, 2).toUpperCase()}</AvatarFallback>
-                                                </Avatar>
-                                            </TableCell>
-                                            <TableCell>
-                                                <div className="flex flex-col">
-                                                    <span className="font-bold text-white text-base group-hover:text-primary transition-colors">{user.name}</span>
-                                                    <span className="text-xs text-muted-foreground opacity-70 italic truncate max-w-[200px]">{user.email}</span>
-                                                </div>
-                                            </TableCell>
-                                            <TableCell className="text-center">
-                                                {user.role === 'ADMIN' ? (
-                                                    <Badge variant="default" className="bg-destructive text-white border-none gap-1 py-0 font-black text-[10px] uppercase tracking-tighter">
-                                                        <ShieldAlert className="h-3 w-3" /> Admin
-                                                    </Badge>
-                                                ) : (
-                                                    <Badge variant="secondary" className="gap-1 py-0 font-bold text-[10px] uppercase tracking-tighter bg-muted/30">
-                                                        <UserIcon className="h-3 w-3" /> Usuario
-                                                    </Badge>
-                                                )}
-                                            </TableCell>
-                                            <TableCell className="text-center">
-                                                {user.isVerified ? (
-                                                    <Badge variant="outline" className="border-green-500/30 text-green-500 font-bold text-[10px] py-0 bg-green-500/5 uppercase">Verificado</Badge>
-                                                ) : (
-                                                    <Badge variant="outline" className="border-yellow-500/30 text-yellow-500 font-bold text-[10px] py-0 bg-yellow-500/5 uppercase">Pendiente</Badge>
-                                                )}
-                                                
-                                                {user.sellerProfile && !user.sellerProfile.isApproved && (
-                                                    <Badge variant="outline" className="ml-1 border-primary/30 text-primary font-bold text-[10px] py-0 bg-primary/5 uppercase animate-pulse">Tienda Pendiente</Badge>
-                                                )}
-                                            </TableCell>
-                                            <TableCell className="text-center text-sm font-mono text-muted-foreground opacity-60 italic">
-                                                {new Date(user.createdAt).toLocaleDateString('es-AR')}
-                                            </TableCell>
-                                            <TableCell className="text-right">
-                                                <DropdownMenu>
-                                                    <DropdownMenuTrigger asChild>
-                                                        <Button variant="ghost" size="icon" className="hover:bg-white/5" disabled={actionLoading === (user.id || user._id)}>
-                                                            {actionLoading === (user.id || user._id) ? <Loader2 className="h-4 w-4 animate-spin text-primary" /> : <MoreVertical className="h-4 w-4 text-muted-foreground" />}
-                                                        </Button>
-                                                    </DropdownMenuTrigger>
-                                                    <DropdownMenuContent align="end" className="bg-card/95 backdrop-blur-xl border-white/10 text-white min-w-[200px] p-2">
-                                                        <DropdownMenuLabel className="font-black text-xs uppercase tracking-[0.15em] text-muted-foreground/60 px-3 py-2">Moderación de Perfil</DropdownMenuLabel>
-                                                        <DropdownMenuSeparator className="bg-white/5" />
-                                                        <DropdownMenuItem onClick={() => router.push(`/admin/users/${user.id || user._id}`)} className="text-sm font-bold hover:bg-primary/10 hover:text-primary cursor-pointer px-3 py-2.5">
-                                                            Ver Detalles
-                                                        </DropdownMenuItem>
-                                                        <DropdownMenuItem onClick={() => handleRoleUpdate(user.id || user._id, user.role)} className={cn("text-sm font-bold hover:bg-primary/10 hover:text-primary cursor-pointer px-3 py-2.5", user.role === 'ADMIN' ? "text-destructive" : "text-green-400")}>
-                                                            <RefreshCw className="mr-3 h-5 w-5" /> {user.role === 'ADMIN' ? 'Degradar a Cliente' : 'Elevar a Administrador'}
-                                                        </DropdownMenuItem>
-                                                        
-                                                        {user.sellerProfile && !user.sellerProfile.isApproved && (
-                                                            <DropdownMenuItem onClick={() => handleApproveSeller(user.id || user._id)} className="text-sm font-bold text-primary hover:bg-primary/10 cursor-pointer px-3 py-2.5">
-                                                                <Shield className="mr-3 h-5 w-5" /> Aprobar Tienda
-                                                            </DropdownMenuItem>
-                                                        )}
-                                                        
-                                                        <DropdownMenuSeparator className="bg-white/5" />
-                                                        <DropdownMenuItem className="text-red-500 font-black text-sm hover:bg-red-500/10 cursor-pointer px-3 py-2.5" onClick={() => handleDelete(user.id || user._id, user.name)}>
-                                                            <Trash2 className="mr-3 h-5 w-5" /> ELIMINAR CUENTA
-                                                        </DropdownMenuItem>
-                                                    </DropdownMenuContent>
-                                                </DropdownMenu>
-                                            </TableCell>
-                                        </TableRow>
-                                    ))
-                                )}
-                            </TableBody>
-                        </Table>
-                    </div>
+                            {user.sellerProfile && !user.sellerProfile.isApproved && (
+                              <DropdownMenuItem
+                                onClick={() => handleApproveSeller(user.id || user._id)}
+                                className="text-sm font-bold text-primary hover:bg-primary/10 cursor-pointer px-3 py-2.5"
+                              >
+                                <Shield className="mr-3 h-5 w-5" /> Aprobar Tienda
+                              </DropdownMenuItem>
+                            )}
 
-                    {/* Barra de Navegación de Nómina */}
-                    <div className="flex items-center justify-between mt-8 text-[11px] font-bold text-muted-foreground uppercase tracking-widest px-2">
-                         <p>Página {page} de {totalPages}</p>
-                         <div className="flex gap-2">
-                             <Button variant="outline" size="sm" onClick={() => setPage(p => Math.max(1, p - 1))} disabled={page === 1 || loading} className="border-white/10 h-8 text-[10px] font-black">Anterior</Button>
-                             <Button variant="outline" size="sm" onClick={() => setPage(p => Math.min(totalPages, p + 1))} disabled={page === totalPages || loading} className="border-white/10 h-8 text-[10px] font-black">Siguiente</Button>
-                         </div>
-                    </div>
-                </CardContent>
-            </Card>
-        </div>
-    );
+                            <DropdownMenuSeparator className="bg-white/5" />
+                            <DropdownMenuItem
+                              className="text-red-500 font-black text-sm hover:bg-red-500/10 cursor-pointer px-3 py-2.5"
+                              onClick={() => handleDelete(user.id || user._id, user.name)}
+                            >
+                              <Trash2 className="mr-3 h-5 w-5" /> ELIMINAR CUENTA
+                            </DropdownMenuItem>
+                          </DropdownMenuContent>
+                        </DropdownMenu>
+                      </TableCell>
+                    </TableRow>
+                  ))
+                )}
+              </TableBody>
+            </Table>
+          </div>
+
+          {/* Barra de Navegación de Nómina */}
+          <div className="flex items-center justify-between mt-8 text-[11px] font-bold text-muted-foreground uppercase tracking-widest px-2">
+            <p>
+              Página {page} de {totalPages}
+            </p>
+            <div className="flex gap-2">
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => setPage((p) => Math.max(1, p - 1))}
+                disabled={page === 1 || loading}
+                className="border-white/10 h-8 text-[10px] font-black"
+              >
+                Anterior
+              </Button>
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => setPage((p) => Math.min(totalPages, p + 1))}
+                disabled={page === totalPages || loading}
+                className="border-white/10 h-8 text-[10px] font-black"
+              >
+                Siguiente
+              </Button>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+    </div>
+  );
 }
-

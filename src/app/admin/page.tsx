@@ -49,6 +49,7 @@ import {
 import { useAdminDashboardViewModel } from '@/hooks/use-admin-dashboard-view-model';
 import { useState } from 'react';
 import Link from 'next/link';
+import { ExportReportDialog } from '@/components/admin/export-report-dialog';
 
 /**
  * ATÓMICO: Tarjeta de Indicador Clave de Rendimiento (KPI)
@@ -210,50 +211,12 @@ export default function AdminDashboardPage() {
         </div>
 
         <div className="flex items-center gap-3 flex-wrap">
-          <Dialog>
-            <DialogTrigger asChild>
-              <Button className="h-11 px-6 bg-white/5 hover:bg-white/10 text-white border border-white/10 hover:border-white/20 font-bold text-[10px] uppercase tracking-wide rounded-xl transition-all shadow-xl hover:shadow-primary/10">
-                <Download className="mr-2 h-4 w-4" />
-                Exportar
-              </Button>
-            </DialogTrigger>
-            <DialogContent className="bg-slate-950/95 backdrop-blur-2xl border border-white/10 rounded-[2.5rem] shadow-2xl p-8 max-w-sm">
-              <DialogHeader>
-                <DialogTitle className="text-2xl font-bold">Exportar Reporte</DialogTitle>
-                <DialogDescription className="text-[10px] font-bold text-primary mt-2">
-                  Consolidado de Negocio
-                </DialogDescription>
-              </DialogHeader>
-              <div className="grid gap-4 py-8">
-                <Button
-                  variant="outline"
-                  className="h-20 justify-start px-6 gap-5 border-white/10 hover:bg-emerald-500/10 hover:border-emerald-500/30 transition-all group"
-                  onClick={handleExportExcel}
-                >
-                  <FileSpreadsheet className="h-8 w-8 text-emerald-500 flex-shrink-0 group-hover:scale-110 transition-transform" />
-                  <div className="text-left">
-                    <p className="font-bold text-white">Libro Excel</p>
-                    <p className="text-[9px] font-bold text-muted-foreground">
-                      Formato de Auditoría (.xlsx)
-                    </p>
-                  </div>
-                </Button>
-                <Button
-                  variant="outline"
-                  className="h-20 justify-start px-6 gap-5 border-white/10 hover:bg-red-500/10 hover:border-red-500/30 transition-all group"
-                  onClick={handleExportPDF}
-                >
-                  <FileText className="h-8 w-8 text-red-500 flex-shrink-0 group-hover:scale-110 transition-transform" />
-                  <div className="text-left">
-                    <p className="font-bold text-white">Documento PDF</p>
-                    <p className="text-[9px] font-bold text-muted-foreground">
-                      Resumen Ejecutivo (.pdf)
-                    </p>
-                  </div>
-                </Button>
-              </div>
-            </DialogContent>
-          </Dialog>
+          <ExportReportDialog
+            onExportExcel={handleExportExcel}
+            onExportPDF={handleExportPDF}
+            title="Exportar Reporte"
+            description="Consolidado de Negocio"
+          />
         </div>
       </div>
 

@@ -1,54 +1,90 @@
-"use client";
+'use client';
 
 /**
  * Capa de Administración: Gestión de Inventario Maestro (Admin Products)
  * --------------------------------------------------------------------------
- * Orquesta la administración centralizada del catálogo global. 
- * Implementa motores de búsqueda indexada y un subsistema de auditoría 
- * mediante la generación de reportes técnicos (PDF/CSV). 
+ * Orquesta la administración centralizada del catálogo global.
+ * Implementa motores de búsqueda indexada y un subsistema de auditoría
+ * mediante la generación de reportes técnicos (PDF/CSV).
  * Garantiza la trazabilidad del stock y la integridad de precios. (MVC / Page)
  */
 
-import { useCallback, useEffect, useState } from "react";
-import Link from "next/link";
-import { ProductApiService } from "@/lib/services/ProductApiService";
-import { useAuth } from "@/hooks/use-auth";
-import { Button } from "@/components/ui/button";
-import { TableSkeleton } from "@/components/ui/skeletons";
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger, DialogDescription } from "@/components/ui/dialog";
-import { Search, Download, Plus, Pencil, Trash2, Package, FileSpreadsheet, FilePieChart } from "lucide-react";
-import { useToast } from "@/hooks/use-toast";
-import { useDebounce } from "@/hooks/use-debounce";
-import type { ProductEntity } from "@/domain/entities/ProductEntity";
-import type { Meta } from "@/lib/types";
-import jsPDF from "jspdf";
-import autoTable from "jspdf-autotable";
-import { Badge } from "@/components/ui/badge";
-import { cn } from "@/lib/utils";
+import { useCallback, useEffect, useState } from 'react';
+import Link from 'next/link';
+import { ProductApiService } from '@/lib/services/ProductApiService';
+import { useAuth } from '@/hooks/use-auth';
+import { Button } from '@/components/ui/button';
+import { TableSkeleton } from '@/components/ui/skeletons';
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from '@/components/ui/table';
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+  DialogDescription,
+} from '@/components/ui/dialog';
+import {
+  Search,
+  Download,
+  Plus,
+  Pencil,
+  Trash2,
+  Package,
+  FileSpreadsheet,
+  FilePieChart,
+} from 'lucide-react';
+import { useToast } from '@/hooks/use-toast';
+import { useDebounce } from '@/hooks/use-debounce';
+import type { ProductEntity } from '@/domain/entities/ProductEntity';
+import type { Meta } from '@/lib/types';
+import jsPDF from 'jspdf';
+import autoTable from 'jspdf-autotable';
+import { Badge } from '@/components/ui/badge';
+import { ExportReportDialog } from '@/components/admin/export-report-dialog';
+import { cn } from '@/lib/utils';
 
 export default function AdminProductsPage() {
   const { loading: authLoading } = useAuth();
   const [products, setProducts] = useState<ProductEntity[]>([]);
   const [meta, setMeta] = useState<Meta>({ total: 0, page: 1, limit: 7, totalPages: 1 });
   const [loading, setLoading] = useState(true);
-  const [search, setSearch] = useState("");
+  const [search, setSearch] = useState('');
   const debouncedSearch = useDebounce(search);
   const { toast } = useToast();
 
-  const loadProducts = useCallback(async (page = 1, searchQuery = "") => {
-    try {
-      setLoading(true);
-      const response = await ProductApiService.getAllAdmin({ page, limit: 7, sort: 'order', search: searchQuery });
-      setProducts(response.products);
-      setMeta(response.meta || { total: 0, page: 1, limit: 7, totalPages: 1 });
-    } catch (error) {
-      toast({ variant: "destructive", title: "Fallo de Sincronía", description: "No se pudo recuperar el inventario del servidor." });
-    } finally {
-      setLoading(false);
-    }
-  }, [toast]);
+  const loadProducts = useCallback(
+    async (page = 1, searchQuery = '') => {
+      try {
+        setLoading(true);
+        const response = await ProductApiService.getAllAdmin({
+          page,
+          limit: 7,
+          sort: 'order',
+          search: searchQuery,
+        });
+        setProducts(response.products);
+        setMeta(response.meta || { total: 0, page: 1, limit: 7, totalPages: 1 });
+      } catch (error) {
+        toast({
+          variant: 'destructive',
+          title: 'Fallo de Sincronía',
+          description: 'No se pudo recuperar el inventario del servidor.',
+        });
+      } finally {
+        setLoading(false);
+      }
+    },
+    [toast]
+  );
 
   useEffect(() => {
     if (!authLoading) loadProducts(1, debouncedSearch);
@@ -58,13 +94,21 @@ export default function AdminProductsPage() {
    * RN - Moderación: Ejecuta la baja lógica del registro.
    */
   const handleDelete = async (id: string, name: string) => {
-    if (!confirm(`¿Confirma el cese de comercialización y baja lógica del producto: ${name}?`)) return;
+    if (!confirm(`¿Confirma el cese de comercialización y baja lógica del producto: ${name}?`))
+      return;
     try {
       await ProductApiService.delete(id);
-      toast({ title: "Baja Sincronizada", description: "El producto ha sido marcado como inactivo en el catálogo." });
+      toast({
+        title: 'Baja Sincronizada',
+        description: 'El producto ha sido marcado como inactivo en el catálogo.',
+      });
       loadProducts(meta.page, search);
     } catch (error) {
-      toast({ variant: "destructive", title: "Error en Operación", description: "No se pudo procesar la baja técnica." });
+      toast({
+        variant: 'destructive',
+        title: 'Error en Operación',
+        description: 'No se pudo procesar la baja técnica.',
+      });
     }
   };
 
@@ -76,46 +120,51 @@ export default function AdminProductsPage() {
    */
   const handleExportPDF = () => {
     if (!products.length) return;
-    
+
     const doc = new jsPDF();
     doc.setFontSize(22);
-    doc.text("4Fun Marketplace — Auditoría de Inventario", 14, 22);
-    
+    doc.text('4Fun Marketplace — Auditoría de Inventario', 14, 22);
+
     doc.setFontSize(10);
     doc.setTextColor(100);
-    doc.text(`Fecha de Corte: ${new Date().toLocaleString("es-AR")}`, 14, 30);
+    doc.text(`Fecha de Corte: ${new Date().toLocaleString('es-AR')}`, 14, 30);
     doc.text(`Cobertura: ${meta.total} ítems registrados en catálogo`, 14, 35);
     doc.setTextColor(0);
 
     autoTable(doc, {
       startY: 45,
-      head: [["IDENTIDAD", "ESPECIFICACIÓN", "PLATAFORMA", "VALORIZACIÓN", "EXISTENCIA", "TIPO"]],
-      body: products.map(p => p.toReportRow()),
+      head: [['IDENTIDAD', 'ESPECIFICACIÓN', 'PLATAFORMA', 'VALORIZACIÓN', 'EXISTENCIA', 'TIPO']],
+      body: products.map((p) => p.toReportRow()),
       styles: { fontSize: 8, cellPadding: 4 },
       headStyles: { fillColor: [45, 45, 55], textColor: [255, 255, 255], fontStyle: 'bold' },
-      columnStyles: { 3: { halign: "right" }, 4: { halign: "center" } },
-      alternateRowStyles: { fillColor: [245, 245, 250] }
+      columnStyles: { 3: { halign: 'right' }, 4: { halign: 'center' } },
+      alternateRowStyles: { fillColor: [245, 245, 250] },
     });
 
     doc.save(`auditoria_stock_${new Date().getTime()}.pdf`);
-    toast({ title: "Reporte Generado", description: "Documento PDF exportado correctamente." });
+    toast({ title: 'Reporte Generado', description: 'Documento PDF exportado correctamente.' });
   };
 
   const handleExportCSV = () => {
     if (!products.length) return;
-    const headers = ["ID", "Nombre", "Plataforma", "Precio Final", "Stock", "Tipo"];
-    const rows = products.map(p => p.toReportRow());
-    const csvContent = [headers.join(","), ...rows.map(r => r.join(","))].join("\n");
-    const blob = new Blob(["\uFEFF" + csvContent], { type: "text/csv;charset=utf-8;" });
+    const headers = ['ID', 'Nombre', 'Plataforma', 'Precio Final', 'Stock', 'Tipo'];
+    const rows = products.map((p) => p.toReportRow());
+    const csvContent = [headers.join(','), ...rows.map((r) => r.join(','))].join('\n');
+    const blob = new Blob(['\uFEFF' + csvContent], { type: 'text/csv;charset=utf-8;' });
     const url = URL.createObjectURL(blob);
-    const link = document.createElement("a");
+    const link = document.createElement('a');
     link.href = url;
     link.download = `matriz_inventario_${new Date().getTime()}.csv`;
     link.click();
-    toast({ title: "Matriz Exportada", description: "Archivo CSV listo para análisis externo." });
+    toast({ title: 'Matriz Exportada', description: 'Archivo CSV listo para análisis externo.' });
   };
 
-  if (loading && !products.length) return <div className="p-8"><TableSkeleton rows={10} columns={5} /></div>;
+  if (loading && !products.length)
+    return (
+      <div className="p-8">
+        <TableSkeleton rows={10} columns={5} />
+      </div>
+    );
 
   return (
     <div className="space-y-6 animate-in fade-in duration-700">
@@ -131,37 +180,16 @@ export default function AdminProductsPage() {
             </CardDescription>
           </div>
           <div className="flex flex-wrap gap-2 w-full md:w-auto">
-            <Dialog>
-              <DialogTrigger asChild>
-                <Button variant="outline" className="border-white/10 hover:bg-white/5 font-bold">
-                  <Download className="mr-2 h-4 w-4" /> DESCARGAR REPORTE
-                </Button>
-              </DialogTrigger>
-              <DialogContent className="bg-card/95 backdrop-blur-xl border-white/10 sm:max-w-[400px]">
-                <DialogHeader>
-                  <DialogTitle className="text-xl font-headline text-white">Exportación de Datos</DialogTitle>
-                  <DialogDescription className="text-muted-foreground text-sm leading-relaxed">
-                    Selecciona el formato para exportar el inventario actual.
-                  </DialogDescription>
-                </DialogHeader>
-                <div className="grid gap-3 py-6">
-                  <Button variant="outline" className="h-16 justify-between px-6 border-white/10 hover:border-primary/50 group" onClick={handleExportCSV}>
-                    <div className="flex items-center gap-4">
-                      <FileSpreadsheet className="h-6 w-6 text-green-500" />
-                      <p className="font-bold text-white uppercase text-xs">DESCARGAR REPORTE</p>
-                    </div>
-                  </Button>
-                  <Button variant="outline" className="h-16 justify-between px-6 border-white/10 hover:border-primary/50 group" onClick={handleExportPDF}>
-                    <div className="flex items-center gap-4">
-                      <FilePieChart className="h-6 w-6 text-destructive" />
-                      <p className="font-bold text-white uppercase text-xs">DESCARGAR REPORTE</p>
-                    </div>
-                  </Button>
-                </div>
-              </DialogContent>
-            </Dialog>
+            <ExportReportDialog
+              onExportExcel={handleExportCSV}
+              onExportPDF={handleExportPDF}
+              title="Exportación de Datos"
+              description="Seleccionar formato para exportar el inventario actual"
+            />
             <Button asChild className="font-black tracking-tighter">
-              <Link href="/admin/products/new"><Plus className="mr-2 h-5 w-5" /> PUBLICAR NUEVO</Link>
+              <Link href="/admin/products/new">
+                <Plus className="mr-2 h-5 w-5" /> PUBLICAR NUEVO
+              </Link>
             </Button>
           </div>
         </CardHeader>
@@ -181,31 +209,51 @@ export default function AdminProductsPage() {
             <Table>
               <TableHeader className="bg-muted/30">
                 <TableRow className="hover:bg-transparent border-white/5">
-                  <TableHead className="font-bold uppercase tracking-widest text-xs text-muted-foreground">Producto</TableHead>
-                  <TableHead className="font-bold uppercase tracking-widest text-xs text-muted-foreground">Precio</TableHead>
-                  <TableHead className="font-bold uppercase tracking-widest text-xs text-muted-foreground">Existencias</TableHead>
-                  <TableHead className="font-bold uppercase tracking-widest text-xs text-muted-foreground text-right">Acciones</TableHead>
+                  <TableHead className="font-bold uppercase tracking-widest text-xs text-muted-foreground">
+                    Producto
+                  </TableHead>
+                  <TableHead className="font-bold uppercase tracking-widest text-xs text-muted-foreground">
+                    Precio
+                  </TableHead>
+                  <TableHead className="font-bold uppercase tracking-widest text-xs text-muted-foreground">
+                    Existencias
+                  </TableHead>
+                  <TableHead className="font-bold uppercase tracking-widest text-xs text-muted-foreground text-right">
+                    Acciones
+                  </TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
                 {loading ? (
                   Array.from({ length: 5 }).map((_, i) => (
                     <TableRow key={i} className="border-white/5">
-                      <TableCell colSpan={4}><div className="h-12 bg-muted/20 animate-pulse rounded-lg" /></TableCell>
+                      <TableCell colSpan={4}>
+                        <div className="h-12 bg-muted/20 animate-pulse rounded-lg" />
+                      </TableCell>
                     </TableRow>
                   ))
                 ) : products.length === 0 ? (
                   <TableRow>
-                     <TableCell colSpan={4} className="h-32 text-center text-muted-foreground italic">No se hallaron registros en la base de datos.</TableCell>
+                    <TableCell
+                      colSpan={4}
+                      className="h-32 text-center text-muted-foreground italic"
+                    >
+                      No se hallaron registros en la base de datos.
+                    </TableCell>
                   </TableRow>
                 ) : (
                   products.map((p) => {
                     const stockStatus = p.getStockStatus();
                     return (
-                      <TableRow key={p.getId()} className="border-white/5 hover:bg-white/5 transition-colors group">
+                      <TableRow
+                        key={p.getId()}
+                        className="border-white/5 hover:bg-white/5 transition-colors group"
+                      >
                         <TableCell>
                           <div className="space-y-1">
-                            <p className="font-bold text-white text-base group-hover:text-primary transition-colors">{p.getDisplayName()}</p>
+                            <p className="font-bold text-white text-base group-hover:text-primary transition-colors">
+                              {p.getDisplayName()}
+                            </p>
                             <p className="text-xs font-mono text-muted-foreground uppercase tracking-tighter opacity-70">
                               {p.getPlatformName()} · {p.type}
                             </p>
@@ -213,25 +261,51 @@ export default function AdminProductsPage() {
                         </TableCell>
                         <TableCell>
                           <div className="font-black text-white text-lg">{p.getDisplayPrice()}</div>
-                          {p.isOnDiscount() && <Badge variant="outline" className="text-[10px] py-0.5 border-green-500/30 text-green-400 mt-1 font-black">{p.getDiscountBadge()}</Badge>}
+                          {p.isOnDiscount() && (
+                            <Badge
+                              variant="outline"
+                              className="text-[10px] py-0.5 border-green-500/30 text-green-400 mt-1 font-black"
+                            >
+                              {p.getDiscountBadge()}
+                            </Badge>
+                          )}
                         </TableCell>
                         <TableCell>
-                          <Badge 
-                            variant="outline" 
+                          <Badge
+                            variant="outline"
                             className={cn(
-                              "text-xs font-bold py-1 px-4",
-                              stockStatus !== 'out' ? "border-green-500/30 text-green-400 bg-green-500/5" : "border-destructive/30 text-destructive bg-destructive/5 animate-pulse"
+                              'text-xs font-bold py-1 px-4',
+                              stockStatus !== 'out'
+                                ? 'border-green-500/30 text-green-400 bg-green-500/5'
+                                : 'border-destructive/30 text-destructive bg-destructive/5 animate-pulse'
                             )}
                           >
-                            {stockStatus === 'available' ? `${p.stock} UNIDADES` : stockStatus === 'low' ? 'STOCK BAJO' : "STOCK AGOTADO"}
+                            {stockStatus === 'available'
+                              ? `${p.stock} UNIDADES`
+                              : stockStatus === 'low'
+                                ? 'STOCK BAJO'
+                                : 'STOCK AGOTADO'}
                           </Badge>
                         </TableCell>
                         <TableCell className="text-right">
                           <div className="flex justify-end gap-2 opacity-40 group-hover:opacity-100 transition-opacity">
-                            <Button variant="ghost" size="icon" asChild className="hover:bg-primary/20 hover:text-primary">
-                              <Link href={`/admin/products/${p.getId()}`}><Pencil className="h-4 w-4" /></Link>
+                            <Button
+                              variant="ghost"
+                              size="icon"
+                              asChild
+                              className="hover:bg-primary/20 hover:text-primary"
+                            >
+                              <Link href={`/admin/products/${p.getId()}`}>
+                                <Pencil className="h-4 w-4" />
+                              </Link>
                             </Button>
-                            <Button variant="ghost" size="icon" onClick={() => handleDelete(p.getId(), p.getDisplayName())} className="hover:bg-destructive/20 hover:text-destructive" title="Dar de baja">
+                            <Button
+                              variant="ghost"
+                              size="icon"
+                              onClick={() => handleDelete(p.getId(), p.getDisplayName())}
+                              className="hover:bg-destructive/20 hover:text-destructive"
+                              title="Dar de baja"
+                            >
                               <Trash2 className="h-4 w-4" />
                             </Button>
                           </div>
@@ -243,14 +317,32 @@ export default function AdminProductsPage() {
               </TableBody>
             </Table>
           </div>
-          
+
           {/* Paginación Operativa */}
           {meta.totalPages > 1 && (
             <div className="flex items-center justify-between mt-8 text-sm font-bold text-muted-foreground uppercase tracking-widest px-2">
-              <p>Página {meta.page} de {meta.totalPages} ({meta.total} totales)</p>
+              <p>
+                Página {meta.page} de {meta.totalPages} ({meta.total} totales)
+              </p>
               <div className="flex gap-2">
-                 <Button variant="outline" size="default" disabled={meta.page === 1} onClick={() => loadProducts(meta.page - 1, search)} className="border-white/10 h-10 px-6">Anterior</Button>
-                 <Button variant="outline" size="default" disabled={meta.page === meta.totalPages} onClick={() => loadProducts(meta.page + 1, search)} className="border-white/10 h-10 px-6">Siguiente</Button>
+                <Button
+                  variant="outline"
+                  size="default"
+                  disabled={meta.page === 1}
+                  onClick={() => loadProducts(meta.page - 1, search)}
+                  className="border-white/10 h-10 px-6"
+                >
+                  Anterior
+                </Button>
+                <Button
+                  variant="outline"
+                  size="default"
+                  disabled={meta.page === meta.totalPages}
+                  onClick={() => loadProducts(meta.page + 1, search)}
+                  className="border-white/10 h-10 px-6"
+                >
+                  Siguiente
+                </Button>
               </div>
             </div>
           )}
