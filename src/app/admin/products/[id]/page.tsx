@@ -305,6 +305,30 @@ export default function EditProductPage({ params }: { params: Promise<{ id: stri
                     />
                   </div>
 
+                  <FormField
+                    control={form.control}
+                    name="type"
+                    render={({ field }) => (
+                      <FormItem className="space-y-3">
+                        <FormLabel className="text-xs font-bold uppercase tracking-widest opacity-60">
+                          Tipo de Producto
+                        </FormLabel>
+                        <Select onValueChange={field.onChange} value={field.value}>
+                          <FormControl>
+                            <SelectTrigger className="h-14 bg-white/5 border-white/10 rounded-2xl font-bold">
+                              <SelectValue placeholder="Seleccionar tipo" />
+                            </SelectTrigger>
+                          </FormControl>
+                          <SelectContent className="bg-card/95 backdrop-blur-3xl border-white/10 rounded-2xl">
+                            <SelectItem value="Digital">Digital (Licencias/Keys)</SelectItem>
+                            <SelectItem value="Physical">Físico (Stock Manual)</SelectItem>
+                          </SelectContent>
+                        </Select>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <FormField
                       control={form.control}
