@@ -191,7 +191,7 @@ export default function EditProductPage({ params }: { params: Promise<{ id: stri
                           {SPEC_PRESETS.map((preset) => (<SelectItem key={preset} value={preset}>{preset}</SelectItem>))}
                         </SelectContent>
                       </Select>
-                      <SpecReferenceTable />
+                      <SpecReferenceTable selectedLevel={form.watch("specPreset")} />
                       <FormMessage />
                     </FormItem>
                   )} />

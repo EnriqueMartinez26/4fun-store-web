@@ -196,7 +196,7 @@ export default function NewProductPage() {
                         <FormControl><SelectTrigger className="h-14 bg-white/5 border-white/10 rounded-2xl font-bold"><SelectValue placeholder="Seleccionar nivel" /></SelectTrigger></FormControl>
                         <SelectContent className="bg-card/95 backdrop-blur-3xl border-white/10 rounded-2xl">{SPEC_PRESETS.map((preset) => (<SelectItem key={preset} value={preset}>{preset}</SelectItem>))}</SelectContent>
                       </Select>
-                      <SpecReferenceTable />
+                      <SpecReferenceTable selectedLevel={form.watch("specPreset")} />
                       <FormMessage />
                     </FormItem>
                   )} />
