@@ -1,15 +1,13 @@
 import { Skeleton } from "@/components/ui/skeleton"
 
 /**
- * Capa de Interfaz: Orquestador de Hidratación Asíncrona (Loading)
+ * Capa de Interfaz: Preparando todo para vos
  * --------------------------------------------------------------------------
- * Implementa el patrón 'Skeleton Screen' para mejorar el rendimiento percibido
- * durante la recuperación de datos en el servidor. 
- * Responsabilidades:
- * 1. Optimización LCP/FCP: Provee una estructura visual base mientras se resuelve
- *    el stream de datos de Next.js.
- * 2. Consistencia Estética: Mantiene el layout proporcional para evitar saltos
- *    de contenido (CLS).
+ * Mostramos una versión simplificada mientras cargamos los juegos, para que
+ * la espera sea más agradable.
+ * Lo que hacemos aquí:
+ * 1. Estructura visual: Te mostramos una base mientras el servidor trabaja.
+ * 2. Estabilidad: Evitamos que la página se mueva inesperadamente mientras carga.
  * (UI / View)
  */
 
@@ -72,7 +70,7 @@ export default function Loading() {
       {/* Footer de Capa de Carga */}
       <div className="fixed bottom-10 left-10 opacity-10 select-none flex items-center gap-3">
           <div className="h-1.5 w-1.5 rounded-full bg-primary animate-ping" />
-          <span className="text-[9px] font-black uppercase tracking-[0.6em] text-white">Stream Loading Protocol Active</span>
+          <span className="text-[9px] font-black uppercase tracking-[0.6em] text-white">Preparando tu experiencia...</span>
       </div>
     </div>
   )

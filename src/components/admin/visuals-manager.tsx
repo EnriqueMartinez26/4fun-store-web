@@ -58,8 +58,8 @@ export function VisualsManager() {
             setGenres(Array.isArray(gData) ? gData : (gData?.data || []));
 
         } catch (error) {
-            console.error("[VisualsManager] Fallo en la persistencia:", error);
-            toast({ variant: "destructive", title: "Error de Red", description: "No se pudieron sincronizar las taxonomías." });
+            console.error("[VisualsManager] No se pudieron guardar los cambios:", error);
+            toast({ variant: "destructive", title: "Error de Red", description: "No se pudieron sincronizar las categorías." });
         } finally {
             setLoading(false);
         }
@@ -184,7 +184,7 @@ function VisualTable({ items, type, onUpdate }: { items: VisualItem[], type: Vis
                 if (ids.length === 1) await TaxonomyApiService.deleteGenre(ids[0]);
                 else await TaxonomyApiService.deleteGenresBulk(ids);
             }
-            toast({ title: "Baja Procesada", description: "Taxonomía actualizada correctamente." });
+            toast({ title: "Baja Procesada", description: "Se actualizó la lista correctamente." });
             onUpdate();
         } catch (error: any) {
             toast({ variant: "destructive", title: "Fallo en Operación", description: error.message || "Error al procesar la baja." });
@@ -299,7 +299,7 @@ function CreateDialog({ type, onUpdate, label }: { type: VisualType, onUpdate: (
             if (type === 'platform') await TaxonomyApiService.createPlatform(payload);
             else if (type === 'genre') await TaxonomyApiService.createGenre(payload);
 
-            toast({ title: "Alta Exitosa", description: "Entidad integrada a la taxonomía." });
+            toast({ title: "Alta Exitosa", description: "Se agregó correctamente a la lista." });
             setOpen(false);
             onUpdate();
             await fetch('/api/revalidate', { method: 'POST' });
@@ -401,7 +401,7 @@ function EditDialog({ itemId, type, onUpdate }: { itemId: string, type: VisualTy
             onUpdate();
             await fetch('/api/revalidate', { method: 'POST' });
         } catch (error: any) {
-            toast({ variant: "destructive", title: "Fallo en Persistencia", description: error.message || "No se pudo salvar." });
+            toast({ variant: "destructive", title: "Error al guardar", description: error.message || "No se pudo salvar." });
         } finally { setLoading(false); }
     };
 

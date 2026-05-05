@@ -167,7 +167,7 @@ export default function SellerEditProductPage({ params }: { params: Promise<{ id
                     <FormItem className="flex flex-row items-center space-x-4 space-y-0 rounded-[2rem] border border-primary/20 p-6 bg-primary/5">
                       <FormControl><Checkbox checked={field.value} onCheckedChange={field.onChange} className="data-[state=checked]:bg-primary data-[state=checked]:text-black" /></FormControl>
                       <div className="space-y-1">
-                        <FormLabel className="text-xs font-bold uppercase tracking-widest text-primary">Producto Público</FormLabel>
+                        <FormLabel className="text-xs font-bold uppercase tracking-widest text-primary">Visible en la Tienda</FormLabel>
                         <FormDescription className="text-[9px] uppercase font-bold tracking-widest opacity-60">Si está marcado, el producto será visible para todos los compradores.</FormDescription>
                       </div>
                     </FormItem>

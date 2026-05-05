@@ -83,7 +83,7 @@ export function KeyManager({ productId, productName, onStockSync }: KeyManagerPr
                 loadKeys();
             }
         } catch (error: any) {
-            toast({ variant: "destructive", title: "Fallo en Persistencia", description: error.message || "No se pudo guardar el lote de keys." });
+            toast({ variant: "destructive", title: "Error al guardar", description: error.message || "No se pudo guardar el lote de keys." });
         } finally {
             setIsSaving(false);
         }

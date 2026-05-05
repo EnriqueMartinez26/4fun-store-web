@@ -30,7 +30,7 @@ export async function generateMetadata({ params }: { params: Promise<{ id: strin
         const game = entity?.getRawData() as unknown as Game;
         return {
             title: `${game.name} | Hub Oficial 4Fun`,
-            description: game.description ? game.description.substring(0, 160) : `Adquiera ${game.name} con las mejores condiciones financieras en 4Fun Store.`,
+            description: game.description ? game.description.substring(0, 160) : `Comprá ${game.name} al mejor precio en 4Fun Store.`,
             openGraph: {
                 title: game.name,
                 description: game.description || undefined,
