@@ -103,7 +103,7 @@ export default function EditProductPage({ params }: { params: Promise<{ id: stri
               stock: p.stock,
               platformId: p.platform?.id || '',
               genreId: p.genre?.id || '',
-              type: p.type as 'Digital' | 'Physical',
+              type: p.type as 'Digital',
               developer: p.developer || '',
               specPreset: p.specPreset
                 ? p.specPreset.charAt(0).toUpperCase() + p.specPreset.slice(1).toLowerCase()

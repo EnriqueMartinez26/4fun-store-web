@@ -3,7 +3,7 @@ import { z } from 'zod';
 /**
  * Capa de Dominio: Esquemas de Validación (Schemas)
  * --------------------------------------------------------------------------
- * Utiliza la librería Zod para garantizar la integridad de los datos 
+ * Utiliza la librería Zod para garantizar la integridad de los datos
  * (Type-Safety) tanto en la entrada (Formularios) como en la salida (Backend).
  * Vincula técnicamente las Reglas de Negocio (RN) de validación.
  */
@@ -25,7 +25,7 @@ export const ProductSchema = z.object({
   stock: z.number().int().min(0),
   status: z.enum(['DRAFT', 'ACTIVE', 'OUT_OF_STOCK', 'SUSPENDED', 'ARCHIVED']).optional(),
   active: z.boolean().optional(),
-  type: z.enum(['Physical', 'Digital']),
+  type: z.enum(['Digital']).default('Digital'),
   imageId: z.string().optional().nullable(),
   platform: z.object({ id: z.string(), name: z.string() }).optional(),
   genre: z.object({ id: z.string(), name: z.string() }).optional(),
@@ -33,19 +33,25 @@ export const ProductSchema = z.object({
   trailerUrl: z.string().optional().nullable(),
   specPreset: z.string().optional().nullable(),
   releaseDate: z.string().optional().nullable(),
-  requirements: z.object({
-    os: z.string().optional(),
-    processor: z.string().optional(),
-    memory: z.string().optional(),
-    graphics: z.string().optional(),
-    storage: z.string().optional(),
-  }).optional().nullable(),
+  requirements: z
+    .object({
+      os: z.string().optional(),
+      processor: z.string().optional(),
+      memory: z.string().optional(),
+      graphics: z.string().optional(),
+      storage: z.string().optional(),
+    })
+    .optional()
+    .nullable(),
   sellerId: z.string().optional().nullable(),
-  seller: z.object({
-    id: z.string(),
-    name: z.string().nullable().optional(),
-    storeName: z.string().nullable().optional(),
-  }).optional().nullable(),
+  seller: z
+    .object({
+      id: z.string(),
+      name: z.string().nullable().optional(),
+      storeName: z.string().nullable().optional(),
+    })
+    .optional()
+    .nullable(),
 });
 
 /**
@@ -59,7 +65,7 @@ export const adminProductBaseSchema = z.object({
   stock: z.coerce.number().int().min(0, 'El stock no puede ser negativo'),
   platformId: z.string().min(1, 'Seleccione una plataforma'),
   genreId: z.string().min(1, 'Seleccione un género'),
-  type: z.enum(['Physical', 'Digital']),
+  type: z.enum(['Digital']).default('Digital'),
   developer: z.string().optional(),
   specPreset: z.string().optional(),
   imageId: z.string().optional(),
@@ -70,7 +76,7 @@ export const adminProductBaseSchema = z.object({
 // ─── DOMINIO: SEGURIDAD Y AUTH ───
 
 /**
- * RN - Políticas de Seguridad (Password): Fuerza un mínimo de robustez 
+ * RN - Políticas de Seguridad (Password): Fuerza un mínimo de robustez
  * en las credenciales del usuario para prevenir vulnerabilidades de fuerza bruta.
  */
 export const LoginSchema = z.object({
@@ -81,15 +87,17 @@ export const LoginSchema = z.object({
 /**
  * RN - Registro de Identidad: Valida la captura de biometría básica.
  */
-export const RegisterSchema = z.object({
-  name: z.string().min(2, 'Nombre muy corto'),
-  email: z.string().email('Email inválido'),
-  password: z.string().min(6, 'Mínimo 6 caracteres'),
-  confirmPassword: z.string().min(6, 'Mínimo 6 caracteres'),
-}).refine((data) => data.password === data.confirmPassword, {
-  message: "Las contraseñas no coinciden",
-  path: ["confirmPassword"],
-});
+export const RegisterSchema = z
+  .object({
+    name: z.string().min(2, 'Nombre muy corto'),
+    email: z.string().email('Email inválido'),
+    password: z.string().min(6, 'Mínimo 6 caracteres'),
+    confirmPassword: z.string().min(6, 'Mínimo 6 caracteres'),
+  })
+  .refine((data) => data.password === data.confirmPassword, {
+    message: 'Las contraseñas no coinciden',
+    path: ['confirmPassword'],
+  });
 
 // Tipos inferidos para el motor de Tipado Progresivo de TypeScript.
 export type Product = z.infer<typeof ProductSchema>;
