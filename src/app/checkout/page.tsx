@@ -70,7 +70,7 @@ export default function CheckoutPage() {
   }
 
   return (
-    <div className="container mx-auto max-w-screen-xl px-4 pt-24 pb-16 animate-in fade-in duration-1000">
+    <div className="container mx-auto max-w-screen-xl px-4 pt-12 pb-16 animate-in fade-in duration-1000">
 
       {/* Stepper Dinámico (UX Premium) */}
       <div className="flex justify-center mb-16 px-4">
