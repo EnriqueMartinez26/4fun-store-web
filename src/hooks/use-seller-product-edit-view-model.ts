@@ -96,7 +96,9 @@ export function useSellerProductEditViewModel(productId: string) {
             genreId: rawProduct.genre?.id || "",
             type: (rawProduct.type as "Physical" | "Digital") || "Digital",
             developer: rawProduct.developer || "",
-            specPreset: (rawProduct.specPreset as string) || "Mid",
+            specPreset: rawProduct.specPreset 
+              ? rawProduct.specPreset.charAt(0).toUpperCase() + rawProduct.specPreset.slice(1).toLowerCase() 
+              : "Mid",
             imageId: rawProduct.imageId || "",
             trailerUrl: rawProduct.trailerUrl || "",
             isDiscounted: (rawProduct.discountPercentage ?? 0) > 0,

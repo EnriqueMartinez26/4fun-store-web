@@ -78,7 +78,9 @@ export default function EditProductPage({ params }: { params: Promise<{ id: stri
               genreId: p.genre?.id || "",
               type: p.type as "Digital" | "Physical",
               developer: p.developer || "",
-              specPreset: (p.specPreset || "Mid") as any,
+              specPreset: p.specPreset 
+                ? p.specPreset.charAt(0).toUpperCase() + p.specPreset.slice(1).toLowerCase() 
+                : "Mid",
               imageId: p.imageId || "",
               trailerUrl: p.trailerUrl || "",
               isDiscounted: (p.discountPercentage ?? 0) > 0,
@@ -185,7 +187,7 @@ export default function EditProductPage({ params }: { params: Promise<{ id: stri
                   <FormField control={form.control} name="specPreset" render={({ field }) => (
                     <FormItem className="space-y-3">
                       <FormLabel className="text-xs font-bold uppercase tracking-widest opacity-60">Requisitos del Sistema</FormLabel>
-                      <Select onValueChange={field.onChange} defaultValue={field.value || ""}>
+                      <Select onValueChange={field.onChange} value={field.value || ""}>
                         <FormControl><SelectTrigger className="h-14 bg-white/5 border-white/10 rounded-2xl font-bold"><SelectValue placeholder="Seleccionar nivel" /></SelectTrigger></FormControl>
                         <SelectContent className="bg-card/95 backdrop-blur-3xl border-white/10 rounded-2xl">
                           {SPEC_PRESETS.map((preset) => (<SelectItem key={preset} value={preset}>{preset}</SelectItem>))}
