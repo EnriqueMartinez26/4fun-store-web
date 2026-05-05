@@ -30,9 +30,9 @@ import { useCheckoutViewModel } from "@/hooks/use-checkout-view-model";
  * RN - Arquitectura de Flujo: Definición de fases del ciclo de checkout.
  */
 const steps = [
-  { id: 1, title: 'Tu Dirección', icon: MapPin },
-  { id: 2, title: 'Cómo vas a pagar', icon: CreditCard },
-  { id: 3, title: 'Resumen', icon: BadgeCheck },
+  { id: 1, title: 'Datos de Envío', icon: MapPin },
+  { id: 2, title: 'Método de Pago', icon: CreditCard },
+  { id: 3, title: 'Revisión Final', icon: CheckCircle2 },
 ];
 
 export default function CheckoutPage() {
@@ -119,8 +119,8 @@ export default function CheckoutPage() {
               <motion.div key="step1" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -20 }}>
                 <Card className="border-none bg-card/40 backdrop-blur-3xl shadow-3xl rounded-[2.5rem] overflow-hidden">
                   <CardHeader className="pt-10 px-10">
-                    <CardTitle className="text-2xl font-semibold font-headline text-white">¿A dónde lo enviamos?</CardTitle>
-                    <CardDescription className="text-xs">Ingresa los detalles de tu domicilio para la entrega.</CardDescription>
+                    <CardTitle className="text-2xl font-semibold font-headline text-white">Datos de Envío</CardTitle>
+                    <CardDescription className="text-xs">Completa la información para recibir tus productos.</CardDescription>
                   </CardHeader>
                   <CardContent className="px-10 pb-10 space-y-6">
                     <form id="shipping-form" onSubmit={nextStep} className="space-y-6">
@@ -155,7 +155,7 @@ export default function CheckoutPage() {
                         <BadgeCheck className="h-3 w-3 text-primary" /> Compra Verificada
                     </p>
                     <Button type="submit" form="shipping-form" className="px-8" disabled={!isFormValid}>
-                        Siguiente <ArrowRight className="ml-2 h-4 w-4" />
+                        Seleccionar Método <ArrowRight className="ml-2 h-4 w-4" />
                     </Button>
                   </CardFooter>
                 </Card>
@@ -167,8 +167,8 @@ export default function CheckoutPage() {
               <motion.div key="step2" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -20 }}>
                 <Card className="border-none bg-card/40 backdrop-blur-3xl shadow-3xl rounded-[2.5rem] overflow-hidden">
                   <CardHeader className="pt-10 px-10">
-                    <CardTitle className="text-2xl font-semibold font-headline text-white">Elegí un medio de pago</CardTitle>
-                    <CardDescription className="text-xs text-muted-foreground">Seleccioná la opción que prefieras para completar tu compra.</CardDescription>
+                    <CardTitle className="text-2xl font-semibold font-headline text-white">Medio de Pago</CardTitle>
+                    <CardDescription className="text-xs text-muted-foreground">Selecciona cómo quieres pagar tu compra.</CardDescription>
                   </CardHeader>
                   <CardContent className="px-10 pb-10">
                     <RadioGroup defaultValue={formData.paymentMethod} onValueChange={(val) => setFormData({ ...formData, paymentMethod: val })} className="gap-4">
@@ -192,10 +192,10 @@ export default function CheckoutPage() {
                   </CardContent>
                   <CardFooter className="bg-white/5 px-10 py-6 flex justify-between">
                     <Button variant="ghost" onClick={prevStep} className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground hover:text-white transition-all">
-                        <ArrowLeft className="mr-2 h-4 w-4" /> Dirección
+                        <ArrowLeft className="mr-2 h-4 w-4" /> Volver
                     </Button>
                     <Button onClick={() => nextStep()} className="px-8">
-                        Revisar Pedido <CheckCircle2 className="ml-2 h-4 w-4" />
+                        Siguiente Paso <CheckCircle2 className="ml-2 h-4 w-4" />
                     </Button>
                   </CardFooter>
                 </Card>
@@ -207,14 +207,14 @@ export default function CheckoutPage() {
               <motion.div key="step3" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -20 }}>
                 <Card className="border-none bg-card/40 backdrop-blur-3xl shadow-3xl rounded-[2.5rem] overflow-hidden">
                   <CardHeader className="pt-10 px-10">
-                    <CardTitle className="text-2xl font-semibold font-headline text-white">Repasemos tu pedido</CardTitle>
-                    <CardDescription className="text-xs text-muted-foreground">Dale una última mirada a los datos antes de pagar.</CardDescription>
+                    <CardTitle className="text-2xl font-semibold font-headline text-white">Resumen de Compra</CardTitle>
+                    <CardDescription className="text-xs text-muted-foreground">Revisa los datos antes de finalizar el pedido.</CardDescription>
                   </CardHeader>
                   <CardContent className="px-10 pb-10 space-y-10">
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
                        <div className="space-y-4">
                           <h4 className="text-[10px] font-medium uppercase tracking-widest text-primary flex items-center gap-2">
-                              <MapPin className="h-3 w-3" /> Entrega en
+                              <MapPin className="h-3 w-3" /> Confirmación de Destino
                           </h4>
                           <div className="bg-white/5 p-5 rounded-2xl border border-white/10">
                              <p className="text-sm text-white font-medium">{formData.street}</p>
@@ -224,7 +224,7 @@ export default function CheckoutPage() {
                        </div>
                        <div className="space-y-4">
                           <h4 className="text-[10px] font-medium uppercase tracking-widest text-primary flex items-center gap-2">
-                              <CreditCard className="h-3 w-3" /> Vas a pagar con
+                              <CreditCard className="h-3 w-3" /> Protocolo de Liquidación
                           </h4>
                           <div className="bg-white/5 p-5 rounded-2xl border border-white/10 flex items-center justify-between">
                              <span className="text-xs font-black uppercase tracking-[0.2em] text-white">Mercado Pago (ARS)</span>
@@ -234,7 +234,7 @@ export default function CheckoutPage() {
                     </div>
                     
                     <div className="bg-destructive/5 border border-destructive/20 p-6 rounded-2xl text-center">
-                        <p className="text-[10px] font-black uppercase tracking-widest text-destructive mb-2">Aviso Importante</p>
+                        <p className="text-[10px] font-black uppercase tracking-widest text-destructive mb-2">Advertencia Legal</p>
                         <p className="text-xs text-muted-foreground leading-relaxed">
                             Al proceder, usted autoriza la generación de la orden técnica y su posterior liquidación vía pasarela. Se aplicarán los términos de servicio vigentes.
                         </p>
@@ -242,11 +242,11 @@ export default function CheckoutPage() {
                   </CardContent>
                   <CardFooter className="bg-white/5 px-10 py-8 flex justify-between">
                     <Button variant="ghost" onClick={prevStep} className="text-[10px] font-black uppercase tracking-widest text-muted-foreground hover:text-white transition-all">
-                        <ArrowLeft className="mr-2 h-4 w-4" /> Pago
+                        <ArrowLeft className="mr-2 h-4 w-4" /> Instrumentos
                     </Button>
                     <Button className="px-10" onClick={handleSubmit} disabled={isSubmitting}>
-                      {isSubmitting ? <Loader2 className="animate-spin mr-2 h-4 w-4" /> : <BadgeCheck className="mr-2 h-4 w-4" />}
-                      Finalizar y Pagar
+                      {isSubmitting ? <Loader2 className="animate-spin mr-2 h-4 w-4" /> : <ShieldCheck className="mr-2 h-4 w-4" />}
+                      Finalizar Pago
                     </Button>
                   </CardFooter>
                 </Card>
@@ -259,7 +259,7 @@ export default function CheckoutPage() {
         <div className="lg:col-span-4">
           <Card className="sticky top-24 border-none bg-card/60 backdrop-blur-3xl shadow-3xl rounded-[2.5rem] overflow-hidden ring-1 ring-primary/20">
             <CardHeader className="bg-primary/10 py-8 text-center border-b border-white/5">
-              <CardTitle className="text-xl font-headline font-bold text-white tracking-widest uppercase">Tu Compra</CardTitle>
+              <CardTitle className="text-xl font-headline font-bold text-white tracking-widest uppercase">Ticket de Pedido</CardTitle>
             </CardHeader>
             <CardContent className="p-8 space-y-6">
               <div className="space-y-4 max-h-[400px] overflow-y-auto pr-2 custom-scrollbar">

@@ -1,7 +1,7 @@
 "use client";
 
 /**
- * Capa de Presentación: Tu Cuenta (Account Page)
+ * Capa de Presentación: Central de Gestión de Identidad (Account Page)
  * --------------------------------------------------------------------------
  * Orquesta la visualización de órdenes, edición de perfil y configuración
  * de seguridad. Consumidor puro del ViewModel `useAccountViewModel`.
@@ -164,7 +164,7 @@ export default function AccountPage() {
         <div className="absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] bg-blue-500/5 blur-[120px] rounded-full" />
       </div>
 
-      {/* Tu Perfil */}
+      {/* Cabecera Técnica de Cuenta */}
       <header className="mb-16 flex flex-col md:flex-row items-center gap-10 bg-white/[0.08] backdrop-blur-3xl p-12 rounded-[3rem] border border-white/10 relative overflow-hidden group hover:bg-white/[0.12] transition-colors duration-500 shadow-2xl shadow-primary/5">
         <div className="absolute inset-0 bg-gradient-to-br from-primary/15 via-transparent to-primary/5 opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
 
@@ -174,7 +174,7 @@ export default function AccountPage() {
               {vm.user.avatar ? (
                 <AvatarImage src={vm.user.avatar} alt={vm.user.name} className="object-cover" />
               ) : null}
-              <AvatarFallback className="bg-primary/10 text-primary text-4xl font-bold">
+              <AvatarFallback className="bg-primary/10 text-primary text-4xl font-black">
                 {initials}
               </AvatarFallback>
             </Avatar>
@@ -217,32 +217,32 @@ export default function AccountPage() {
           <div className="flex flex-wrap items-center gap-3 justify-center md:justify-start">
             <Badge
               variant="outline"
-              className="h-8 px-4 bg-primary/15 border-primary/30 text-primary font-bold uppercase tracking-widest text-[11px] hover:bg-primary/20 hover:border-primary/40 transition-all font-headline"
+              className="h-8 px-4 bg-primary/15 border-primary/30 text-primary font-black uppercase tracking-widest text-[11px] hover:bg-primary/20 hover:border-primary/40 transition-all font-headline"
             >
-              <BadgeCheck className="h-4 w-4 mr-2" />
+              <Shield className="h-4 w-4 mr-2" />
               {vm.user.role === "ADMIN" ? "Admin" : vm.user.role === "SELLER" ? "Vendedor" : "Comprador"}
             </Badge>
             {vm.user.isVerified ? (
               <Badge
                 variant="outline"
-                className="h-8 px-4 border-green-500/30 bg-green-500/10 text-green-400 font-bold uppercase tracking-widest text-[11px] hover:bg-green-500/15 hover:border-green-500/40 transition-all"
+                className="h-8 px-4 border-green-500/30 bg-green-500/10 text-green-400 font-black uppercase tracking-widest text-[11px] hover:bg-green-500/15 hover:border-green-500/40 transition-all"
               >
-                <BadgeCheck className="h-4 w-4 mr-2" /> Correo Confirmado
+                <BadgeCheck className="h-4 w-4 mr-2" /> Email Verificado
               </Badge>
             ) : (
                 <Badge
                   variant="outline"
-                  className="h-8 px-4 border-yellow-500/30 bg-yellow-500/10 text-yellow-500 font-bold uppercase tracking-widest text-[9px] hover:bg-yellow-500/15 hover:border-yellow-500/40 transition-all font-headline"
+                  className="h-8 px-4 border-yellow-500/30 bg-yellow-500/10 text-yellow-500 font-black uppercase tracking-widest text-[9px] hover:bg-yellow-500/15 hover:border-yellow-500/40 transition-all font-headline"
                 >
-                  <XCircle className="h-3 w-3 mr-2" /> Falta Confirmar
+                  <XCircle className="h-3 w-3 mr-2" /> Verificación pendiente
                 </Badge>
             )}
           </div>
           
           <div className="pt-4 flex items-center gap-4 justify-center md:justify-start">
             <div className="bg-white/5 px-4 py-2 rounded-xl">
-              <p className="text-[12px] text-muted-foreground font-bold uppercase tracking-widest opacity-40 mb-1">
-                En 4Fun desde
+              <p className="text-[12px] text-muted-foreground font-black uppercase tracking-widest opacity-40 mb-1">
+                Miembro desde
               </p>
               <p className="text-sm text-white font-bold">{memberSince}</p>
             </div>
@@ -262,14 +262,14 @@ export default function AccountPage() {
                   }
                 }}
                 disabled={vm.resendingVerification}
-                className="h-12 px-8 bg-white/5 text-white hover:bg-primary hover:text-black border border-white/10 hover:border-primary font-semibold uppercase text-[10px] tracking-[0.15em] rounded-xl shadow-xl hover:shadow-primary/20 transition-all duration-300 group"
+                className="h-12 px-8 bg-white/5 text-white hover:bg-primary hover:text-black border border-white/10 hover:border-primary font-black uppercase text-[10px] tracking-[0.15em] rounded-xl shadow-xl hover:shadow-primary/20 transition-all duration-300 group"
               >
                 {vm.resendingVerification ? (
                   <Loader2 className="h-4 w-4 animate-spin mr-2" />
                 ) : (
-                  <BadgeCheck className="h-4 w-4 mr-2 group-hover:scale-110 transition-transform" />
+                  <ShieldCheck className="h-4 w-4 mr-2 group-hover:scale-110 transition-transform" />
                 )}
-                Confirmar mi Correo
+                Verificar el Mail
               </Button>
             )}
           </div>
@@ -285,23 +285,23 @@ export default function AccountPage() {
             value="orders"
             className="relative flex-1 h-full rounded-[1.2rem] font-bold uppercase tracking-[0.15em] text-[11px] text-white/40 border border-transparent hover:bg-white/5 hover:border-white/10 hover:text-white data-[state=active]:text-white data-[state=active]:bg-primary data-[state=active]:border-primary data-[state=active]:shadow-[0_0_30px_rgba(214,88,250,0.3)] transition-all duration-500 z-10"
           >
-            <Package className="h-4 w-4 mr-2" /> Mis Compras
+            <Package className="h-4 w-4 mr-2" /> Mis Órdenes
           </TabsTrigger>
           <TabsTrigger
             value="seller"
             className="relative flex-1 h-full rounded-[1.2rem] font-bold uppercase tracking-[0.15em] text-[11px] text-white/40 border border-transparent hover:bg-white/5 hover:border-white/10 hover:text-white data-[state=active]:text-white data-[state=active]:bg-primary data-[state=active]:border-primary data-[state=active]:shadow-[0_0_30px_rgba(214,88,250,0.3)] transition-all duration-500 z-10"
           >
-            <Store className="h-4 w-4 mr-2" /> Ventas
+            <Store className="h-4 w-4 mr-2" /> Mis Ventas
           </TabsTrigger>
           <TabsTrigger
             value="settings"
             className="relative flex-1 h-full rounded-[1.2rem] font-bold uppercase tracking-[0.15em] text-[11px] text-white/40 border border-transparent hover:bg-white/5 hover:border-white/10 hover:text-white data-[state=active]:text-white data-[state=active]:bg-primary data-[state=active]:border-primary data-[state=active]:shadow-[0_0_30px_rgba(214,88,250,0.3)] transition-all duration-500 z-10"
           >
-            <Settings className="h-4 w-4 mr-2" /> Ajustes
+            <Settings className="h-4 w-4 mr-2" /> Configuración
           </TabsTrigger>
         </TabsList>
 
-        {/* ======== HISTORIAL DE COMPRAS ======== */}
+        {/* ======== AUDITORÍA TRANSACCIONAL ======== */}
         <TabsContent value="orders">
           <AnimatePresence mode="wait">
             <motion.div
@@ -314,7 +314,7 @@ export default function AccountPage() {
               {vm.loadingOrders ? (
                 <div className="py-20 flex flex-col items-center gap-4">
                   <Loader2 className="h-12 w-12 animate-spin text-primary" />
-                  <p className="font-bold uppercase tracking-[0.3em] text-[10px] animate-pulse">Buscando tus pedidos...</p>
+                  <p className="font-black uppercase tracking-[0.3em] text-[10px] animate-pulse">Buscando tus compras...</p>
                 </div>
               ) : vm.orders.length === 0 ? (
                 <Card className="border-none bg-white/[0.03] backdrop-blur-3xl py-24 text-center rounded-[3rem] ring-1 ring-white/5 shadow-2xl">
@@ -324,7 +324,7 @@ export default function AccountPage() {
                     </div>
                     <div>
                       <h3 className="text-2xl font-bold text-white tracking-tighter">
-                        Todavía no compraste nada
+                        Sin Órdenes Todavía
                       </h3>
                       <p className="text-muted-foreground text-sm mt-2">
                         ¿Listo para tu primer juego? Explorá el catálogo completo.
@@ -348,8 +348,8 @@ export default function AccountPage() {
                       <div className="bg-primary/5 px-8 py-6 border-b border-white/5 flex flex-col md:flex-row justify-between items-center gap-4">
                         <div className="flex flex-col md:flex-row items-center gap-6">
                           <div className="flex flex-col">
-                            <span className="text-[9px] font-bold uppercase tracking-widest text-muted-foreground opacity-60">
-                              Pedido #
+                            <span className="text-[9px] font-black uppercase tracking-widest text-muted-foreground opacity-60">
+                              Orden #
                             </span>
                             <CardTitle className="text-lg font-bold font-headline text-white">
                               {(order.id || order._id).slice(-8).toUpperCase()}
@@ -357,21 +357,21 @@ export default function AccountPage() {
                           </div>
                           <Badge
                             className={cn(
-                              "h-7 px-4 rounded-full font-bold uppercase text-[9px] tracking-widest",
+                              "h-7 px-4 rounded-full font-black uppercase text-[9px] tracking-widest",
                               order.isPaid
                                 ? "bg-green-500/10 text-green-400 border-green-500/20"
                                 : "bg-yellow-500/10 text-yellow-500 border-yellow-500/20"
                             )}
                             variant="outline"
                           >
-                            {order.isPaid ? "Pagado" : "Pendiente"}
+                            {order.isPaid ? "Pagada" : "Pendiente"}
                           </Badge>
                         </div>
                         <div className="text-right flex flex-col items-center md:items-end">
-                          <span className="text-[9px] font-bold uppercase tracking-widest text-muted-foreground opacity-60">
+                          <span className="text-[9px] font-black uppercase tracking-widest text-muted-foreground opacity-60">
                             Total
                           </span>
-                          <p className="font-bold text-2xl text-white tabular-nums tracking-tighter">
+                          <p className="font-black text-2xl text-white tabular-nums tracking-tighter">
                             {formatCurrency(order.totalPrice || order.total)}
                           </p>
                         </div>
@@ -391,7 +391,7 @@ export default function AccountPage() {
                                     </div>
                                     <div>
                                       <p className="font-bold text-white text-sm">{item.name}</p>
-                                      <p className="text-[10px] text-muted-foreground uppercase font-bold tracking-widest">
+                                      <p className="text-[10px] text-muted-foreground uppercase font-black tracking-widest">
                                         Unidades: {item.quantity}
                                       </p>
                                     </div>
@@ -423,12 +423,12 @@ export default function AccountPage() {
                         </div>
 
                         <div className="flex items-center justify-between pt-4 opacity-40">
-                          <div className="flex items-center gap-2 text-[10px] font-bold uppercase tracking-widest">
+                          <div className="flex items-center gap-2 text-[10px] font-black uppercase tracking-widest">
                             <Calendar className="h-3 w-3" /> Registrada:{" "}
                             {new Date(order.createdAt).toLocaleDateString("es-AR")}
                           </div>
-                          <p className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">
-                            Pago: {order.paymentMethod || "Mercado Pago"}
+                          <p className="text-[10px] font-black uppercase tracking-widest text-muted-foreground">
+                            Gateway: {order.paymentMethod || "Mercado Pago"}
                           </p>
                         </div>
                       </CardContent>
@@ -450,8 +450,8 @@ export default function AccountPage() {
                   </Button>
                   
                   <div className="flex flex-col items-center">
-                    <p className="text-[10px] font-bold uppercase tracking-[0.3em] text-primary/50 mb-1">Página</p>
-                    <p className="text-2xl font-bold italic tracking-tighter">
+                    <p className="text-[10px] font-black uppercase tracking-[0.3em] text-primary/50 mb-1">Página</p>
+                    <p className="text-2xl font-black italic tracking-tighter">
                       {vm.ordersPage} <span className="text-white/20 mx-1">/</span> {vm.ordersTotalPages}
                     </p>
                   </div>
@@ -486,15 +486,15 @@ export default function AccountPage() {
                       <div className="h-12 w-12 bg-primary/20 rounded-2xl flex items-center justify-center mb-4">
                         <Store className="h-6 w-6 text-primary" />
                       </div>
-                      <div className="tracking-tight text-3xl font-bold italic">Tu Tienda</div>
-                      <div className="text-muted-foreground text-[10px] font-bold uppercase tracking-widest opacity-60">
-                        Estado de tus juegos en 4Fun
+                      <div className="tracking-tight text-3xl font-black italic">Centro de Ventas</div>
+                      <div className="text-muted-foreground text-[10px] font-black uppercase tracking-widest opacity-60">
+                        Estado de tus publicaciones en 4Fun
                       </div>
                     </div>
                     <div className="p-0 space-y-6 w-full">
                       <div className="flex items-center justify-center gap-2">
-                        <div className="inline-flex items-center border transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 hover:bg-primary/80 bg-green-500/10 text-green-400 border-green-500/20 px-4 py-2 rounded-xl font-bold uppercase tracking-widest text-[9px]">
-                          <BadgeCheck className="h-3 w-3 mr-2" /> Vendedor Verificado
+                        <div className="inline-flex items-center border transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 hover:bg-primary/80 bg-green-500/10 text-green-400 border-green-500/20 px-4 py-2 rounded-xl font-black uppercase tracking-widest text-[9px]">
+                          <ShieldCheck className="h-3 w-3 mr-2" /> Vendedor Verificado
                         </div>
                       </div>
                       <Link 
@@ -518,7 +518,7 @@ export default function AccountPage() {
                         <div className="h-20 w-20 bg-primary rounded-[2rem] flex items-center justify-center shadow-[0_0_50px_rgba(214,88,250,0.5)] rotate-3">
                           <Rocket className="h-10 w-10 text-black animate-bounce" />
                         </div>
-                        <h2 className="text-5xl lg:text-6xl font-bold font-headline tracking-tighter italic leading-[0.9] text-white">
+                        <h2 className="text-5xl lg:text-6xl font-black font-headline tracking-tighter italic leading-[0.9] text-white">
                           Empezá a <br /> vender en <span className="text-primary italic">4Fun</span>
                         </h2>
                         <p className="text-xl text-white/60 font-medium leading-relaxed max-w-md">
@@ -528,20 +528,20 @@ export default function AccountPage() {
                       
                       <div className="grid grid-cols-2 gap-8">
                         <div>
-                          <p className="text-[10px] font-bold uppercase tracking-widest text-primary mb-2">Comisión</p>
-                          <p className="text-2xl font-bold italic">0% <span className="text-sm text-white/40">FIJA</span></p>
+                          <p className="text-[10px] font-black uppercase tracking-widest text-primary mb-2">Comisión</p>
+                          <p className="text-2xl font-black italic">0% <span className="text-sm text-white/40">FIJA</span></p>
                         </div>
                         <div>
-                          <p className="text-[10px] font-bold uppercase tracking-widest text-primary mb-2">Seguridad</p>
-                          <p className="text-2xl font-bold italic text-nowrap">Safe-Key <span className="text-sm text-white/40">v2</span></p>
+                          <p className="text-[10px] font-black uppercase tracking-widest text-primary mb-2">Seguridad</p>
+                          <p className="text-2xl font-black italic text-nowrap">Safe-Key <span className="text-sm text-white/40">v2</span></p>
                         </div>
                       </div>
                     </div>
 
                     <div className="p-12 lg:p-20 flex flex-col justify-center items-center lg:items-end text-center lg:text-right space-y-8 lg:border-l lg:border-white/5">
                       <div className="space-y-4">
-                        <p className="text-[11px] font-bold uppercase tracking-[0.4em] text-white/30">Sin trámites, 100% Automático</p>
-                        <h3 className="text-3xl font-bold italic leading-tight">
+                        <p className="text-[11px] font-black uppercase tracking-[0.4em] text-white/30">Sin trámites, 100% Automático</p>
+                        <h3 className="text-3xl font-black italic leading-tight">
                           Publicá tus juegos <br /> y empezá a ganar
                         </h3>
                       </div>
@@ -568,7 +568,7 @@ export default function AccountPage() {
                             </>
                           )}
                         </Button>
-                        <p className="text-[10px] text-white/20 uppercase font-bold tracking-[0.2em]">
+                        <p className="text-[10px] text-white/20 uppercase font-black tracking-[0.2em]">
                           Al continuar, aceptás los términos de venta de 4Fun
                         </p>
                       </div>
@@ -586,10 +586,10 @@ export default function AccountPage() {
           <section className="grid grid-cols-1 lg:grid-cols-2 gap-8">
             <Card className="flex flex-col border-none bg-gradient-to-br from-white/[0.08] to-white/[0.03] backdrop-blur-3xl rounded-[2.5rem] overflow-hidden group/card shadow-xl ring-1 ring-white/10 hover:ring-primary/20 hover:shadow-[0_10px_40px_rgba(214,88,250,0.1)] transition-all">
               <CardHeader className="p-10 pb-6 border-b border-white/5">
-                <CardTitle className="flex items-center gap-4 text-2xl font-bold text-white italic">
+                <CardTitle className="flex items-center gap-4 text-2xl font-black text-white italic">
                   <Camera className="h-6 w-6 text-primary" /> Tu Avatar
                 </CardTitle>
-                <CardDescription className="text-xs uppercase font-bold tracking-widest text-muted-foreground opacity-60 mt-2">
+                <CardDescription className="text-xs uppercase font-black tracking-widest text-muted-foreground opacity-60 mt-2">
                   Cambiá cómo te ven en la comunidad
                 </CardDescription>
               </CardHeader>
@@ -638,18 +638,18 @@ export default function AccountPage() {
             {/* Datos Personales */}
             <Card className="border-none bg-gradient-to-br from-white/[0.08] to-white/[0.03] backdrop-blur-3xl rounded-[2.5rem] overflow-hidden shadow-xl ring-1 ring-white/10 hover:ring-primary/20 hover:shadow-[0_10px_40px_rgba(214,88,250,0.1)] transition-all">
               <CardHeader className="p-10 pb-6 border-b border-white/5">
-                <CardTitle className="flex items-center gap-4 text-2xl font-bold text-white italic">
-                  <UserIcon className="h-6 w-6 text-primary" /> Tu Información
+                <CardTitle className="flex items-center gap-4 text-2xl font-black text-white italic">
+                  <UserIcon className="h-6 w-6 text-primary" /> Datos Personales
                 </CardTitle>
-                <CardDescription className="text-xs uppercase font-bold tracking-widest text-muted-foreground opacity-60 mt-2">
-                  Mantené tus datos al día
+                <CardDescription className="text-xs uppercase font-black tracking-widest text-muted-foreground opacity-60 mt-2">
+                  Mantené tu información al día
                 </CardDescription>
               </CardHeader>
               <CardContent className="px-10 pb-10 space-y-6">
                 <div className="space-y-2">
                   <Label
                     htmlFor="edit-name"
-                    className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground ml-1"
+                    className="text-[10px] font-black uppercase tracking-widest text-muted-foreground ml-1"
                   >
                     Tu Nombre
                   </Label>
@@ -662,7 +662,7 @@ export default function AccountPage() {
                 </div>
 
                 <div className="space-y-2">
-                  <Label className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground ml-1 flex items-center gap-2">
+                  <Label className="text-[10px] font-black uppercase tracking-widest text-muted-foreground ml-1 flex items-center gap-2">
                     Correo Electrónico{" "}
                     <Badge
                       variant="outline"
@@ -681,7 +681,7 @@ export default function AccountPage() {
                   <div className="space-y-2">
                     <Label
                       htmlFor="edit-phone"
-                      className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground ml-1"
+                      className="text-[10px] font-black uppercase tracking-widest text-muted-foreground ml-1"
                     >
                       Teléfono (Opcional)
                     </Label>
@@ -696,7 +696,7 @@ export default function AccountPage() {
                   <div className="space-y-2">
                     <Label
                       htmlFor="edit-address"
-                      className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground ml-1"
+                      className="text-[10px] font-black uppercase tracking-widest text-muted-foreground ml-1"
                     >
                       Provincia (Opcional)
                     </Label>
@@ -731,17 +731,17 @@ export default function AccountPage() {
           {/* Cambiar Contraseña */}
           <Card className="border-none bg-gradient-to-br from-destructive/8 to-destructive/3 backdrop-blur-3xl rounded-[2.5rem] overflow-hidden ring-1 ring-destructive/15 hover:ring-destructive/25 hover:shadow-[0_10px_40px_rgba(239,68,68,0.1)] transition-all">
             <CardHeader className="p-10 pb-6 border-b border-destructive/10">
-              <CardTitle className="flex items-center gap-4 text-2xl font-bold text-white italic">
-                <Lock className="h-6 w-6 text-destructive" /> Cambiá tu clave
+              <CardTitle className="flex items-center gap-4 text-2xl font-black text-white italic">
+                <Lock className="h-6 w-6 text-destructive" /> Cambiar Contraseña
               </CardTitle>
-              <CardDescription className="text-xs uppercase font-bold tracking-widest text-muted-foreground opacity-60 mt-2">
-                Actualizá tu seguridad cuando quieras
+              <CardDescription className="text-xs uppercase font-black tracking-widest text-muted-foreground opacity-60 mt-2">
+                Reforzá tu seguridad cuando lo necesites
               </CardDescription>
             </CardHeader>
             <CardContent className="px-10 pb-10 space-y-6">
               <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
                 <div className="space-y-3">
-                  <Label className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground ml-1">
+                  <Label className="text-[10px] font-black uppercase tracking-widest text-muted-foreground ml-1">
                     Contraseña Actual
                   </Label>
                   <Input
@@ -753,7 +753,7 @@ export default function AccountPage() {
                   />
                 </div>
                 <div className="space-y-3">
-                  <Label className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground ml-1">
+                  <Label className="text-[10px] font-black uppercase tracking-widest text-muted-foreground ml-1">
                     Nueva Contraseña
                   </Label>
                   <Input
@@ -765,7 +765,7 @@ export default function AccountPage() {
                   />
                 </div>
                 <div className="space-y-3">
-                  <Label className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground ml-1">
+                  <Label className="text-[10px] font-black uppercase tracking-widest text-muted-foreground ml-1">
                     Confirmar Contraseña
                   </Label>
                   <Input
@@ -788,7 +788,7 @@ export default function AccountPage() {
                   {vm.changingPassword ? (
                     <Loader2 className="mr-2 h-4 w-4 animate-spin" />
                   ) : (
-                    <BadgeCheck className="mr-2 h-4 w-4" />
+                    <ShieldCheck className="mr-2 h-4 w-4" />
                   )}
                   Actualizar Contraseña
                 </Button>
