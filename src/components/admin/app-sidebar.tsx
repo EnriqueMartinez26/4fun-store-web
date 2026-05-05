@@ -41,32 +41,17 @@ import { Button } from "@/components/ui/button";
 /**
  * RN - Estructura de Navegación: Mapeo de módulos de gestión.
  */
-const items = [
-    {
-        title: "Dashboard",
-        url: "/admin",
-        icon: LayoutDashboard,
-    },
-    {
-        title: "Productos",
-        url: "/admin/products",
-        icon: Package,
-    },
-    {
-        title: "Visuales",
-        url: "/admin/visuals",
-        icon: ImageIcon,
-    },
-    {
-        title: "Ordenes",
-        url: "/admin/orders",
-        icon: ShoppingCart,
-    },
-    {
-        title: "Usuarios",
-        url: "/admin/users",
-        icon: User,
-    },
+const adminItems = [
+    { title: "Dashboard", url: "/admin", icon: LayoutDashboard },
+    { title: "Productos", url: "/admin/products", icon: Package },
+    { title: "Visuales", url: "/admin/visuals", icon: ImageIcon },
+    { title: "Ordenes", url: "/admin/orders", icon: ShoppingCart },
+    { title: "Usuarios", url: "/admin/users", icon: User },
+];
+
+const sellerItems = [
+    { title: "Dashboard", url: "/seller/dashboard", icon: LayoutDashboard },
+    { title: "Mis Productos", url: "/seller/products", icon: Package },
 ];
 
 export function AppSidebar() {
@@ -79,18 +64,18 @@ export function AppSidebar() {
     };
 
     return (
-        <Sidebar collapsible="icon" className="!top-16 md:!top-20 !h-[calc(100svh-4rem)] md:!h-[calc(100svh-5rem)] z-40 border-r border-white/5 bg-card/95 backdrop-blur-xl">
+        <Sidebar collapsible="icon" className="!top-24 !h-[calc(100svh-6rem)] z-40 border-r border-white/5 bg-card/95 backdrop-blur-xl">
             <SidebarHeader>
                 <SidebarMenu>
                     <SidebarMenuItem>
                         <SidebarMenuButton size="lg" asChild className="hover:bg-white/5 hover:text-white transition-colors cursor-pointer">
-                            <Link href="/admin">
+                            <Link href={user?.role === 'ADMIN' ? "/admin" : "/seller/dashboard"}>
                                 <div className="flex aspect-square size-8 items-center justify-center rounded-lg bg-primary text-white font-bold shadow-lg shadow-primary/20">
                                     <Package className="size-5" />
                                 </div>
                                 <div className="grid flex-1 text-left text-sm leading-tight group-data-[collapsible=icon]:hidden">
                                     <span className="truncate font-headline font-bold text-white uppercase tracking-tight">4Fun Dashboard</span>
-                                    <span className="truncate text-[10px] lg:text-xs text-muted-foreground uppercase font-bold tracking-widest">Panel de Dashboard</span>
+                                    <span className="truncate text-[10px] lg:text-xs text-muted-foreground uppercase font-bold tracking-widest">Panel de {user?.role === 'ADMIN' ? 'Admin' : 'Ventas'}</span>
                                 </div>
                             </Link>
                         </SidebarMenuButton>
@@ -104,7 +89,7 @@ export function AppSidebar() {
                     <SidebarGroupLabel className="text-[10px] lg:text-xs uppercase font-bold tracking-[0.2em] text-muted-foreground mb-2">Gestión Operativa</SidebarGroupLabel>
                     <SidebarGroupContent>
                         <SidebarMenu>
-                            {items.map((item) => (
+                            {(user?.role === 'ADMIN' ? adminItems : sellerItems).map((item) => (
                                 <SidebarMenuItem key={item.title}>
                                     <SidebarMenuButton 
                                         asChild 

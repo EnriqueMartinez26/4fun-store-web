@@ -27,7 +27,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
     <SidebarProvider>
       <AppSidebar />
       <SidebarInset className="bg-background">
-        <header className="flex h-14 shrink-0 items-center gap-2 border-b border-white/5 bg-card/60 backdrop-blur-xl px-4 sticky top-0 z-10">
+        <header className="flex h-14 shrink-0 items-center gap-2 border-b border-white/5 bg-card/60 backdrop-blur-xl px-4 sticky top-24 z-10">
           <SidebarTrigger className="-ml-1 text-muted-foreground hover:text-foreground transition-colors" />
           <Separator orientation="vertical" className="mr-2 h-4 bg-white/10" />
         </header>
