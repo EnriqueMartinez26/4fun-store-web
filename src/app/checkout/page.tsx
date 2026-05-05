@@ -72,8 +72,7 @@ export default function CheckoutPage() {
   return (
     <div className="container mx-auto max-w-screen-xl px-4 py-16 animate-in fade-in duration-1000">
       <div className="flex flex-col items-center mb-16 text-center sticky top-[4.5rem] z-30 bg-background/90 backdrop-blur-xl pt-6 pb-6 -mt-6 border-b border-white/5 shadow-sm">
-        <h1 className="text-5xl font-semibold font-headline text-white tracking-tighter mb-4 italic uppercase drop-shadow-md">Finalizar Compra</h1>
-        <p className="text-xs font-black uppercase tracking-[0.3em] text-primary/80">Pago Seguro Protegido por SSL — 4Fun Store</p>
+        <h1 className="text-5xl font-semibold font-headline text-white tracking-tighter italic uppercase drop-shadow-md">Finalizar Compra</h1>
       </div>
 
       {/* Stepper Dinámico (UX Premium) */}
@@ -153,7 +152,7 @@ export default function CheckoutPage() {
                   </CardContent>
                   <CardFooter className="bg-white/5 px-10 py-6 flex justify-between">
                     <p className="text-[10px] font-bold text-muted-foreground flex items-center gap-2">
-                        <ShieldCheck className="h-3 w-3 text-primary" /> Datos protegidos vía SSL
+                        <BadgeCheck className="h-3 w-3 text-primary" /> Compra Verificada
                     </p>
                     <Button type="submit" form="shipping-form" className="px-8" disabled={!isFormValid}>
                         Seleccionar Método <ArrowRight className="ml-2 h-4 w-4" />
@@ -270,7 +269,7 @@ export default function CheckoutPage() {
                         <p className="text-white font-bold transition-colors group-hover:text-primary">{item.name}</p>
                         <p className="text-[10px] text-muted-foreground uppercase font-black tracking-widest">{item.quantity} Unidad(es) x {formatCurrency(item.price)}</p>
                     </div>
-                    <span className="text-white font-black tabular-nums">{formatCurrency(item.price * item.quantity)}</span>
+                    <span className="text-white font-bold tabular-nums">{formatCurrency(item.price * item.quantity)}</span>
                   </div>
                 ))}
               </div>
@@ -287,7 +286,7 @@ export default function CheckoutPage() {
                  
                  <div className="bg-white/5 p-6 rounded-2xl flex justify-between items-center ring-1 ring-white/10 mt-6">
                     <span className="text-xs font-black uppercase tracking-[0.2em] text-muted-foreground">Total a Pagar</span>
-                    <span className="text-3xl font-black text-white tracking-tighter">{formatCurrency(cartTotal)}</span>
+                    <span className="text-3xl font-bold text-white tracking-tighter">{formatCurrency(cartTotal)}</span>
                  </div>
               </div>
             </CardContent>
@@ -295,8 +294,8 @@ export default function CheckoutPage() {
           
           <div className="mt-8 flex flex-col items-center gap-4 opacity-40 grayscale group-hover:grayscale-0 transition-all">
              <div className="flex items-center gap-4 border border-white/10 px-4 py-2 rounded-full">
-                <ShieldCheck className="h-4 w-4 text-green-400" />
-                <span className="text-[9px] font-black uppercase tracking-widest text-muted-foreground">Integración Certificada: Mercado Pago Protocol</span>
+                <BadgeCheck className="h-4 w-4 text-primary" />
+                <span className="text-[9px] font-black uppercase tracking-widest text-muted-foreground">Procesamiento Seguro</span>
              </div>
           </div>
         </div>

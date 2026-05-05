@@ -115,13 +115,13 @@ export default function CartPage() {
                         </span>
                     </div>
                     <h3 className="font-headline text-xl font-semibold text-white group-hover:text-primary transition-colors">{itemName}</h3>
-                    <p className="text-lg font-medium mt-2 text-white/90 tabular-nums tracking-tighter">{asCurrencySafe(safePrice)}</p>
+                    <p className="text-lg font-bold mt-2 text-white/90 tabular-nums tracking-tighter">{asCurrencySafe(safePrice)}</p>
                   </div>
                   
                   <div className="flex items-center gap-6">
                     <div className="flex flex-col items-center gap-2">
                         <span className={cn(
-                          "text-[9px] font-black uppercase tracking-widest transition-colors",
+                          "text-[9px] font-bold uppercase tracking-widest transition-colors",
                           item.stock <= 5 ? "text-amber-400" : "text-muted-foreground opacity-40"
                         )}>
                           {item.stock <= 5 ? `STOCK: ${item.stock}` : 'UDS'}
@@ -185,8 +185,8 @@ export default function CartPage() {
             </Card>
             
             <div className="mt-8 flex items-center justify-center gap-3 opacity-30 select-none">
-                <ShieldCheck className="h-4 w-4 text-primary" />
-                <span className="text-[10px] font-semibold uppercase tracking-widest text-white">Transacción Segura AES-256</span>
+                <BadgeCheck className="h-4 w-4 text-primary" />
+                <span className="text-[10px] font-semibold uppercase tracking-widest text-white">Transacción Verificada</span>
             </div>
           </div>
         </div>

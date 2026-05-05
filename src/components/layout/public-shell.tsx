@@ -4,17 +4,17 @@ import { usePathname } from "next/navigation";
 import { Header } from "@/components/layout/header";
 import { Footer } from "@/components/layout/footer";
 
-const PANEL_PREFIXES = ["/admin", "/seller"];
+const NO_FOOTER_PATHS = ["/admin", "/seller", "/cart", "/checkout"];
 
 export function PublicShell({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
-  const isPanel = PANEL_PREFIXES.some((p) => pathname.startsWith(p));
-
+  const hideFooter = NO_FOOTER_PATHS.some((p) => pathname.startsWith(p));
+  
   return (
     <div className="relative flex min-h-dvh flex-col bg-background">
       <Header />
       <main className="flex-1">{children}</main>
-      {!isPanel && <Footer />}
+      {!hideFooter && <Footer />}
     </div>
   );
 }
