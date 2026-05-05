@@ -98,7 +98,7 @@ export function AppSidebar() {
       <SidebarContent>
         <SidebarGroup className="mt-12">
           <SidebarGroupLabel className="text-[10px] lg:text-xs uppercase font-bold tracking-[0.2em] text-muted-foreground mb-2">
-            Gestión Operativa
+            Panel
           </SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu>
