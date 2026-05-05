@@ -96,7 +96,7 @@ export default function UsersPage() {
     const debouncedSearch = useDebounce(searchTerm);
 
     /**
-     * RN - Auditoría de Identidad: Recupera el listado de usuarios con filtros aplicados.
+     * Búsqueda de Usuarios: Recupera el listado con filtros aplicados.
      */
     const fetchUsers = useCallback(async () => {
         setLoading(true);
@@ -125,7 +125,7 @@ export default function UsersPage() {
     }, [fetchUsers]);
 
     /**
-     * RN - Moderación RBAC: Gestiona la escalación de privilegios (Admin vs User).
+     * Gestión de Roles: Permite cambiar los permisos de acceso del usuario.
      */
     const handleRoleUpdate = async (userId: string, currentRole: string) => {
         const newRole = currentRole === 'ADMIN' ? 'USER' : 'ADMIN';
@@ -142,15 +142,15 @@ export default function UsersPage() {
     };
 
     /**
-     * RN - Baja de Entidades: Implementa la eliminación irreversible de perfiles.
+     * Gestión de Cuentas: Permite eliminar perfiles de usuario.
      */
     const handleDelete = async (userId: string, name: string) => {
-        if (!confirm(`¿Confirma el cese de actividad y baja lógica del perfil: ${name}?`)) return;
+        if (!confirm(`¿Estás seguro de que deseas eliminar permanentemente al usuario: ${name}?`)) return;
 
         setActionLoading(userId);
         try {
             await UserApiService.deleteUser(userId);
-            toast({ title: "Baja Sincronizada", description: "El registro ha sido desactivado del sistema según normativa." });
+            toast({ title: "Cuenta Eliminada", description: "El usuario ha sido removido del sistema." });
             fetchUsers();
         } catch (err: any) {
             toast({ title: "Error en Operación", description: err.message, variant: "destructive" });
@@ -179,7 +179,7 @@ export default function UsersPage() {
         }
     };
 
-    // ─── SUBSISTEMA DE AUDITORÍA REGISTRAL ───
+    // ─── DESCARGA DE REPORTES ───
 
     const handleExportCSV = () => {
         if (!users.length) return;
@@ -201,7 +201,7 @@ export default function UsersPage() {
         if (!users.length) return;
         const doc = new jsPDF();
         doc.setFontSize(22);
-        doc.text("Reporte de Auditoría: Nómina de Usuarios", 14, 22);
+        doc.text("Reporte de Usuarios Registrados", 14, 22);
         doc.setFontSize(10);
         doc.setTextColor(100);
         doc.text(`Fecha: ${new Date().toLocaleString("es-AR")} | 4Fun Marketplace`, 14, 30);
@@ -209,12 +209,12 @@ export default function UsersPage() {
 
         autoTable(doc, {
             startY: 40,
-            head: [["IDENTIDAD", "E-MAIL CORPORATIVO", "JERARQUÍA", "VERIFICACIÓN", "ALTA SISTEMA"]],
+            head: [["NOMBRE", "CORREO ELECTRÓNICO", "TIPO DE CUENTA", "ESTADO", "FECHA DE REGISTRO"]],
             body: users.map(u => [
                 u.name,
                 u.email,
-                u.role === "ADMIN" ? "ADMINISTRADOR" : "USUARIO FINAL",
-                u.isVerified ? "VERIFICADO" : "PENDIENTE",
+                u.role === "ADMIN" ? "ADMINISTRADOR" : "CLIENTE",
+                u.isVerified ? "ACTIVO" : "PENDIENTE",
                 new Date(u.createdAt).toLocaleDateString("es-AR"),
             ]),
             styles: { fontSize: 8, cellPadding: 4 },
@@ -303,11 +303,11 @@ export default function UsersPage() {
                         <Table>
                             <TableHeader className="bg-muted/30">
                                 <TableRow className="hover:bg-transparent border-white/5">
-                                    <TableHead className="w-[80px] font-bold uppercase tracking-widest text-[11px] text-muted-foreground">Activo</TableHead>
+                                    <TableHead className="w-[80px] font-bold uppercase tracking-widest text-[11px] text-muted-foreground">Foto</TableHead>
                                     <TableHead className="font-bold uppercase tracking-widest text-[11px] text-muted-foreground">Usuario</TableHead>
-                                    <TableHead className="font-bold uppercase tracking-widest text-[11px] text-muted-foreground text-center">Jerarquía</TableHead>
+                                    <TableHead className="font-bold uppercase tracking-widest text-[11px] text-muted-foreground text-center">Tipo de Cuenta</TableHead>
                                     <TableHead className="font-bold uppercase tracking-widest text-[11px] text-muted-foreground text-center">Estado</TableHead>
-                                    <TableHead className="font-bold uppercase tracking-widest text-[11px] text-muted-foreground text-center">Alta</TableHead>
+                                    <TableHead className="font-bold uppercase tracking-widest text-[11px] text-muted-foreground text-center">Registro</TableHead>
                                     <TableHead className="text-right font-bold uppercase tracking-widest text-[11px] text-muted-foreground">Acciones</TableHead>
                                 </TableRow>
                             </TableHeader>
@@ -371,7 +371,7 @@ export default function UsersPage() {
                                                         <DropdownMenuLabel className="font-black text-xs uppercase tracking-[0.15em] text-muted-foreground/60 px-3 py-2">Moderación de Perfil</DropdownMenuLabel>
                                                         <DropdownMenuSeparator className="bg-white/5" />
                                                         <DropdownMenuItem onClick={() => router.push(`/admin/users/${user.id || user._id}`)} className="text-sm font-bold hover:bg-primary/10 hover:text-primary cursor-pointer px-3 py-2.5">
-                                                            Visualizar Auditoría
+                                                            Ver Detalles
                                                         </DropdownMenuItem>
                                                         <DropdownMenuItem onClick={() => handleRoleUpdate(user.id || user._id, user.role)} className={cn("text-sm font-bold hover:bg-primary/10 hover:text-primary cursor-pointer px-3 py-2.5", user.role === 'ADMIN' ? "text-destructive" : "text-green-400")}>
                                                             <RefreshCw className="mr-3 h-5 w-5" /> {user.role === 'ADMIN' ? 'Degradar a Cliente' : 'Elevar a Administrador'}
@@ -385,7 +385,7 @@ export default function UsersPage() {
                                                         
                                                         <DropdownMenuSeparator className="bg-white/5" />
                                                         <DropdownMenuItem className="text-red-500 font-black text-sm hover:bg-red-500/10 cursor-pointer px-3 py-2.5" onClick={() => handleDelete(user.id || user._id, user.name)}>
-                                                            <Trash2 className="mr-3 h-5 w-5" /> DAR DE BAJA
+                                                            <Trash2 className="mr-3 h-5 w-5" /> ELIMINAR CUENTA
                                                         </DropdownMenuItem>
                                                     </DropdownMenuContent>
                                                 </DropdownMenu>

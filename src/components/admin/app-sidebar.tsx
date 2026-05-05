@@ -64,7 +64,7 @@ export function AppSidebar() {
     };
 
     return (
-        <Sidebar collapsible="icon" className="!top-24 !h-[calc(100svh-6rem)] z-40 border-r border-white/5 bg-card/95 backdrop-blur-xl">
+        <Sidebar collapsible="icon" className="z-40 border-r border-white/5 bg-card/95 backdrop-blur-xl">
             <SidebarHeader>
                 <SidebarMenu>
                     <SidebarMenuItem>

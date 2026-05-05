@@ -11,8 +11,12 @@ export function SpecReferenceTable({ selectedLevel }: SpecReferenceTableProps) {
     Low: { cpu: 'Ryzen 5 5600X / i5-12400', ram: '16 GB DDR4', gpu: 'RTX 4060 / RX 6700' },
   };
 
-  const currentSpecs = selectedLevel && specsMap[selectedLevel] 
-    ? specsMap[selectedLevel] 
+  const normalizedLevel = selectedLevel 
+    ? selectedLevel.charAt(0).toUpperCase() + selectedLevel.slice(1).toLowerCase()
+    : null;
+
+  const currentSpecs = normalizedLevel && specsMap[normalizedLevel] 
+    ? specsMap[normalizedLevel] 
     : { cpu: '-', ram: '-', gpu: '-' };
 
   return (
