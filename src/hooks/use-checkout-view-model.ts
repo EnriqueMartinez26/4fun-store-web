@@ -19,7 +19,7 @@ export function useCheckoutViewModel() {
     state: "",
     zipCode: "",
     country: "Argentina",
-    paymentMethod: "mercadopago"
+    paymentMethod: "MERCADOPAGO"
   });
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {

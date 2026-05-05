@@ -171,9 +171,9 @@ export default function CheckoutPage() {
                     <RadioGroup defaultValue={formData.paymentMethod} onValueChange={(val) => setFormData({ ...formData, paymentMethod: val })} className="gap-4">
                       <div className={cn(
                         "flex items-center space-x-4 border border-white/10 p-6 rounded-2xl cursor-pointer transition-all duration-300",
-                        formData.paymentMethod === 'mercadopago' ? "bg-primary/10 border-primary ring-1 ring-primary" : "hover:bg-white/5"
+                        formData.paymentMethod === 'MERCADOPAGO' ? "bg-primary/10 border-primary ring-1 ring-primary" : "hover:bg-white/5"
                       )}>
-                        <RadioGroupItem value="mercadopago" id="mercadopago" className="border-primary text-primary" />
+                        <RadioGroupItem value="MERCADOPAGO" id="mercadopago" className="border-primary text-primary" />
                         <Label htmlFor="mercadopago" className="flex items-center gap-4 cursor-pointer w-full">
                           <div className="h-12 w-12 bg-blue-500/10 rounded-xl flex items-center justify-center border border-blue-500/20">
                              <CreditCard className="h-6 w-6 text-blue-400" />
