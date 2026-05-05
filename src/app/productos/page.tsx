@@ -11,28 +11,28 @@ import { ProductApiService } from '@/lib/services/ProductApiService';
  */
 
 export default async function ProductosPage({
-  searchParams
+  searchParams,
 }: {
-  searchParams: Promise<{ [key: string]: string | string[] | undefined }>
+  searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
 }) {
   // RN - Navegación: Recupera los criterios de filtrado desde los parámetros de la URL.
   const { genre, platform, search } = await searchParams;
 
   /**
    * RN - Hidratación Inicial: Solicita la primera página de productos al Backend.
-   * Mantenibilidad: Se utiliza el motor de caché de Next.js (ISR) con revalidación 
+   * Mantenibilidad: Se utiliza el motor de caché de Next.js (ISR) con revalidación
    * cada 60 segundos para optimizar el rendimiento de la infraestructura.
    */
   const { products, meta } = await ProductApiService.getAll({
     page: 1,
-    limit: 12,
+    limit: 9,
     sort: 'order',
     genre: genre as string,
     platform: platform as string,
-    search: search as string
+    search: search as string,
   });
 
-  const games = products.map(p => p.getRawData());
+  const games = products.map((p) => p.getRawData());
   const totalPages = meta?.totalPages || 1;
 
   return (

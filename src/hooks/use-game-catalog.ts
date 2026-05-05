@@ -95,7 +95,7 @@ export function useGameCatalog(initialGames: Game[], initialTotalPages = 1) {
       try {
         const { products, meta } = await ProductApiService.getAll({
           page,
-          limit: 12,
+          limit: 9,
           search: searchQuery,
           platform: selectedPlatforms.length > 0 ? selectedPlatforms.join(',') : undefined,
           genre: selectedGenres.length > 0 ? selectedGenres.join(',') : undefined,
