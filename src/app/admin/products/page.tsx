@@ -31,7 +31,7 @@ import { cn } from "@/lib/utils";
 export default function AdminProductsPage() {
   const { loading: authLoading } = useAuth();
   const [products, setProducts] = useState<ProductEntity[]>([]);
-  const [meta, setMeta] = useState<Meta>({ total: 0, page: 1, limit: 10, totalPages: 1 });
+  const [meta, setMeta] = useState<Meta>({ total: 0, page: 1, limit: 7, totalPages: 1 });
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState("");
   const debouncedSearch = useDebounce(search);
@@ -40,9 +40,9 @@ export default function AdminProductsPage() {
   const loadProducts = useCallback(async (page = 1, searchQuery = "") => {
     try {
       setLoading(true);
-      const response = await ProductApiService.getAllAdmin({ page, limit: 10, sort: 'order', search: searchQuery });
+      const response = await ProductApiService.getAllAdmin({ page, limit: 7, sort: 'order', search: searchQuery });
       setProducts(response.products);
-      setMeta(response.meta || { total: 0, page: 1, limit: 10, totalPages: 1 });
+      setMeta(response.meta || { total: 0, page: 1, limit: 7, totalPages: 1 });
     } catch (error) {
       toast({ variant: "destructive", title: "Fallo de Sincronía", description: "No se pudo recuperar el inventario del servidor." });
     } finally {

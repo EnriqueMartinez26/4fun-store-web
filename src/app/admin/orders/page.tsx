@@ -164,10 +164,10 @@ export default function AdminOrdersPage() {
                     <div className="space-y-1">
                         <CardTitle className="text-3xl font-headline font-bold text-white flex items-center gap-3">
                             <ShoppingBag className="h-8 w-8 text-primary" />
-                            Consola de Auditoría Fiscal
+                            Órdenes
                         </CardTitle>
                         <CardDescription className="text-muted-foreground uppercase tracking-widest text-[10px] font-bold">
-                            Seguimiento de Órdenes de Compra y Control Transaccional
+                            Seguimiento de Órdenes
                         </CardDescription>
                     </div>
                     

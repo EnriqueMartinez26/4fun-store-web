@@ -231,7 +231,7 @@ export default function UsersPage() {
                     <div className="space-y-1">
                         <CardTitle className="text-3xl font-headline font-bold text-white flex items-center gap-3">
                             <Users className="h-8 w-8 text-primary" />
-                            Cuentas
+                            Usuarios
                         </CardTitle>
                         <CardDescription className="text-muted-foreground uppercase tracking-widest text-[10px] font-bold">
                             Administración de usuarios y perfiles
