@@ -41,7 +41,7 @@ const normalizeCartItem = (item: any): CartItem => {
   const stock = toFiniteNumber(product?.stock ?? item?.stock, 999);
   const id = String(item?.id || `loc-${productId}`);
   const price = toFiniteNumber(product?.finalPrice ?? product?.price ?? item?.price, 0);
-  
+
   return {
     id,
     productId,
@@ -83,7 +83,7 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
   const cartTotal = cart.reduce((sum, item) => {
     const price = toFiniteNumber(item.price, 0);
     const quantity = Math.max(1, Math.trunc(toFiniteNumber(item.quantity, 1)));
-    return sum + (price * quantity);
+    return sum + price * quantity;
   }, 0);
   const cartCount = cart.reduce((sum, item) => {
     const quantity = Math.max(1, Math.trunc(toFiniteNumber(item.quantity, 1)));
@@ -101,7 +101,7 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
       const items = cartRes?.cart?.items || cartRes?.items || [];
       setCart(normalizeCartItems(items));
     } catch (err) {
-      console.error("[CartContext] Falló la sincronización remota:", err);
+      console.error('[CartContext] Falló la sincronización remota:', err);
     }
   };
 
@@ -129,127 +129,141 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
 
   /**
    * RN - Adición de Ítems: Maneja la lógica de "Merge" o "Create".
-   * 
+   *
    * @param {Object} product - Entidad del producto.
    * @param {number} quantity - Cantidad deseada.
    */
-  const addToCart = useCallback(async (product: any, quantity = 1) => {
-    const safeQuantity = Math.max(1, Math.trunc(toFiniteNumber(quantity, 1)));
+  const addToCart = useCallback(
+    async (product: any, quantity = 1) => {
+      const safeQuantity = Math.max(1, Math.trunc(toFiniteNumber(quantity, 1)));
 
-    if (user) {
-      try {
-        // Ejecución Remota: Registra la intención en la BDD.
-        await CartApiService.addToCart(product.id, safeQuantity);
-        await fetchCart(); // Re-sincronización tras mutación
-        toast({ title: "Producto Añadido", description: `${product.name} sumado a tu pedido.` });
-      } catch (e: any) {
-        toast({ variant: "destructive", title: "Error", description: e.message || "Fallo de conexión." });
-      }
-    } else {
-      // ✅ VALIDACIÓN ESTRICTA (Arquitectura Senior):
-      // Verificamos stock acumulado para evitar sobreventa local.
-      const existingItem = cart.find(i => i.productId === product.id);
-      const totalRequested = (existingItem?.quantity || 0) + safeQuantity;
-      const availableStock = toFiniteNumber(product.stock, 0);
-
-      if (totalRequested > availableStock) {
-        toast({ 
-          variant: "destructive", 
-          title: "Límite de Stock", 
-          description: `No puedes agregar más. Stock total: ${availableStock} unidades.` 
-        });
-        return;
-      }
-
-      // Ejecución Local: Almacena en el navegador para persistir entre recargas.
-      setCart(prev => {
-        const exist = prev.find(p => p.productId === product.id);
-        let newCart;
-        if (exist) {
-          newCart = prev.map(p => p.productId === product.id ? { ...p, quantity: p.quantity + safeQuantity } : p);
-        } else {
-          const newItem = normalizeCartItem({
-            id: `loc-${Date.now()}`,
-            productId: product.id,
-            name: product.name,
-            price: product.finalPrice ?? product.price,
-            quantity: safeQuantity,
-            stock: availableStock,
-            image: product.imageId || product.image,
-            platform: product.platform
+      if (user) {
+        try {
+          // Ejecución Remota: Registra la intención en la BDD.
+          await CartApiService.addToCart(product.id, safeQuantity);
+          await fetchCart(); // Re-sincronización tras mutación
+          toast({ title: 'Producto Añadido', description: `${product.name} sumado a tu pedido.` });
+        } catch (e: any) {
+          toast({
+            variant: 'destructive',
+            title: 'Error',
+            description: e.message || 'Fallo de conexión.',
           });
-          newCart = [...prev, newItem];
         }
-        localStorage.setItem('cart', JSON.stringify(newCart));
-        return newCart;
-      });
-      toast({ title: "Carrito Actualizado", description: "Ítem guardado localmente." });
-    }
-  }, [user, toast, cart]);
+      } else {
+        // ✅ VALIDACIÓN ESTRICTA (Arquitectura Senior):
+        // Verificamos stock acumulado para evitar sobreventa local.
+        const existingItem = cart.find((i) => i.productId === product.id);
+        const totalRequested = (existingItem?.quantity || 0) + safeQuantity;
+        const availableStock = toFiniteNumber(product.stock, 0);
+
+        if (totalRequested > availableStock) {
+          toast({
+            variant: 'destructive',
+            title: 'Límite de Stock',
+            description: `No puedes agregar más. Stock total: ${availableStock} unidades.`,
+          });
+          return;
+        }
+
+        // Ejecución Local: Almacena en el navegador para persistir entre recargas.
+        setCart((prev) => {
+          const exist = prev.find((p) => p.productId === product.id);
+          let newCart;
+          if (exist) {
+            newCart = prev.map((p) =>
+              p.productId === product.id ? { ...p, quantity: p.quantity + safeQuantity } : p
+            );
+          } else {
+            const newItem = normalizeCartItem({
+              id: `loc-${Date.now()}`,
+              productId: product.id,
+              name: product.name,
+              price: product.finalPrice ?? product.price,
+              quantity: safeQuantity,
+              stock: availableStock,
+              image: product.imageId || product.image,
+              platform: product.platform,
+            });
+            newCart = [...prev, newItem];
+          }
+          localStorage.setItem('cart', JSON.stringify(newCart));
+          return newCart;
+        });
+        toast({ title: 'Carrito Actualizado', description: 'Ítem guardado localmente.' });
+      }
+    },
+    [user, toast, cart]
+  );
 
   /**
    * RN - Gestión de Cantidades (Optimistic UI): Actualiza el estado visual antes
    * de confirmar con el servidor para mejorar la percepción de velocidad.
    */
-  const updateQuantity = useCallback(async (itemId: string, quantity: number) => {
-    const item = cart.find(i => i.id === itemId);
-    if (!item) return;
+  const updateQuantity = useCallback(
+    async (itemId: string, quantity: number) => {
+      const item = cart.find((i) => i.id === itemId);
+      if (!item) return;
 
-    let safeQuantity = Math.max(1, Math.trunc(toFiniteNumber(quantity, 1)));
-    
-    // ✅ CLÁUSULA DE SALVAGUARDA (Arquitectura Senior):
-    // Impide el desborde de unidades basándose en el stock contractual del ítem.
-    if (safeQuantity > item.stock) {
-      toast({ 
-        title: "Stock Insuficiente", 
-        description: `Solo disponemos de ${item.stock} unidades de este producto.`,
-        variant: "destructive"
-      });
-      safeQuantity = item.stock;
-    }
+      let safeQuantity = Math.max(1, Math.trunc(toFiniteNumber(quantity, 1)));
 
-    const oldCart = [...cart];
-    
-    // UI Optimista: Aplicamos el cambio inmediato en la interfaz
-    setCart(prev => prev.map(i => i.id === itemId ? { ...i, quantity: safeQuantity } : i));
-
-    if (user) {
-      try {
-        await CartApiService.updateItem(itemId, safeQuantity);
-      } catch {
-        // Rollback: Si falla el servidor, revertimos al estado anterior (Seguridad).
-        setCart(oldCart);
+      // Limitar cantidad al stock disponible
+      if (safeQuantity > item.stock) {
+        toast({
+          title: 'Stock Insuficiente',
+          description: `Solo disponemos de ${item.stock} unidades de este producto.`,
+          variant: 'destructive',
+        });
+        safeQuantity = item.stock;
       }
-    } else {
-      setCart(prev => {
-        const newCart = prev.map(i => i.id === itemId ? { ...i, quantity: safeQuantity } : i);
-        localStorage.setItem('cart', JSON.stringify(newCart));
-        return newCart;
-      });
-    }
-  }, [user, cart, toast]);
+
+      const oldCart = [...cart];
+
+      // UI Optimista: Aplicamos el cambio inmediato en la interfaz
+      setCart((prev) => prev.map((i) => (i.id === itemId ? { ...i, quantity: safeQuantity } : i)));
+
+      if (user) {
+        try {
+          await CartApiService.updateItem(itemId, safeQuantity);
+        } catch {
+          // Rollback: Si falla el servidor, revertimos al estado anterior (Seguridad).
+          setCart(oldCart);
+        }
+      } else {
+        setCart((prev) => {
+          const newCart = prev.map((i) => (i.id === itemId ? { ...i, quantity: safeQuantity } : i));
+          localStorage.setItem('cart', JSON.stringify(newCart));
+          return newCart;
+        });
+      }
+    },
+    [user, cart, toast]
+  );
 
   /**
    * Expulsa un ítem del proceso de checkout.
    */
-  const removeFromCart = useCallback(async (itemId: string) => {
-    const oldCart = [...cart];
-    setCart(prev => prev.filter(i => i.id !== itemId));
+  const removeFromCart = useCallback(
+    async (itemId: string) => {
+      const oldCart = [...cart];
+      setCart((prev) => prev.filter((i) => i.id !== itemId));
 
-    if (user) {
-      try {
-        await CartApiService.removeItem(itemId);
-      } catch {
-        setCart(oldCart);
+      if (user) {
+        try {
+          await CartApiService.removeItem(itemId);
+        } catch {
+          setCart(oldCart);
+        }
+      } else {
+        setCart((prev) => {
+          const newCart = prev.filter((i) => i.id !== itemId);
+          localStorage.setItem('cart', JSON.stringify(newCart));
+          return newCart;
+        });
       }
-    } else {
-      setCart(prev => {
-        const newCart = prev.filter(i => i.id !== itemId);
-        localStorage.setItem('cart', JSON.stringify(newCart));
-        return newCart;
-      });
-    }
-  }, [user, cart]);
+    },
+    [user, cart]
+  );
 
   /**
    * RN - Transaccionalidad: Limpia la sesión de compra tras éxito o cancelación masiva.
@@ -257,17 +271,29 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
   const clearCart = useCallback(async () => {
     setCart([]);
     if (user) {
-      try { await CartApiService.clear(); } catch (e) { console.error(e); }
+      try {
+        await CartApiService.clear();
+      } catch (e) {
+        console.error(e);
+      }
     } else {
       localStorage.removeItem('cart');
     }
   }, [user]);
 
   return (
-    <CartContext.Provider value={{
-      cart, addToCart, removeFromCart, updateQuantity, clearCart,
-      cartTotal, cartCount, isLoading
-    }}>
+    <CartContext.Provider
+      value={{
+        cart,
+        addToCart,
+        removeFromCart,
+        updateQuantity,
+        clearCart,
+        cartTotal,
+        cartCount,
+        isLoading,
+      }}
+    >
       {children}
     </CartContext.Provider>
   );

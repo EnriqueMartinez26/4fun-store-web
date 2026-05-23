@@ -1,17 +1,17 @@
-"use client";
+'use client';
 
 /**
  * Capa de Interfaz: Mutación de Credenciales de Acceso (Reset Password)
  * --------------------------------------------------------------------------
- * Componente asintomático (Dumb Component). Toda la orquestación y 
+ * Componente asintomático (Dumb Component). Toda la orquestación y
  * retención de estados ocurre puramente en el ViewModel.
  * (MVC / View)
  */
 
-import { use } from "react";
-import Link from "next/link";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
+import { use } from 'react';
+import Link from 'next/link';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
 import {
   Card,
   CardContent,
@@ -19,7 +19,7 @@ import {
   CardFooter,
   CardHeader,
   CardTitle,
-} from "@/components/ui/card";
+} from '@/components/ui/card';
 import {
   Form,
   FormControl,
@@ -27,42 +27,36 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "@/components/ui/form";
-import { Loader2, KeyRound, ArrowLeft, Eye, EyeOff, ShieldCheck } from "lucide-react";
+} from '@/components/ui/form';
+import { Loader2, KeyRound, ArrowLeft, Eye, EyeOff, ShieldCheck } from 'lucide-react';
 
-// ✅ INYECCIÓN MVC
-import { useResetPasswordViewModel } from "@/hooks/use-reset-password-view-model";
+import { useResetPasswordViewModel } from '@/hooks/use-reset-password-view-model';
 
-export default function ResetPasswordPage({
-  params,
-}: {
-  params: Promise<{ token: string }>;
-}) {
+export default function ResetPasswordPage({ params }: { params: Promise<{ token: string }> }) {
   const { token } = use(params);
-  const { 
-    form, 
-    isSubmitting, 
-    showPassword, 
-    showConfirm, 
-    togglePasswordVisibility, 
-    toggleConfirmVisibility, 
-    onSubmit 
+  const {
+    form,
+    isSubmitting,
+    showPassword,
+    showConfirm,
+    togglePasswordVisibility,
+    toggleConfirmVisibility,
+    onSubmit,
   } = useResetPasswordViewModel(token);
 
   return (
     <div className="container mx-auto flex items-center justify-center min-h-[90vh] py-8 px-4 animate-in fade-in zoom-in-95 duration-700">
       <Card className="w-full max-w-md border-none bg-card/40 backdrop-blur-3xl shadow-3xl rounded-[2.5rem] overflow-hidden ring-1 ring-white/10 relative">
-        
         {/* Adorno Top gradient */}
         <div className="absolute top-0 inset-x-0 h-1 bg-gradient-to-r from-transparent via-primary/50 to-transparent opacity-80" />
 
         <CardHeader className="pt-12 pb-6 text-center space-y-4">
           <div className="flex justify-center mb-2">
             <div className="relative group">
-                <div className="absolute inset-0 bg-primary/20 blur-2xl rounded-full opacity-50 transition-opacity duration-1000 group-hover:opacity-100" />
-                <div className="h-20 w-20 flex items-center justify-center bg-black/40 rounded-2xl border border-white/5 relative z-10 hover:scale-110 transition-transform shadow-[0_0_15px_rgba(0,0,0,0.5)]">
-                    <KeyRound className="h-10 w-10 text-primary" />
-                </div>
+              <div className="absolute inset-0 bg-primary/20 blur-2xl rounded-full opacity-50 transition-opacity duration-1000 group-hover:opacity-100" />
+              <div className="h-20 w-20 flex items-center justify-center bg-black/40 rounded-2xl border border-white/5 relative z-10 hover:scale-110 transition-transform shadow-[0_0_15px_rgba(0,0,0,0.5)]">
+                <KeyRound className="h-10 w-10 text-primary" />
+              </div>
             </div>
           </div>
           <CardTitle className="text-3xl font-headline font-bold text-white tracking-tighter">
@@ -81,11 +75,13 @@ export default function ResetPasswordPage({
                 name="password"
                 render={({ field }) => (
                   <FormItem className="space-y-3">
-                    <FormLabel className="text-[10px] font-black uppercase tracking-widest text-muted-foreground">Nueva Contraseña</FormLabel>
+                    <FormLabel className="text-[10px] font-black uppercase tracking-widest text-muted-foreground">
+                      Nueva Contraseña
+                    </FormLabel>
                     <FormControl>
                       <div className="relative group">
                         <Input
-                          type={showPassword ? "text" : "password"}
+                          type={showPassword ? 'text' : 'password'}
                           disabled={isSubmitting}
                           className="h-12 bg-white/5 border-white/10 rounded-xl focus:ring-primary/40 text-white placeholder:opacity-20 pr-12"
                           {...field}
@@ -114,11 +110,13 @@ export default function ResetPasswordPage({
                 name="confirmPassword"
                 render={({ field }) => (
                   <FormItem className="space-y-3">
-                    <FormLabel className="text-[10px] font-black uppercase tracking-widest text-muted-foreground">Confirmar Credencial</FormLabel>
+                    <FormLabel className="text-[10px] font-black uppercase tracking-widest text-muted-foreground">
+                      Confirmar Credencial
+                    </FormLabel>
                     <FormControl>
                       <div className="relative group">
                         <Input
-                          type={showConfirm ? "text" : "password"}
+                          type={showConfirm ? 'text' : 'password'}
                           disabled={isSubmitting}
                           className="h-12 bg-white/5 border-white/10 rounded-xl focus:ring-primary/40 text-white placeholder:opacity-20 pr-12"
                           {...field}
@@ -154,8 +152,8 @@ export default function ResetPasswordPage({
                   </>
                 ) : (
                   <div className="flex items-center gap-2">
-                      <ShieldCheck className="h-4 w-4" />
-                      Normalizar Acceso
+                    <ShieldCheck className="h-4 w-4" />
+                    Normalizar Acceso
                   </div>
                 )}
               </Button>

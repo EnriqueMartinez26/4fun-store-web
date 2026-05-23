@@ -26,7 +26,6 @@ import {
 import { ProductReviews } from '@/components/game/product-reviews';
 import { Breadcrumbs } from '@/components/ui/breadcrumbs';
 
-// ✅ INYECCIÓN ARQUITECTÓNICA (QA MVC)
 import { useProductDetailViewModel } from '@/hooks/use-product-detail-view-model';
 
 interface ProductDetailViewProps {

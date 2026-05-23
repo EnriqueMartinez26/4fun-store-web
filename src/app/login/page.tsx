@@ -1,4 +1,4 @@
-"use client";
+'use client';
 
 /**
  * Capa de Interfaz: Ingreso de Usuario (Login Page)
@@ -7,10 +7,10 @@
  * Zod validations y ruteo es delegada al ViewModel.
  */
 
-import { Suspense } from "react";
-import Link from "next/link";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
+import { Suspense } from 'react';
+import Link from 'next/link';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
 import {
   Card,
   CardContent,
@@ -18,7 +18,7 @@ import {
   CardFooter,
   CardHeader,
   CardTitle,
-} from "@/components/ui/card";
+} from '@/components/ui/card';
 import {
   Form,
   FormControl,
@@ -26,12 +26,11 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "@/components/ui/form";
-import Image from "next/image";
-import { Loader2, LogIn, ArrowRight } from "lucide-react";
+} from '@/components/ui/form';
+import Image from 'next/image';
+import { Loader2, LogIn, ArrowRight } from 'lucide-react';
 
-// ✅ INYECCIÓN MVC
-import { useLoginViewModel } from "@/hooks/use-login-view-model";
+import { useLoginViewModel } from '@/hooks/use-login-view-model';
 
 function LoginForm() {
   const { form, isSubmitting, authLoading, onSubmit } = useLoginViewModel();
@@ -50,8 +49,14 @@ function LoginForm() {
         <CardHeader className="pt-12 pb-6 text-center space-y-4">
           <div className="flex justify-center mb-2">
             <div className="relative group">
-                <div className="absolute inset-0 bg-primary/20 blur-2xl rounded-full opacity-50 group-hover:opacity-100 transition-opacity" />
-                <Image src="/logo.png" alt="4Fun Logo" width={100} height={100} className="h-20 w-20 object-contain relative z-10 hover:scale-110 transition-transform duration-500" />
+              <div className="absolute inset-0 bg-primary/20 blur-2xl rounded-full opacity-50 group-hover:opacity-100 transition-opacity" />
+              <Image
+                src="/logo.png"
+                alt="4Fun Logo"
+                width={100}
+                height={100}
+                className="h-20 w-20 object-contain relative z-10 hover:scale-110 transition-transform duration-500"
+              />
             </div>
           </div>
           <div className="space-y-1">
@@ -63,7 +68,7 @@ function LoginForm() {
             </CardDescription>
           </div>
         </CardHeader>
-        
+
         <CardContent className="px-10 pb-8">
           <Form {...form}>
             <form onSubmit={onSubmit} className="space-y-6">
@@ -72,7 +77,9 @@ function LoginForm() {
                 name="email"
                 render={({ field }) => (
                   <FormItem className="space-y-3">
-                    <FormLabel className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground ml-1">Tu email</FormLabel>
+                    <FormLabel className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground ml-1">
+                      Tu email
+                    </FormLabel>
                     <FormControl>
                       <Input
                         type="email"
@@ -90,7 +97,9 @@ function LoginForm() {
                 name="password"
                 render={({ field }) => (
                   <FormItem className="space-y-3">
-                    <FormLabel className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground ml-1">Contraseña</FormLabel>
+                    <FormLabel className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground ml-1">
+                      Contraseña
+                    </FormLabel>
                     <FormControl>
                       <Input
                         type="password"
@@ -111,7 +120,11 @@ function LoginForm() {
                   ¿Olvidaste tu contraseña?
                 </Link>
               </div>
-              <Button type="submit" className="w-full h-14 mt-6 bg-white/5 text-white hover:bg-primary hover:text-black border border-white/10 hover:border-primary font-black uppercase text-xs tracking-[0.15em] rounded-2xl shadow-xl hover:shadow-primary/20 transition-all duration-300 group" disabled={isSubmitting}>
+              <Button
+                type="submit"
+                className="w-full h-14 mt-6 bg-white/5 text-white hover:bg-primary hover:text-black border border-white/10 hover:border-primary font-black uppercase text-xs tracking-[0.15em] rounded-2xl shadow-xl hover:shadow-primary/20 transition-all duration-300 group"
+                disabled={isSubmitting}
+              >
                 {isSubmitting ? (
                   <>
                     <Loader2 className="mr-3 h-5 w-5 animate-spin" />
@@ -129,9 +142,13 @@ function LoginForm() {
         </CardContent>
         <CardFooter className="flex flex-col space-y-6 text-center px-10 pb-12 mt-2">
           <div className="text-sm text-muted-foreground/80 font-medium tracking-tight">
-            ¿No tenés una cuenta?{" "}
-            <Link href="/register" className="text-white hover:text-primary transition-colors font-bold flex items-center justify-center mt-3 gap-2 group">
-              ¡Registrate ahora! <ArrowRight className="h-4 w-4 group-hover:translate-x-1.5 transition-transform text-primary" />
+            ¿No tenés una cuenta?{' '}
+            <Link
+              href="/register"
+              className="text-white hover:text-primary transition-colors font-bold flex items-center justify-center mt-3 gap-2 group"
+            >
+              ¡Registrate ahora!{' '}
+              <ArrowRight className="h-4 w-4 group-hover:translate-x-1.5 transition-transform text-primary" />
             </Link>
           </div>
         </CardFooter>
@@ -142,11 +159,13 @@ function LoginForm() {
 
 export default function LoginPage() {
   return (
-    <Suspense fallback={
+    <Suspense
+      fallback={
         <div className="min-h-[85vh] flex items-center justify-center">
-            <Loader2 className="h-10 w-10 animate-spin text-primary opacity-20" />
+          <Loader2 className="h-10 w-10 animate-spin text-primary opacity-20" />
         </div>
-    }>
+      }
+    >
       <LoginForm />
     </Suspense>
   );

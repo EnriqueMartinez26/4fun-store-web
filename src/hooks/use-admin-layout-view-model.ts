@@ -1,6 +1,6 @@
-import { useEffect } from "react";
-import { useRouter } from "next/navigation";
-import { useAuth } from "@/hooks/use-auth";
+import { useEffect } from 'react';
+import { useRouter } from 'next/navigation';
+import { useAuth } from '@/hooks/use-auth';
 
 /**
  * ViewModel para el Layout de Administración
@@ -21,13 +21,13 @@ export function useAdminLayoutViewModel() {
         const currentPath = window.location.pathname;
         router.push(`/login?redirect=${encodeURIComponent(currentPath)}`);
       } else if (!userEntity.canAccessAdminPanel()) {
-        // ✅ POO: Delega en el método del objeto — no compara strings
-        router.push("/");
+        // Usar método de objeto para verificar autorización
+        router.push('/');
       }
     }
   }, [userEntity, loading, router]);
 
-  // ✅ POO: isAuthorized se determina por el método de la entidad
+  // Autorización basada en método de entidad
   const isAuthorized = !loading && !!userEntity && userEntity.canAccessAdminPanel();
 
   return {

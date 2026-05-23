@@ -29,7 +29,6 @@ import {
 } from '@/components/ui/form';
 import { Loader2, UserPlus, ArrowLeft, ArrowRight, ShieldCheck } from 'lucide-react';
 
-// ✅ INYECCIÓN MVC
 import { useRegisterViewModel } from '@/hooks/use-register-view-model';
 
 function RegisterForm() {

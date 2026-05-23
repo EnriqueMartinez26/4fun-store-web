@@ -1,4 +1,4 @@
-"use client";
+'use client';
 
 /**
  * Capa de Lógica Reutilizable: Orquestador de Cuenta (Account ViewModel)
@@ -9,35 +9,31 @@
  * (MVC / ViewModel)
  */
 
-import { useState, useEffect } from "react";
-import { useAuth } from "./use-auth";
-import { useRouter } from "next/navigation";
-import { OrderApiService } from "@/lib/services/OrderApiService";
-import { UserApiService } from "@/lib/services/UserApiService";
-import { AuthApiService } from "@/lib/services/AuthApiService";
-import type { Order } from "@/lib/types";
+import { useState, useEffect } from 'react';
+import { useAuth } from './use-auth';
+import { useRouter } from 'next/navigation';
+import { OrderApiService } from '@/lib/services/OrderApiService';
+import { UserApiService } from '@/lib/services/UserApiService';
+import { AuthApiService } from '@/lib/services/AuthApiService';
+import type { Order } from '@/lib/types';
 
 interface AccountState {
-  // Órdenes
   orders: Order[];
   loadingOrders: boolean;
-  
-  // Perfil
+
   editName: string;
   editPhone: string;
   editAddress: string;
   savingProfile: boolean;
-  
-  // Avatar
+
   uploadingAvatar: boolean;
-  
-  // Contraseña
+
   currentPassword: string;
   newPassword: string;
   confirmPassword: string;
   changingPassword: boolean;
 
-  // Marketplace (Becoming Seller)
+  // Vendedor
   storeName: string;
   storeDescription: string;
   bankAccount: string;
@@ -49,7 +45,6 @@ interface AccountState {
   resendingVerification: boolean;
 }
 
-
 export function useAccountViewModel() {
   const { user, refreshUser, loading: authLoading } = useAuth();
   const router = useRouter();
@@ -58,19 +53,19 @@ export function useAccountViewModel() {
   const [state, setState] = useState<AccountState>({
     orders: [],
     loadingOrders: true,
-    editName: "",
-    editPhone: "",
-    editAddress: "",
+    editName: '',
+    editPhone: '',
+    editAddress: '',
     savingProfile: false,
     uploadingAvatar: false,
-    currentPassword: "",
-    newPassword: "",
-    confirmPassword: "",
+    currentPassword: '',
+    newPassword: '',
+    confirmPassword: '',
     changingPassword: false,
-    storeName: "",
-    storeDescription: "",
-    bankAccount: "",
-    taxId: "",
+    storeName: '',
+    storeDescription: '',
+    bankAccount: '',
+    taxId: '',
     becomingSeller: false,
     ordersPage: 1,
     ordersTotalPages: 1,
@@ -83,7 +78,7 @@ export function useAccountViewModel() {
    */
   useEffect(() => {
     if (!authLoading && !user) {
-      router.push("/login");
+      router.push('/login');
     }
   }, [user, authLoading, router]);
 
@@ -94,9 +89,9 @@ export function useAccountViewModel() {
     if (user) {
       setState((prev) => ({
         ...prev,
-        editName: user.name || "",
-        editPhone: user.phone || "",
-        editAddress: user.address || "",
+        editName: user.name || '',
+        editPhone: user.phone || '',
+        editAddress: user.address || '',
       }));
     }
   }, [user]);
@@ -113,17 +108,17 @@ export function useAccountViewModel() {
     setState((prev) => ({ ...prev, loadingOrders: true }));
     try {
       const { orders, total, totalPages } = await OrderApiService.getMyOrders({ page, limit: 5 });
-      
-      setState((prev) => ({ 
-        ...prev, 
-        orders: orders.map(o => o.getRawData() as any), 
+
+      setState((prev) => ({
+        ...prev,
+        orders: orders.map((o) => o.getRawData() as any),
         ordersPage: page,
         ordersTotalPages: totalPages,
         totalOrders: total,
-        loadingOrders: false
+        loadingOrders: false,
       }));
     } catch (error) {
-      console.error("[Account ViewModel] Error loading orders:", error);
+      console.error('[Account ViewModel] Error loading orders:', error);
       setState((prev) => ({ ...prev, loadingOrders: false }));
     }
   };
@@ -161,7 +156,7 @@ export function useAccountViewModel() {
    */
   const saveProfile = async () => {
     if (!state.editName.trim()) {
-      throw new Error("El campo nominal es obligatorio.");
+      throw new Error('El campo nominal es obligatorio.');
     }
 
     setState((prev) => ({ ...prev, savingProfile: true }));
@@ -173,7 +168,7 @@ export function useAccountViewModel() {
       });
       await refreshUser();
     } catch (error) {
-      console.error("[Account ViewModel] Error saving profile:", error);
+      console.error('[Account ViewModel] Error saving profile:', error);
       throw error;
     } finally {
       setState((prev) => ({ ...prev, savingProfile: false }));
@@ -184,11 +179,11 @@ export function useAccountViewModel() {
    * RN - Carga de Avatar: Validación y sincronización con CDN.
    */
   const handleAvatarUpload = async (file: File) => {
-    if (!file.type.startsWith("image/")) {
-      throw new Error("Formato de imagen no soportado.");
+    if (!file.type.startsWith('image/')) {
+      throw new Error('Formato de imagen no soportado.');
     }
     if (file.size > 5 * 1024 * 1024) {
-      throw new Error("El activo supera el límite de 5MB.");
+      throw new Error('El activo supera el límite de 5MB.');
     }
 
     setState((prev) => ({ ...prev, uploadingAvatar: true }));
@@ -197,7 +192,7 @@ export function useAccountViewModel() {
       await UserApiService.updateProfile({ avatar: imageUrl });
       await refreshUser();
     } catch (error) {
-      console.error("[Account ViewModel] Error uploading avatar:", error);
+      console.error('[Account ViewModel] Error uploading avatar:', error);
       throw error;
     } finally {
       setState((prev) => ({ ...prev, uploadingAvatar: false }));
@@ -213,7 +208,7 @@ export function useAccountViewModel() {
       await UserApiService.updateProfile({ avatar: null });
       await refreshUser();
     } catch (error) {
-      console.error("[Account ViewModel] Error removing avatar:", error);
+      console.error('[Account ViewModel] Error removing avatar:', error);
       throw error;
     } finally {
       setState((prev) => ({ ...prev, uploadingAvatar: false }));
@@ -240,13 +235,13 @@ export function useAccountViewModel() {
    */
   const changePassword = async () => {
     if (!state.currentPassword || !state.newPassword) {
-      throw new Error("Especifique las credenciales solicitadas.");
+      throw new Error('Especifique las credenciales solicitadas.');
     }
     if (state.newPassword.length < 6) {
-      throw new Error("La nueva contraseña debe poseer al menos 6 caracteres.");
+      throw new Error('La nueva contraseña debe poseer al menos 6 caracteres.');
     }
     if (state.newPassword !== state.confirmPassword) {
-      throw new Error("La validación de contraseña no coincide.");
+      throw new Error('La validación de contraseña no coincide.');
     }
 
     setState((prev) => ({ ...prev, changingPassword: true }));
@@ -256,9 +251,9 @@ export function useAccountViewModel() {
         newPassword: state.newPassword,
       });
       resetPasswordFields();
-      return res.message || "Credenciales actualizadas correctamente.";
+      return res.message || 'Credenciales actualizadas correctamente.';
     } catch (error) {
-      console.error("[Account ViewModel] Error changing password:", error);
+      console.error('[Account ViewModel] Error changing password:', error);
       throw error;
     } finally {
       setState((prev) => ({ ...prev, changingPassword: false }));
@@ -271,61 +266,64 @@ export function useAccountViewModel() {
   const resetPasswordFields = () => {
     setState((prev) => ({
       ...prev,
-      currentPassword: "",
-      newPassword: "",
-      confirmPassword: "",
+      currentPassword: '',
+      newPassword: '',
+      confirmPassword: '',
     }));
   };
-  
+
   /**
    * RN - Marketplace: Transforma al usuario en Vendedor.
    */
-  const updateStoreName = (value: string) => setState(prev => ({ ...prev, storeName: value }));
-  const updateStoreDescription = (value: string) => setState(prev => ({ ...prev, storeDescription: value }));
-  const updateBankAccount = (value: string) => setState(prev => ({ ...prev, bankAccount: value }));
-  const updateTaxId = (value: string) => setState(prev => ({ ...prev, taxId: value }));
+  const updateStoreName = (value: string) => setState((prev) => ({ ...prev, storeName: value }));
+  const updateStoreDescription = (value: string) =>
+    setState((prev) => ({ ...prev, storeDescription: value }));
+  const updateBankAccount = (value: string) =>
+    setState((prev) => ({ ...prev, bankAccount: value }));
+  const updateTaxId = (value: string) => setState((prev) => ({ ...prev, taxId: value }));
 
   const becomeSeller = async (fastTrack = false) => {
     // Si es fastTrack y no hay nombre, usamos el nombre del usuario
-    const finalStoreName = fastTrack && !state.storeName.trim() 
-      ? `Vendedor: ${user?.name || 'Vendedor'}`
-      : state.storeName.trim();
+    const finalStoreName =
+      fastTrack && !state.storeName.trim()
+        ? `Vendedor: ${user?.name || 'Vendedor'}`
+        : state.storeName.trim();
 
-    if (!finalStoreName && !fastTrack) throw new Error("El nombre de la tienda es obligatorio.");
-    
-    setState(prev => ({ ...prev, becomingSeller: true }));
+    if (!finalStoreName && !fastTrack) throw new Error('El nombre de la tienda es obligatorio.');
+
+    setState((prev) => ({ ...prev, becomingSeller: true }));
     try {
       const res = await AuthApiService.becomeSeller({
         storeName: finalStoreName,
-        storeDescription: state.storeDescription.trim() || "Perfil de venta en 4Fun",
+        storeDescription: state.storeDescription.trim() || 'Perfil de venta en 4Fun',
         bankAccount: state.bankAccount.trim(),
         taxId: state.taxId.trim(),
       });
-      
+
       await refreshUser(); // Sincronizamos el nuevo rol y perfil
-      
+
       // Si fue exitoso, redirigimos a la creación de producto para que sea fluido
-      router.push("/seller/products/new");
-      
+      router.push('/seller/products/new');
+
       return res.message;
     } catch (error) {
-      console.error("[Account ViewModel] Error becoming seller:", error);
+      console.error('[Account ViewModel] Error becoming seller:', error);
       throw error;
     } finally {
-      setState(prev => ({ ...prev, becomingSeller: false }));
+      setState((prev) => ({ ...prev, becomingSeller: false }));
     }
   };
 
   const resendVerification = async () => {
     if (!user?.email) return;
-    setState(prev => ({ ...prev, resendingVerification: true }));
+    setState((prev) => ({ ...prev, resendingVerification: true }));
     try {
       await AuthApiService.resendVerification(user.email);
     } catch (error) {
-      console.error("[Account ViewModel] Error resending verification:", error);
+      console.error('[Account ViewModel] Error resending verification:', error);
       throw error;
     } finally {
-      setState(prev => ({ ...prev, resendingVerification: false }));
+      setState((prev) => ({ ...prev, resendingVerification: false }));
     }
   };
 
@@ -334,11 +332,11 @@ export function useAccountViewModel() {
   return {
     // Estado
     ...state,
-    
+
     // Flags
     isLoading: authLoading,
     user,
-    
+
     // Acciones
     refreshOrders,
     updateEditName,

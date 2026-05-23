@@ -1,4 +1,4 @@
-"use client";
+'use client';
 
 /**
  * Capa de Presentación: Central de Gestión de Identidad (Account Page)
@@ -8,26 +8,15 @@
  * (MVC / View)
  */
 
-import { useRef } from "react";
-import {
-  Card,
-  CardContent,
-  CardHeader,
-  CardTitle,
-  CardDescription,
-} from "@/components/ui/card";
-import {
-  Tabs,
-  TabsContent,
-  TabsList,
-  TabsTrigger,
-} from "@/components/ui/tabs";
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
-import { useToast } from "@/hooks/use-toast";
+import { useRef, useState } from 'react';
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
+import { useToast } from '@/hooks/use-toast';
 import {
   Loader2,
   Key,
@@ -50,13 +39,49 @@ import {
   ShoppingBag,
   ChevronLeft,
   ChevronRight,
-} from "lucide-react";
-import Link from "next/link";
-import { formatCurrency } from "@/lib/utils";
-import { cn } from "@/lib/utils";
-import { motion, AnimatePresence } from "framer-motion";
-import { useAccountViewModel } from "@/hooks/use-account-view-model";
-import type { Order } from "@/lib/types";
+} from 'lucide-react';
+import Link from 'next/link';
+import { formatCurrency } from '@/lib/utils';
+import { cn } from '@/lib/utils';
+import { motion, AnimatePresence } from 'framer-motion';
+import { useAccountViewModel } from '@/hooks/use-account-view-model';
+import type { Order } from '@/lib/types';
+
+// Componente Local para Revelar Keys con Estilo Premium
+function KeyBadge({ keyStr }: { keyStr: string }) {
+  const [revealed, setRevealed] = useState(false);
+
+  return (
+    <div
+      onClick={() => setRevealed(!revealed)}
+      className={cn(
+        'flex items-center gap-3 px-4 py-2 rounded-xl text-xs font-mono border transition-all duration-300 cursor-pointer animate-in slide-in-from-right-2',
+        revealed
+          ? 'bg-green-500/20 text-green-400 border-green-500/50 scale-105 shadow-[0_0_20px_rgba(34,197,94,0.2)]'
+          : 'bg-green-500/10 text-green-400 border-green-500/30 hover:bg-green-500/15 hover:border-green-500/50 hover:scale-105'
+      )}
+    >
+      <Key className={cn('h-4 w-4', revealed ? 'animate-none' : 'animate-pulse')} />
+      <span
+        className={cn(
+          'transition-all duration-500',
+          revealed ? 'opacity-100' : 'opacity-40 select-none'
+        )}
+      >
+        {revealed ? keyStr : '••••-••••-••••-••••'}
+      </span>
+      {revealed && (
+        <motion.span
+          initial={{ opacity: 0, scale: 0.5 }}
+          animate={{ opacity: 1, scale: 1 }}
+          className="text-[8px] font-black uppercase bg-green-500 text-black px-1.5 py-0.5 rounded-md ml-1"
+        >
+          Revelada
+        </motion.span>
+      )}
+    </div>
+  );
+}
 
 export default function AccountPage() {
   const vm = useAccountViewModel();
@@ -78,27 +103,27 @@ export default function AccountPage() {
   if (!vm.user) return null;
 
   // Helpers
-  const initials = (vm.user.name || "U").substring(0, 2).toUpperCase();
+  const initials = (vm.user.name || 'U').substring(0, 2).toUpperCase();
   const memberSince = vm.user.createdAt
-    ? new Date(vm.user.createdAt).toLocaleDateString("es-AR", {
-        year: "numeric",
-        month: "long",
+    ? new Date(vm.user.createdAt).toLocaleDateString('es-AR', {
+        year: 'numeric',
+        month: 'long',
       })
-    : "Evaluación TFI";
+    : 'Evaluación TFI';
 
   // Handlers con toast
   const handleSaveProfile = async () => {
     try {
       await vm.saveProfile();
       toast({
-        title: "Perfil Guardado",
-        description: "Tu información se guardó correctamente.",
+        title: 'Perfil Guardado',
+        description: 'Tu información se guardó correctamente.',
       });
     } catch (error: any) {
       toast({
-        title: "Error de Guardado",
-        description: error.message || "Algo salió mal, probá de nuevo.",
-        variant: "destructive",
+        title: 'Error de Guardado',
+        description: error.message || 'Algo salió mal, probá de nuevo.',
+        variant: 'destructive',
       });
     }
   };
@@ -110,17 +135,17 @@ export default function AccountPage() {
     try {
       await vm.handleAvatarUpload(file);
       toast({
-        title: "Foto Actualizada",
-        description: "Tu foto de perfil se cambió correctamente.",
+        title: 'Foto Actualizada',
+        description: 'Tu foto de perfil se cambió correctamente.',
       });
     } catch (error: any) {
       toast({
-        title: "Error en Carga",
-        description: error.message || "Fallo en la nube de activos.",
-        variant: "destructive",
+        title: 'Error en Carga',
+        description: error.message || 'Fallo en la nube de activos.',
+        variant: 'destructive',
       });
     } finally {
-      if (fileInputRef.current) fileInputRef.current.value = "";
+      if (fileInputRef.current) fileInputRef.current.value = '';
     }
   };
 
@@ -128,14 +153,14 @@ export default function AccountPage() {
     try {
       await vm.handleRemoveAvatar();
       toast({
-        title: "Avatar Removido",
-        description: "Se ha purgado el activo multimedia del perfil.",
+        title: 'Avatar Removido',
+        description: 'Se ha purgado el activo multimedia del perfil.',
       });
     } catch (error: any) {
       toast({
-        title: "Fallo en Operación",
+        title: 'Fallo en Operación',
         description: error.message,
-        variant: "destructive",
+        variant: 'destructive',
       });
     }
   };
@@ -144,14 +169,14 @@ export default function AccountPage() {
     try {
       const message = await vm.changePassword();
       toast({
-        title: "Seguridad Reforzada",
+        title: 'Seguridad Reforzada',
         description: message,
       });
     } catch (error: any) {
       toast({
-        title: "Fallo de Validación",
-        description: error.message || "La contraseña actual es incorrecta.",
-        variant: "destructive",
+        title: 'Fallo de Validación',
+        description: error.message || 'La contraseña actual es incorrecta.',
+        variant: 'destructive',
       });
     }
   };
@@ -220,7 +245,11 @@ export default function AccountPage() {
               className="h-8 px-4 bg-primary/15 border-primary/30 text-primary font-black uppercase tracking-widest text-[11px] hover:bg-primary/20 hover:border-primary/40 transition-all font-headline"
             >
               <Shield className="h-4 w-4 mr-2" />
-              {vm.user.role === "ADMIN" ? "Admin" : vm.user.role === "SELLER" ? "Vendedor" : "Comprador"}
+              {vm.user.role === 'ADMIN'
+                ? 'Admin'
+                : vm.user.role === 'SELLER'
+                  ? 'Vendedor'
+                  : 'Comprador'}
             </Badge>
             {vm.user.isVerified ? (
               <Badge
@@ -230,15 +259,15 @@ export default function AccountPage() {
                 <BadgeCheck className="h-4 w-4 mr-2" /> Email Verificado
               </Badge>
             ) : (
-                <Badge
-                  variant="outline"
-                  className="h-8 px-4 border-yellow-500/30 bg-yellow-500/10 text-yellow-500 font-black uppercase tracking-widest text-[9px] hover:bg-yellow-500/15 hover:border-yellow-500/40 transition-all font-headline"
-                >
-                  <XCircle className="h-3 w-3 mr-2" /> Verificación pendiente
-                </Badge>
+              <Badge
+                variant="outline"
+                className="h-8 px-4 border-yellow-500/30 bg-yellow-500/10 text-yellow-500 font-black uppercase tracking-widest text-[9px] hover:bg-yellow-500/15 hover:border-yellow-500/40 transition-all font-headline"
+              >
+                <XCircle className="h-3 w-3 mr-2" /> Verificación pendiente
+              </Badge>
             )}
           </div>
-          
+
           <div className="pt-4 flex items-center gap-4 justify-center md:justify-start">
             <div className="bg-white/5 px-4 py-2 rounded-xl">
               <p className="text-[12px] text-muted-foreground font-black uppercase tracking-widest opacity-40 mb-1">
@@ -248,17 +277,17 @@ export default function AccountPage() {
             </div>
 
             {!vm.user.isVerified && (
-              <Button 
+              <Button
                 onClick={async () => {
                   try {
                     await vm.resendVerification();
-                    toast({ 
-                      title: "Email Enviado", 
-                      description: "Revisá tu bandeja de entrada para verificar tu cuenta.",
-                      className: "bg-primary/20 border-primary/20 text-white" 
+                    toast({
+                      title: 'Email Enviado',
+                      description: 'Revisá tu bandeja de entrada para verificar tu cuenta.',
+                      className: 'bg-primary/20 border-primary/20 text-white',
                     });
                   } catch (error: any) {
-                    toast({ title: "Error", description: error.message, variant: "destructive" });
+                    toast({ title: 'Error', description: error.message, variant: 'destructive' });
                   }
                 }}
                 disabled={vm.resendingVerification}
@@ -280,7 +309,7 @@ export default function AccountPage() {
         <TabsList className="h-16 w-full max-w-2xl mx-auto bg-white/[0.05] backdrop-blur-2xl border border-white/10 rounded-[1.5rem] p-1.5 shadow-2xl flex items-center relative overflow-hidden">
           {/* Luz de fondo vibrante en todo el contenedor */}
           <div className="absolute inset-0 bg-gradient-to-r from-transparent via-primary/15 to-transparent blur-xl pointer-events-none" />
-          
+
           <TabsTrigger
             value="orders"
             className="relative flex-1 h-full rounded-[1.2rem] font-bold uppercase tracking-[0.15em] text-[11px] text-white/40 border border-transparent hover:bg-white/5 hover:border-white/10 hover:text-white data-[state=active]:text-white data-[state=active]:bg-primary data-[state=active]:border-primary data-[state=active]:shadow-[0_0_30px_rgba(214,88,250,0.3)] transition-all duration-500 z-10"
@@ -314,7 +343,9 @@ export default function AccountPage() {
               {vm.loadingOrders ? (
                 <div className="py-20 flex flex-col items-center gap-4">
                   <Loader2 className="h-12 w-12 animate-spin text-primary" />
-                  <p className="font-black uppercase tracking-[0.3em] text-[10px] animate-pulse">Buscando tus compras...</p>
+                  <p className="font-black uppercase tracking-[0.3em] text-[10px] animate-pulse">
+                    Buscando tus compras...
+                  </p>
                 </div>
               ) : vm.orders.length === 0 ? (
                 <Card className="border-none bg-white/[0.03] backdrop-blur-3xl py-24 text-center rounded-[3rem] ring-1 ring-white/5 shadow-2xl">
@@ -357,14 +388,14 @@ export default function AccountPage() {
                           </div>
                           <Badge
                             className={cn(
-                              "h-7 px-4 rounded-full font-black uppercase text-[9px] tracking-widest",
+                              'h-7 px-4 rounded-full font-black uppercase text-[9px] tracking-widest',
                               order.isPaid
-                                ? "bg-green-500/10 text-green-400 border-green-500/20"
-                                : "bg-yellow-500/10 text-yellow-500 border-yellow-500/20"
+                                ? 'bg-green-500/10 text-green-400 border-green-500/20'
+                                : 'bg-yellow-500/10 text-yellow-500 border-yellow-500/20'
                             )}
                             variant="outline"
                           >
-                            {order.isPaid ? "Pagada" : "Pendiente"}
+                            {order.isPaid ? 'Pagada' : 'Pendiente'}
                           </Badge>
                         </div>
                         <div className="text-right flex flex-col items-center md:items-end">
@@ -379,56 +410,48 @@ export default function AccountPage() {
                       <CardContent className="p-8 space-y-6">
                         <div className="space-y-4">
                           {Array.isArray(order.orderItems || order.items) &&
-                            (order.orderItems || order.items).map(
-                              (item: any, idx: number) => (
-                                <div
-                                  key={idx}
-                                  className="flex justify-between items-center bg-gradient-to-r from-white/[0.04] to-white/[0.02] p-6 rounded-2xl border border-primary/5 hover:border-primary/15 hover:bg-gradient-to-r hover:from-white/[0.06] hover:to-white/[0.03] transition-all duration-300 group/item"
-                                >
-                                  <div className="flex items-center gap-4">
-                                    <div className="h-10 w-10 rounded-lg bg-black/40 flex items-center justify-center">
-                                      <CreditCard className="h-5 w-5 text-primary opacity-60" />
-                                    </div>
-                                    <div>
-                                      <p className="font-bold text-white text-sm">{item.name}</p>
-                                      <p className="text-[10px] text-muted-foreground uppercase font-black tracking-widest">
-                                        Unidades: {item.quantity}
-                                      </p>
-                                    </div>
+                            (order.orderItems || order.items).map((item: any, idx: number) => (
+                              <div
+                                key={idx}
+                                className="flex justify-between items-center bg-gradient-to-r from-white/[0.04] to-white/[0.02] p-6 rounded-2xl border border-primary/5 hover:border-primary/15 hover:bg-gradient-to-r hover:from-white/[0.06] hover:to-white/[0.03] transition-all duration-300 group/item"
+                              >
+                                <div className="flex items-center gap-4">
+                                  <div className="h-10 w-10 rounded-lg bg-black/40 flex items-center justify-center">
+                                    <CreditCard className="h-5 w-5 text-primary opacity-60" />
                                   </div>
-
-                                  {order.isPaid && Array.isArray(order.digitalKeys) && (
-                                    <div className="flex flex-col items-end gap-2">
-                                      {order.digitalKeys
-                                        .filter(
-                                          (k: any) =>
-                                            k.productoId === item.product ||
-                                            k.productoId === (item.product as any)?._id ||
-                                            k.productoId === item.productId
-                                        )
-                                        .map((k: any, kIdx: number) => (
-                                          <div
-                                            key={kIdx}
-                                            className="flex items-center gap-3 bg-green-500/10 text-green-400 px-4 py-2 rounded-xl text-xs font-mono border border-green-500/30 animate-in slide-in-from-right-2 hover:bg-green-500/15 hover:border-green-500/50 hover:scale-105 transition-all duration-300 cursor-pointer"
-                                          >
-                                            <Key className="h-4 w-4 animate-pulse" />
-                                            {k.clave}
-                                          </div>
-                                        ))}
-                                    </div>
-                                  )}
+                                  <div>
+                                    <p className="font-bold text-white text-sm">{item.name}</p>
+                                    <p className="text-[10px] text-muted-foreground uppercase font-black tracking-widest">
+                                      Unidades: {item.quantity}
+                                    </p>
+                                  </div>
                                 </div>
-                              )
-                            )}
+
+                                {order.isPaid && Array.isArray(order.digitalKeys) && (
+                                  <div className="flex flex-col items-end gap-2">
+                                    {order.digitalKeys
+                                      .filter(
+                                        (k: any) =>
+                                          k.productoId === item.product ||
+                                          k.productoId === (item.product as any)?._id ||
+                                          k.productoId === item.productId
+                                      )
+                                      .map((k: any, kIdx: number) => (
+                                        <KeyBadge key={kIdx} keyStr={k.clave} />
+                                      ))}
+                                  </div>
+                                )}
+                              </div>
+                            ))}
                         </div>
 
                         <div className="flex items-center justify-between pt-4 opacity-40">
                           <div className="flex items-center gap-2 text-[10px] font-black uppercase tracking-widest">
-                            <Calendar className="h-3 w-3" /> Registrada:{" "}
-                            {new Date(order.createdAt).toLocaleDateString("es-AR")}
+                            <Calendar className="h-3 w-3" /> Registrada:{' '}
+                            {new Date(order.createdAt).toLocaleDateString('es-AR')}
                           </div>
                           <p className="text-[10px] font-black uppercase tracking-widest text-muted-foreground">
-                            Gateway: {order.paymentMethod || "Mercado Pago"}
+                            Gateway: {order.paymentMethod || 'Mercado Pago'}
                           </p>
                         </div>
                       </CardContent>
@@ -448,11 +471,14 @@ export default function AccountPage() {
                   >
                     <ChevronLeft className="h-4 w-4" />
                   </Button>
-                  
+
                   <div className="flex flex-col items-center">
-                    <p className="text-[10px] font-black uppercase tracking-[0.3em] text-primary/50 mb-1">Página</p>
+                    <p className="text-[10px] font-black uppercase tracking-[0.3em] text-primary/50 mb-1">
+                      Página
+                    </p>
                     <p className="text-2xl font-black italic tracking-tighter">
-                      {vm.ordersPage} <span className="text-white/20 mx-1">/</span> {vm.ordersTotalPages}
+                      {vm.ordersPage} <span className="text-white/20 mx-1">/</span>{' '}
+                      {vm.ordersTotalPages}
                     </p>
                   </div>
 
@@ -478,7 +504,7 @@ export default function AccountPage() {
               animate={{ opacity: 1, scale: 1 }}
               className="space-y-8"
             >
-              {vm.user.role === "SELLER" || vm.user.role === "ADMIN" ? (
+              {vm.user.role === 'SELLER' || vm.user.role === 'ADMIN' ? (
                 /* Vista del Vendedor Activo */
                 <div className="flex justify-center">
                   <div className="border text-card-foreground border-none bg-gradient-to-br from-primary/20 to-white/[0.02] backdrop-blur-3xl rounded-[3rem] p-10 ring-1 ring-primary/30 shadow-2xl shadow-primary/10 max-w-md w-full flex flex-col items-center text-center">
@@ -486,7 +512,9 @@ export default function AccountPage() {
                       <div className="h-12 w-12 bg-primary/20 rounded-2xl flex items-center justify-center mb-4">
                         <Store className="h-6 w-6 text-primary" />
                       </div>
-                      <div className="tracking-tight text-3xl font-black italic">Centro de Ventas</div>
+                      <div className="tracking-tight text-3xl font-black italic">
+                        Centro de Ventas
+                      </div>
                       <div className="text-muted-foreground text-[10px] font-black uppercase tracking-widest opacity-60">
                         Estado de tus publicaciones en 4Fun
                       </div>
@@ -497,8 +525,8 @@ export default function AccountPage() {
                           <ShieldCheck className="h-3 w-3 mr-2" /> Vendedor Verificado
                         </div>
                       </div>
-                      <Link 
-                        className="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 bg-primary text-primary-foreground hover:bg-primary/90 h-10 px-4 py-2 w-full mt-4" 
+                      <Link
+                        className="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 bg-primary text-primary-foreground hover:bg-primary/90 h-10 px-4 py-2 w-full mt-4"
                         href="/seller/dashboard"
                       >
                         <BarChart3 className="h-4 w-4 mr-2" /> Panel de Ventas
@@ -511,7 +539,7 @@ export default function AccountPage() {
                 <Card className="relative border-none bg-gradient-to-br from-card/60 to-black/40 backdrop-blur-3xl rounded-[3rem] overflow-hidden ring-1 ring-white/10 shadow-2xl min-h-[500px] flex items-center">
                   {/* Decoración de fondo */}
                   <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-primary/20 blur-[120px] rounded-full -translate-y-1/2 translate-x-1/2" />
-                  
+
                   <div className="relative z-10 grid grid-cols-1 lg:grid-cols-2 w-full">
                     <div className="p-12 lg:p-20 space-y-10">
                       <div className="space-y-6">
@@ -519,41 +547,60 @@ export default function AccountPage() {
                           <Rocket className="h-10 w-10 text-black animate-bounce" />
                         </div>
                         <h2 className="text-5xl lg:text-6xl font-black font-headline tracking-tighter italic leading-[0.9] text-white">
-                          Empezá a <br /> vender en <span className="text-primary italic">4Fun</span>
+                          Empezá a <br /> vender en{' '}
+                          <span className="text-primary italic">4Fun</span>
                         </h2>
                         <p className="text-xl text-white/60 font-medium leading-relaxed max-w-md">
-                          Publicá tus productos y ganá dinero con 4Fun. Vendé tus keys de forma segura y retirá tus ganancias al instante.
+                          Publicá tus productos y ganá dinero con 4Fun. Vendé tus keys de forma
+                          segura y retirá tus ganancias al instante.
                         </p>
                       </div>
-                      
+
                       <div className="grid grid-cols-2 gap-8">
                         <div>
-                          <p className="text-[10px] font-black uppercase tracking-widest text-primary mb-2">Comisión</p>
-                          <p className="text-2xl font-black italic">0% <span className="text-sm text-white/40">FIJA</span></p>
+                          <p className="text-[10px] font-black uppercase tracking-widest text-primary mb-2">
+                            Comisión
+                          </p>
+                          <p className="text-2xl font-black italic">
+                            0% <span className="text-sm text-white/40">FIJA</span>
+                          </p>
                         </div>
                         <div>
-                          <p className="text-[10px] font-black uppercase tracking-widest text-primary mb-2">Seguridad</p>
-                          <p className="text-2xl font-black italic text-nowrap">Safe-Key <span className="text-sm text-white/40">v2</span></p>
+                          <p className="text-[10px] font-black uppercase tracking-widest text-primary mb-2">
+                            Seguridad
+                          </p>
+                          <p className="text-2xl font-black italic text-nowrap">
+                            Safe-Key <span className="text-sm text-white/40">v2</span>
+                          </p>
                         </div>
                       </div>
                     </div>
 
                     <div className="p-12 lg:p-20 flex flex-col justify-center items-center lg:items-end text-center lg:text-right space-y-8 lg:border-l lg:border-white/5">
                       <div className="space-y-4">
-                        <p className="text-[11px] font-black uppercase tracking-[0.4em] text-white/30">Sin trámites, 100% Automático</p>
+                        <p className="text-[11px] font-black uppercase tracking-[0.4em] text-white/30">
+                          Sin trámites, 100% Automático
+                        </p>
                         <h3 className="text-3xl font-black italic leading-tight">
                           Publicá tus juegos <br /> y empezá a ganar
                         </h3>
                       </div>
 
                       <div className="w-full max-w-sm space-y-6">
-                        <Button 
+                        <Button
                           onClick={async () => {
                             try {
                               const msg = await vm.becomeSeller(true); // Fast Track: On
-                              toast({ title: "¡Perfil de Venta Activado!", description: "Ya podés publicar tu primer producto." });
+                              toast({
+                                title: '¡Perfil de Venta Activado!',
+                                description: 'Ya podés publicar tu primer producto.',
+                              });
                             } catch (error: any) {
-                              toast({ title: "Error", description: error.message, variant: "destructive" });
+                              toast({
+                                title: 'Error',
+                                description: error.message,
+                                variant: 'destructive',
+                              });
                             }
                           }}
                           disabled={vm.becomingSeller}
@@ -663,7 +710,7 @@ export default function AccountPage() {
 
                 <div className="space-y-2">
                   <Label className="text-[10px] font-black uppercase tracking-widest text-muted-foreground ml-1 flex items-center gap-2">
-                    Correo Electrónico{" "}
+                    Correo Electrónico{' '}
                     <Badge
                       variant="outline"
                       className="text-[8px] h-4 w-4 border-white/10 opacity-40 flex items-center justify-center p-0"
