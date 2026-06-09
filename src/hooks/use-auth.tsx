@@ -29,7 +29,11 @@ interface AuthContextType {
   userEntity: UserEntity | null;
   loading: boolean;
   login: (email: string, password: string) => Promise<{ success: boolean; message?: string }>;
-  register: (name: string, email: string, password: string) => Promise<{ success: boolean; message?: string }>;
+  register: (
+    name: string,
+    email: string,
+    password: string
+  ) => Promise<{ success: boolean; message?: string }>;
   logout: () => Promise<void>;
   refreshUser: () => Promise<void>;
 }
@@ -52,7 +56,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     try {
       setUserEntity(EntityFactory.createUser(rawUser as any));
     } catch (e: any) {
-      Logger.warn('[Auth] EntityFactory.createUser failed, userEntity set to null', { error: e.message });
+      Logger.warn('[Auth] EntityFactory.createUser failed, userEntity set to null', {
+        error: e.message,
+      });
       setUserEntity(null);
     }
   };
@@ -64,19 +70,15 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   useEffect(() => {
     const checkSession = async () => {
       try {
-        Logger.debug("[Auth] Verificando integridad de sesión contra el servidor...");
+        Logger.debug('[Auth] Verificando integridad de sesión contra el servidor...');
         const response = await AuthApiService.getProfile();
 
         if (response.success && response.user) {
           hydrateUser(response.user);
         } else {
-          // RN - Limpieza: Si el servidor deniega la sesión, purgamos el almacén local.
-          localStorage.removeItem('token');
           hydrateUser(null);
         }
       } catch (error: any) {
-        // Manejo de Excepciones: 401 indica token caduco o corrupto.
-        if (error?.status === 401) localStorage.removeItem('token');
         hydrateUser(null);
       } finally {
         setLoading(false);
@@ -96,9 +98,6 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       const response = await AuthApiService.login({ email, password });
       if (response.success) {
         hydrateUser(response.user);
-        // RN - Persistencia Segura: El token se guarda en LocalStorage para
-        // inyectarse en los headers de ApiClient automáticamente.
-        if (response.token) localStorage.setItem('token', response.token);
         return { success: true };
       }
       return { success: false, message: 'Credenciales inválidas' };
@@ -115,7 +114,6 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       const response = await AuthApiService.register({ name, email, password });
       if (response.success) {
         hydrateUser(response.user);
-        if (response.token) localStorage.setItem('token', response.token);
         return { success: true };
       }
       return { success: false, message: 'Fallo en la creación de cuenta.' };
@@ -132,11 +130,10 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       // Notificamos al servidor para invalidación de Cookies/Backend-Session.
       await AuthApiService.logout();
     } catch (error) {
-      console.error("[Auth] Error en cierre remoto:", error);
+      console.error('[Auth] Error en cierre remoto:', error);
     } finally {
       // Purga radical del estado local (Seguridad post-logout).
       hydrateUser(null);
-      localStorage.removeItem('token');
       localStorage.removeItem('cart');
       window.location.href = '/'; // Redirección forzada tras destrucción de estado.
     }
@@ -150,7 +147,6 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       const response = await AuthApiService.getProfile();
       if (response.success && response.user) hydrateUser(response.user);
       else {
-        localStorage.removeItem('token');
         hydrateUser(null);
       }
     } catch (error: any) {
@@ -159,7 +155,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   };
 
   return (
-    <AuthContext.Provider value={{ user, userEntity, loading, login, register, logout, refreshUser }}>
+    <AuthContext.Provider
+      value={{ user, userEntity, loading, login, register, logout, refreshUser }}
+    >
       {children}
     </AuthContext.Provider>
   );

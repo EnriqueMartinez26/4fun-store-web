@@ -16,7 +16,11 @@ const getBaseUrl = () => {
 };
 
 export class ApiError extends Error {
-  constructor(public message: string, public status: number, public data?: any) {
+  constructor(
+    public message: string,
+    public status: number,
+    public data?: any
+  ) {
     super(message);
     this.name = 'ApiError';
   }
@@ -29,51 +33,52 @@ export class HttpTransport {
     const apiPath = baseUrl.endsWith('/api') ? '' : '/api';
     const url = `${baseUrl}${apiPath}${endpoint}`;
 
-    const token = typeof window !== 'undefined' ? localStorage.getItem('token') : null;
     const isFormData = options.body instanceof FormData;
     const headers: Record<string, string> = {
       ...(isFormData ? {} : { 'Content-Type': 'application/json' }),
-      ...(token ? { 'Authorization': `Bearer ${token}` } : {}),
-      ...options.headers as any
+      ...(options.headers as any),
     };
 
     const response = await fetch(url, { ...options, credentials: 'include', headers });
     if (response.status === 204) return {} as T;
-    
+
     let data: any;
     try {
       data = await response.json();
     } catch (e) {
-      throw new ApiError('Error de Conexión', response.status, { message: 'El servidor no respondió correctamente.' });
+      throw new ApiError('Error de Conexión', response.status, {
+        message: 'El servidor no respondió correctamente.',
+      });
     }
 
     if (!response.ok) {
       const errorTitle = data.error || 'Error del Sistema';
       const errorMessage = data.message || 'Ocurrió un error inesperado.';
-      
+
       if (response.status !== 401) {
         Logger.error(`[API Error] ${endpoint} (${response.status}):`, errorMessage);
       }
-      
+
       throw new ApiError(errorMessage, response.status, { title: errorTitle, ...data });
     }
     return data;
   }
 
   public static buildQuery(params?: Record<string, any>): string {
-    if (!params) return "";
+    if (!params) return '';
     const query = new URLSearchParams();
     Object.entries(params).forEach(([key, value]) => {
-      if (value !== undefined && value !== null && value !== "" && value !== "all") query.append(key, value.toString());
+      if (value !== undefined && value !== null && value !== '' && value !== 'all')
+        query.append(key, value.toString());
     });
     const qs = query.toString();
-    return qs ? `?${qs}` : "";
+    return qs ? `?${qs}` : '';
   }
 
   public static async uploadImage(file: File): Promise<string> {
     const formData = new FormData();
     formData.append('file', file);
-    
+
     // RN - Infraestructura: Recuperamos configuración de Cloudinary desde variables de entorno.
     const cloudName = process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME;
     const uploadPreset = process.env.NEXT_PUBLIC_CLOUDINARY_UPLOAD_PRESET;
@@ -86,17 +91,17 @@ export class HttpTransport {
     }
 
     formData.append('upload_preset', uploadPreset);
-    
+
     const res = await fetch(`https://api.cloudinary.com/v1_1/${cloudName}/image/upload`, {
       method: 'POST',
-      body: formData
+      body: formData,
     });
-    
+
     if (!res.ok) {
       const errorData = await res.json();
       const detailedMessage = errorData.error?.message || 'Bad Request';
       throw new ApiError(
-        `[Cloudinary Error] ${detailedMessage} (Cloud: ${cloudName}, Preset: ${uploadPreset}). Asegúrate de que el preset sea "Unsigned".`, 
+        `[Cloudinary Error] ${detailedMessage} (Cloud: ${cloudName}, Preset: ${uploadPreset}). Asegúrate de que el preset sea "Unsigned".`,
         res.status
       );
     }
@@ -106,19 +111,18 @@ export class HttpTransport {
   }
 
   public static async login(data: LoginValues): Promise<any> {
-    const res = await this.request<any>('/auth/login', { method: 'POST', body: JSON.stringify(data) });
-    if (res.success && res.token) localStorage.setItem('token', res.token);
-    return res;
+    return this.request<any>('/auth/login', { method: 'POST', body: JSON.stringify(data) });
   }
   public static async register(data: RegisterPayload): Promise<any> {
-    const res = await this.request<any>('/auth/register', { method: 'POST', body: JSON.stringify(data) });
-    if (res.success && res.token) localStorage.setItem('token', res.token);
-    return res;
+    return this.request<any>('/auth/register', { method: 'POST', body: JSON.stringify(data) });
   }
-  public static async getProfile(): Promise<any> { return this.request('/auth/profile'); }
+  public static async getProfile(): Promise<any> {
+    return this.request('/auth/profile');
+  }
   public static async logout(): Promise<any> {
-    localStorage.removeItem('token');
     return { success: true, data: null };
   }
-  public static async updateProfile(data: any): Promise<any> { return this.request('/auth/profile', { method: 'PUT', body: JSON.stringify(data) }); }
+  public static async updateProfile(data: any): Promise<any> {
+    return this.request('/auth/profile', { method: 'PUT', body: JSON.stringify(data) });
+  }
 }
