@@ -1,173 +1,113 @@
-<p align="center">
-  <h1 align="center">🎮 4Fun Store — Frontend</h1>
-  <p align="center">
-    Interfaz web moderna para marketplace de videojuegos.<br/>
-    Desarrollado como proyecto de tesis — <strong>Mariano Martinez</strong>.
-  </p>
-</p>
+# 4Fun Store Web
 
-<p align="center">
-  <img src="https://img.shields.io/badge/Next.js-15-000000?logo=next.js&logoColor=white" alt="Next.js">
-  <img src="https://img.shields.io/badge/React-18-61DAFB?logo=react&logoColor=black" alt="React">
-  <img src="https://img.shields.io/badge/TypeScript-5-3178C6?logo=typescript&logoColor=white" alt="TypeScript">
-  <img src="https://img.shields.io/badge/Tailwind_CSS-3.4-06B6D4?logo=tailwindcss&logoColor=white" alt="Tailwind">
-  <img src="https://img.shields.io/badge/Radix_UI-Components-161618?logo=radixui&logoColor=white" alt="Radix UI">
-</p>
+Cliente web SPA para un sistema e-commerce académico orientado a la venta de videojuegos digitales. El proyecto implementa una interfaz de usuario interactiva y responsiva para la navegación del catálogo de productos, carrito de compras, comparador de videojuegos, proceso de checkout simulado e historial de claves digitales de compras realizadas.
 
----
+## Alcance del proyecto
 
-## 📋 Tabla de Contenido
+Este cliente web forma parte de un proyecto de tesis de Tecnicatura en Programación. Su objetivo es demostrar el análisis, diseño e implementación de un frontend robusto con arquitectura desacoplada, gestión de estados complejos, interfaces dinámicas de usuario y separación de responsabilidades entre la capa de interfaz y de lógica de negocio.
 
-- [Descripción](#-descripción)
-- [Tech Stack](#-tech-stack)
-- [Estructura del Proyecto](#-estructura-del-proyecto)
-- [Instalación](#-instalación)
-- [Páginas](#-páginas)
-- [Diseño](#-diseño)
-- [Backend](#-backend)
+El sistema se enfoca exclusivamente en videojuegos digitales. La experiencia del usuario se centra en la simulación guiada de la adquisición de licencias y acceso a su respectivo stock de claves.
 
----
+### Funcionalidades principales
 
-## 📖 Descripción
+- Registro de cuentas, inicio de sesión y autenticación persistente.
+- Catálogo dinámico de videojuegos con filtros interactivos por género y plataforma.
+- Buscador global rápido integrado en un diálogo dedicado.
+- Ficha detallada de productos con especificaciones técnicas, valoraciones y reseñas de usuarios.
+- Herramienta de comparación técnica lado a lado de hasta 3 videojuegos simultáneos.
+- Carrito de compras reactivo y wishlist persistente localmente.
+- Proceso de checkout guiado y simulado.
+- Perfil de usuario con historial de órdenes y visualización de claves digitales adquiridas.
+- Panel administrativo interactivo para la gestión de productos, carga de stock de claves, administración de usuarios y métricas agregadas de negocio.
 
-Frontend del marketplace **4Fun Store**, una SPA construida con **Next.js 15** (App Router + Turbopack) que ofrece:
+## Arquitectura
 
-- 🎮 **Catálogo de juegos** con filtros por plataforma, género y precio
-- 🔍 **Búsqueda global** con diálogo dedicado
-- 🛒 **Carrito de compras** con estado persistente
-- ❤️ **Wishlist** para guardar juegos favoritos
-- ⚖️ **Comparador de juegos** side-by-side
-- 💳 **Checkout** integrado con MercadoPago
-- 👤 **Gestión de cuenta** con historial de órdenes
-- ⭐ **Reseñas** de productos
-- 📊 **Panel admin** con dashboard, gestión de productos/usuarios/órdenes
-- 📧 **Formulario de contacto**
-- ✅ **Verificación de email** al registrarse
+El frontend está desarrollado bajo una arquitectura orientada a la separación estricta de responsabilidades utilizando el patrón **ViewModel (MVVM)** para aislar la lógica de la vista:
 
----
+- **Views (Vistas)**: Componentes funcionales en React estructurados en directorios de Next.js (App Router). Solo se encargan del renderizado de interfaz y la canalización de eventos.
+- **ViewModels (Modelos de Vista)**: Capa intermedia estructurada mediante custom hooks o clases que gestiona el estado local, validaciones operativas (ej. stock, límites) y la interacción directa con la API.
+- **Services (Servicios / Cliente API)**: Clientes de red parametrizados (Axios) responsables de establecer comunicación con la API REST de `4fun-store-api`.
 
-## 🛠 Tech Stack
+Flujo de datos:
+`Usuario → Vista (React Component) → ViewModel (Hook/State) → Service (Axios) → Backend API`
 
-| Categoría         | Tecnología                                  |
-|-------------------|---------------------------------------------|
-| Framework         | Next.js 15 (App Router, Turbopack)          |
-| Lenguaje          | TypeScript 5                                |
-| UI Components     | Radix UI (20+ componentes primitivos)       |
-| Styling           | Tailwind CSS 3.4 + tailwindcss-animate      |
-| Animaciones       | Framer Motion                               |
-| Formularios       | React Hook Form + Zod                       |
-| Gráficos          | Recharts                                    |
-| HTTP Client       | Axios                                       |
-| Carrusel          | Embla Carousel                              |
-| Fechas            | date-fns                                    |
-| Iconos            | Lucide React + iconos pixel-art custom      |
+## Tecnologías
 
----
+- Next.js 15 (App Router, Turbopack)
+- React 18
+- TypeScript 5
+- Tailwind CSS 3.4
+- Radix UI
+- Lucide React
+- Axios
+- Recharts
+- Vitest
 
-## 📁 Estructura del Proyecto
+## Estructura del proyecto
 
 ```
-Proyecto-Front/src/
-├── app/                  # Páginas (App Router)
-│   ├── account/          # Mi cuenta
-│   ├── admin/            # Panel administrador
-│   │   ├── orders/       # Gestión de órdenes
-│   │   ├── products/     # ABM de productos
-│   │   ├── users/        # Gestión de usuarios
-│   │   └── visuals/      # Configuración visual
+4fun-store-web/src/
+├── app/                  # Directorio de rutas de Next.js
+│   ├── account/          # Perfil de usuario e historial
+│   ├── admin/            # Dashboard administrativo y ABM
 │   ├── cart/             # Carrito de compras
-│   ├── checkout/         # Proceso de pago
-│   │   ├── success.tsx   # Pago exitoso
-│   │   ├── failure.tsx   # Pago fallido
-│   │   └── pending.tsx   # Pago pendiente
-│   ├── comparar/         # Comparador de juegos
-│   ├── contacto/         # Formulario de contacto
-│   ├── login/            # Inicio de sesión
-│   ├── register/         # Registro
-│   ├── productos/        # Catálogo y detalle
-│   ├── verificar-email/  # Verificación de email
-│   └── wishlist/         # Lista de deseos
-├── components/           # Componentes reutilizables
-│   ├── admin/            # Componentes del panel admin
-│   ├── game/             # Cards, detalles, filtros de juegos
-│   ├── layout/           # Header, Footer, Navbar
-│   ├── ui/               # 34 componentes base (Radix + shadcn)
-│   ├── pixel-hero.tsx    # Hero section con estilo pixel-art
-│   └── search-dialog.tsx # Búsqueda global
-├── context/              # React Context
-│   ├── CartContext.tsx    # Estado del carrito
-│   ├── ComparatorContext.tsx  # Estado del comparador
-│   └── WishlistContext.tsx    # Estado de la wishlist
-├── hooks/                # Custom hooks
-│   ├── use-auth.tsx      # Autenticación
-│   ├── use-debounce.ts   # Debounce para búsquedas
-│   ├── use-game-filter.ts    # Filtros de juegos
-│   ├── use-image-upload.ts   # Subida de imágenes
-│   ├── use-mobile.tsx    # Detección de mobile
-│   └── use-toast.ts      # Notificaciones toast
-└── lib/                  # Utilidades
-    ├── api.ts            # Cliente API (Axios)
-    ├── constants.ts      # Constantes
-    ├── logger.ts         # Logger frontend
-    ├── schemas.ts        # Esquemas Zod
-    ├── types.ts          # TypeScript types
-    └── utils.ts          # Utilidades generales
+│   ├── checkout/         # Flujo de pago simulado
+│   ├── comparar/         # Vista del comparador técnico
+│   └── productos/        # Catálogo general y detalle de juego
+├── components/           # Componentes UI reutilizables
+├── context/              # Contextos globales de React (Carrito, Comparador, Wishlist)
+├── hooks/                # ViewModels e interceptores customizados
+└── lib/                  # Utilidades y definición de cliente API (Axios)
 ```
 
----
+## Variables de entorno
 
-## 🚀 Instalación
+Crear un archivo `.env.local` en la raíz del proyecto para conectar el cliente con el backend de desarrollo:
+
+```env
+NEXT_PUBLIC_API_URL=http://localhost:9003/api
+```
+
+## Instalación
 
 ```bash
-# 1. Ir al directorio del frontend
-cd Proyecto-Front
-
-# 2. Instalar dependencias
 npm install
-
-# 3. Configurar variables de entorno
-cp .env.local.example .env.local
-# Editar con la URL del backend
-
-# 4. Iniciar en modo desarrollo (Turbopack)
-npm run dev
-
-# Disponible en http://localhost:9002
 ```
 
-### Scripts disponibles
+## Ejecución
 
-| Script          | Descripción                     |
-|-----------------|---------------------------------|
-| `npm run dev`   | Desarrollo con Turbopack (9002) |
-| `npm run build` | Build de producción             |
-| `npm run start` | Servir build de producción      |
-| `npm run lint`  | Linting con ESLint              |
-| `npm run typecheck` | Verificar tipos TypeScript |
+### Modo desarrollo (Turbopack)
 
----
+```bash
+npm run dev
+```
 
-## 🎨 Diseño
+La aplicación queda disponible localmente en:
+`http://localhost:9002`
 
-Siguiendo el blueprint del proyecto:
+### Producción
 
-- **Color primario:** Deep Indigo (`#4B0082`)
-- **Fondo:** Light Lavender (`#E6E6FA`)
-- **Acento:** Electric Purple (`#BF00FF`)
-- **Tipografía headlines:** Space Grotesk (sans-serif)
-- **Tipografía body:** Inter (sans-serif)
-- **Iconografía:** Estilo pixel-art para géneros y plataformas
-- **Layout:** Grid responsivo para catálogo
-- **Animaciones:** Framer Motion (fade-in, hover states, transiciones)
+```bash
+npm run build
+npm run start
+```
 
----
+## Pruebas
 
-## 🔗 Backend
+```bash
+npm run test
+```
 
-La API REST se encuentra en el directorio `Proyecto-Back/`. Consulta el [README del Backend](../Proyecto-Back/README.md) para documentación completa de endpoints.
+Las pruebas unitarias y de interfaz están implementadas con **Vitest** y **React Testing Library**, cubriendo componentes lógicos interactivos como el comparador y las utilidades críticas de la UI.
 
----
+## Limitaciones académicas
 
-## 📜 Licencia
+- El flujo de checkout modela y simula las transacciones bancarias, redirigiendo a vistas de éxito/fallo simuladas. No interactúa con cuentas de dinero productivas ni tarjetas reales.
+- Dependencia estricta de la accesibilidad de la API backend para la sincronización de sesiones y persistencia profunda de datos.
+- Persistencia local temporal para carritos de usuarios no registrados mediante `localStorage`.
 
-MIT © Mariano Martinez
+## Mejoras futuras
+
+- Integración productiva final con webhooks de MercadoPago u otra pasarela real.
+- Gráficos avanzados y reportes de exportación en múltiples formatos para administradores.
+- Implementación de pruebas E2E (End-to-End) con herramientas como Playwright o Cypress.
