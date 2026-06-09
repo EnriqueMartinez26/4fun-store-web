@@ -1,113 +1,102 @@
 # 4Fun Store Web
 
-Cliente web SPA para un sistema e-commerce académico orientado a la venta de videojuegos digitales. El proyecto implementa una interfaz de usuario interactiva y responsiva para la navegación del catálogo de productos, carrito de compras, comparador de videojuegos, proceso de checkout simulado e historial de claves digitales de compras realizadas.
+Cliente web para 4Fun Store, un sistema e-commerce académico orientado a la venta de videojuegos digitales. La aplicación permite explorar el catálogo, gestionar carrito, iniciar sesión, crear órdenes y consumir los servicios expuestos por la API backend.
 
 ## Alcance del proyecto
 
-Este cliente web forma parte de un proyecto de tesis de Tecnicatura en Programación. Su objetivo es demostrar el análisis, diseño e implementación de un frontend robusto con arquitectura desacoplada, gestión de estados complejos, interfaces dinámicas de usuario y separación de responsabilidades entre la capa de interfaz y de lógica de negocio.
+Este frontend forma parte de una tesis de Tecnicatura en Programación. Su objetivo es demostrar la construcción de una interfaz web moderna conectada a una API REST, con manejo de estado, validaciones, autenticación, navegación por catálogo y flujo de compra.
 
-El sistema se enfoca exclusivamente en videojuegos digitales. La experiencia del usuario se centra en la simulación guiada de la adquisición de licencias y acceso a su respectivo stock de claves.
+## Funcionalidades principales
 
-### Funcionalidades principales
-
-- Registro de cuentas, inicio de sesión y autenticación persistente.
-- Catálogo dinámico de videojuegos con filtros interactivos por género y plataforma.
-- Buscador global rápido integrado en un diálogo dedicado.
-- Ficha detallada de productos con especificaciones técnicas, valoraciones y reseñas de usuarios.
-- Herramienta de comparación técnica lado a lado de hasta 3 videojuegos simultáneos.
-- Carrito de compras reactivo y wishlist persistente localmente.
-- Proceso de checkout guiado y simulado.
-- Perfil de usuario con historial de órdenes y visualización de claves digitales adquiridas.
-- Panel administrativo interactivo para la gestión de productos, carga de stock de claves, administración de usuarios y métricas agregadas de negocio.
-
-## Arquitectura
-
-El frontend está desarrollado bajo una arquitectura orientada a la separación estricta de responsabilidades utilizando el patrón **ViewModel (MVVM)** para aislar la lógica de la vista:
-
-- **Views (Vistas)**: Componentes funcionales en React estructurados en directorios de Next.js (App Router). Solo se encargan del renderizado de interfaz y la canalización de eventos.
-- **ViewModels (Modelos de Vista)**: Capa intermedia estructurada mediante custom hooks o clases que gestiona el estado local, validaciones operativas (ej. stock, límites) y la interacción directa con la API.
-- **Services (Servicios / Cliente API)**: Clientes de red parametrizados (Axios) responsables de establecer comunicación con la API REST de `4fun-store-api`.
-
-Flujo de datos:
-`Usuario → Vista (React Component) → ViewModel (Hook/State) → Service (Axios) → Backend API`
+- Página de inicio con taxonomías de productos.
+- Catálogo de videojuegos digitales.
+- Filtros por plataforma, género, búsqueda y precio.
+- Detalle de producto.
+- Registro e inicio de sesión.
+- Manejo de sesión autenticada.
+- Carrito de compras.
+- Creación de órdenes.
+- Panel administrativo para gestión básica.
+- Validación de formularios.
+- Manejo de estados de carga y errores.
 
 ## Tecnologías
 
-- Next.js 15 (App Router, Turbopack)
-- React 18
-- TypeScript 5
-- Tailwind CSS 3.4
+- Next.js
+- React
+- TypeScript
+- Tailwind CSS
 - Radix UI
-- Lucide React
-- Axios
-- Recharts
+- React Hook Form
+- Zod
 - Vitest
+- Testing Library
 
-## Estructura del proyecto
+## Arquitectura
 
+La aplicación se organiza en capas:
+
+- **app**: rutas y páginas de Next.js.
+- **components**: componentes visuales reutilizables.
+- **context**: estados globales como autenticación y carrito.
+- **hooks**: lógica reutilizable del cliente.
+- **lib**: transporte HTTP, servicios y tipos.
+- **domain**: entidades y reglas de representación del dominio.
+
+## Integración con backend
+
+El frontend consume la API REST de 4Fun Store API.
+
+Variable principal:
+
+```bash
+NEXT_PUBLIC_API_URL=http://localhost:9003
 ```
-4fun-store-web/src/
-├── app/                  # Directorio de rutas de Next.js
-│   ├── account/          # Perfil de usuario e historial
-│   ├── admin/            # Dashboard administrativo y ABM
-│   ├── cart/             # Carrito de compras
-│   ├── checkout/         # Flujo de pago simulado
-│   ├── comparar/         # Vista del comparador técnico
-│   └── productos/        # Catálogo general y detalle de juego
-├── components/           # Componentes UI reutilizables
-├── context/              # Contextos globales de React (Carrito, Comparador, Wishlist)
-├── hooks/                # ViewModels e interceptores customizados
-└── lib/                  # Utilidades y definición de cliente API (Axios)
-```
 
-## Variables de entorno
-
-Crear un archivo `.env.local` en la raíz del proyecto para conectar el cliente con el backend de desarrollo:
-
-```env
-NEXT_PUBLIC_API_URL=http://localhost:9003/api
-```
+Las requests autenticadas deben enviarse con credenciales para permitir el uso de cookies HttpOnly emitidas por el backend.
 
 ## Instalación
 
 ```bash
 npm install
-```
-
-## Ejecución
-
-### Modo desarrollo (Turbopack)
-
-```bash
 npm run dev
 ```
 
-La aplicación queda disponible localmente en:
-`http://localhost:9002`
+La aplicación queda disponible en:
+http://localhost:9002
 
-### Producción
+## Scripts
 
-```bash
-npm run build
-npm run start
-```
+- `npm run dev`: Inicia el servidor de desarrollo.
+- `npm run build`: Genera el bundle optimizado para producción.
+- `npm run lint`: Ejecuta el análisis estático del código (ESLint).
+- `npm run typecheck`: Valida la consistencia de tipos de TypeScript.
+- `npm run test`: Ejecuta las pruebas unitarias e integración con Vitest.
+
+## Flujo principal
+
+1. El usuario ingresa al sitio.
+2. Explora el catálogo.
+3. Filtra productos.
+4. Consulta el detalle de un videojuego.
+5. Inicia sesión.
+6. Agrega productos al carrito.
+7. Crea una orden.
+8. Consulta su historial de compras.
 
 ## Pruebas
 
-```bash
-npm run test
-```
+Las pruebas se enfocan en componentes y lógica crítica:
 
-Las pruebas unitarias y de interfaz están implementadas con **Vitest** y **React Testing Library**, cubriendo componentes lógicos interactivos como el comparador y las utilidades críticas de la UI.
+- Formularios de autenticación.
+- Carrito.
+- Catálogo.
+- Servicios HTTP.
+- Validaciones de dominio.
 
 ## Limitaciones académicas
 
-- El flujo de checkout modela y simula las transacciones bancarias, redirigiendo a vistas de éxito/fallo simuladas. No interactúa con cuentas de dinero productivas ni tarjetas reales.
-- Dependencia estricta de la accesibilidad de la API backend para la sincronización de sesiones y persistencia profunda de datos.
-- Persistencia local temporal para carritos de usuarios no registrados mediante `localStorage`.
-
-## Mejoras futuras
-
-- Integración productiva final con webhooks de MercadoPago u otra pasarela real.
-- Gráficos avanzados y reportes de exportación en múltiples formatos para administradores.
-- Implementación de pruebas E2E (End-to-End) con herramientas como Playwright o Cypress.
+- El sistema está orientado a demostrar un flujo académico completo.
+- El pago puede estar simulado según la configuración del backend.
+- El panel administrativo se limita a las funciones necesarias para validar el flujo principal.
+- La aplicación depende de la API backend para operar correctamente.
