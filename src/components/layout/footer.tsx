@@ -1,20 +1,20 @@
-"use client";
+'use client';
 
 /**
  * Capa de Interfaz: Pie de Página Institucional (Footer)
  * --------------------------------------------------------------------------
  * Orquesta los enlaces de navegación secundaria, acceso a documentación corporativa
- * y datos de contacto técnicos. 
+ * y datos de contacto técnicos.
  * Implementa una estrategia de 'Client-Side Only rendering' para garantizar
  * la estabilidad de hidratación en Next.js 15.
  */
 
-import React, { forwardRef, useState, useEffect } from "react";
-import Image from "next/image";
-import Link from "next/link";
-import { AboutDialog } from "@/components/about-dialog";
-import { FaqDialog } from "@/components/faq-dialog";
-import { usePathname } from "next/navigation";
+import React, { forwardRef, useState, useEffect } from 'react';
+import Image from 'next/image';
+import Link from 'next/link';
+import { AboutDialog } from '@/components/about-dialog';
+import { FaqDialog } from '@/components/faq-dialog';
+import { usePathname } from 'next/navigation';
 
 export function Footer() {
   const pathname = usePathname();
@@ -25,37 +25,37 @@ export function Footer() {
   }, []);
 
   // RN - Estrategia de Tunneling: Ocultar footer en el flujo de conversión (Carrito)
-  if (pathname === "/cart") return null;
+  if (pathname === '/cart') return null;
 
   // RN - Estabilidad: Si no ha montado, no renderizamos estructura compleja
   // para evitar el mismatch de hidratación con el servidor.
   if (!mounted) return <footer className="w-full h-20 bg-background" />;
 
   const footerLinks = {
-    "Asistencia": [
-      { title: "Centro de ayuda", href: "/contacto" },
-      { title: "Preguntas frecuentes", href: "#faq" },
+    Asistencia: [
+      { title: 'Centro de ayuda', href: '/contacto' },
+      { title: 'Preguntas frecuentes', href: '#faq' },
     ],
-    "Institucional": [
-      { title: "Sobre 4Fun", href: "#about" },
-    ],
+    Institucional: [{ title: 'Sobre 4Fun', href: '#about' }],
   };
 
   return (
     <footer className="w-full border-t border-white/5 bg-background/95 mt-16 backdrop-blur-xl animate-in fade-in duration-500">
       <div className="container relative z-10 mx-auto max-w-screen-2xl px-4 py-8 lg:py-16">
         <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-12">
-          
           {/* Identidad y Propósito */}
           <div className="col-span-2 lg:col-span-1">
-            <Link href="/" className="inline-flex items-center mb-6 hover:opacity-80 transition-opacity">
+            <Link
+              href="/"
+              className="inline-flex items-center mb-6 hover:opacity-80 transition-opacity"
+            >
               <div className="relative h-16 w-16 md:h-20 md:w-20 transition-all duration-700">
-                 <Image src="/logo.png" alt="4Fun Logo" fill className="object-contain" />
+                <Image src="/logo.png" alt="4Fun Logo" fill className="object-contain" />
               </div>
             </Link>
             <p className="text-sm text-muted-foreground leading-relaxed max-w-xs">
-              Tu tienda de juegos digitales y fisicos en un solo lugar.
-              Precios competitivos, entregas rapidas y soporte cuando lo necesites.
+              Tu tienda de videojuegos digitales en un solo lugar. Precios competitivos, entregas
+              rapidas y soporte cuando lo necesites.
             </p>
           </div>
 
@@ -63,22 +63,22 @@ export function Footer() {
           {Object.entries(footerLinks).map(([category, links]) => (
             <div key={category}>
               <h4 className="font-headline font-bold text-white mb-6 uppercase tracking-[0.2em] text-xs underline decoration-primary/30 underline-offset-8 decoration-2">
-                 {category}
+                {category}
               </h4>
               <ul className="space-y-4">
                 {links.map((link) => (
                   <li key={link.title}>
-                    {link.href === "#about" ? (
+                    {link.href === '#about' ? (
                       <AboutDialog>
-                         <FooterLink text={link.title} />
+                        <FooterLink text={link.title} />
                       </AboutDialog>
-                    ) : link.href === "#faq" ? (
+                    ) : link.href === '#faq' ? (
                       <FaqDialog>
-                         <FooterLink text={link.title} />
+                        <FooterLink text={link.title} />
                       </FaqDialog>
                     ) : (
                       <Link href={link.href} className="inline-block w-full">
-                         <FooterLink text={link.title} />
+                        <FooterLink text={link.title} />
                       </Link>
                     )}
                   </li>
@@ -94,7 +94,7 @@ export function Footer() {
             &copy; {new Date().getFullYear()} 4Fun Marketplace. Derechos Reservados.
           </p>
           <div className="flex gap-6 italic opacity-50">
-             <span>Tienda oficial</span>
+            <span>Tienda oficial</span>
           </div>
         </div>
       </div>
@@ -108,7 +108,7 @@ export function Footer() {
 const FooterLink = forwardRef<HTMLSpanElement, { text: string; onClick?: () => void }>(
   ({ text, onClick, ...props }, ref) => {
     return (
-      <span 
+      <span
         ref={ref}
         onClick={onClick}
         {...props}
@@ -120,4 +120,4 @@ const FooterLink = forwardRef<HTMLSpanElement, { text: string; onClick?: () => v
   }
 );
 
-FooterLink.displayName = "FooterLink";
+FooterLink.displayName = 'FooterLink';
