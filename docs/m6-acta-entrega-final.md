@@ -63,6 +63,8 @@ Este documento certifica la correcta publicación, configuración y validación 
 
 Para verificar el correcto funcionamiento del despliegue:
 
+- **Video del Smoke Test en Producción**: [recording.webm](file:///d:/Programación/Proyectos/Facultad/tesis/4fun-store-web/docs/evidencias/m6/recording.webm)
+
 1.  Ingresar a [https://4fun-store-web.vercel.app](https://4fun-store-web.vercel.app).
 2.  Iniciar sesión con un usuario comprador del seed de prueba.
 3.  Efectuar una compra simulada y constatar que el flujo transaccional se propaga hacia el backend en [https://4fun-store-api.vercel.app](https://4fun-store-api.vercel.app) sin errores.
