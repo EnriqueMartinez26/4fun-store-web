@@ -2,6 +2,9 @@
 
 Este documento certifica la correcta publicación, configuración y validación en producción de la plataforma académica **4Fun Store**, consolidando formalmente el **Hito M6 (Entrega Final)**.
 
+> [!NOTE]
+> **Nota de release**: Los tags `tesis-m2-flujo-principal-cerrado` y `v0.2.0-thesis-main-flow` fueron actualizados durante el cierre M6 para apuntar al último estado integrado con despliegue y evidencias finales. El cierre académico final queda representado por el estado actual de la rama `tesis/flujo-principal` y los tags definitivos `tesis-m6-entrega-final` y `v1.0.0-thesis`.
+
 ---
 
 ## 1. Ficha Técnica del Despliegue
