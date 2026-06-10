@@ -1,0 +1,28 @@
+{
+  "mainApproval": {
+    "orderId": "727f4b4e-3681-4b9b-a06c-17b11d75275f",
+    "transactionId": "25f06237-8452-40b2-b133-d659b8fbe61c",
+    "previousStatus": "PENDING_APPROVAL",
+    "finalStatus": "FUNDS_RELEASED",
+    "approvedBy": "c0eebc99-9c0b-4ef8-bb6d-6bb9bd380a33",
+    "approvedAt": "2026-06-10T03:12:38.625Z",
+    "rejectionReason": null,
+    "amount": 149.97
+  },
+  "rejectionCase": {
+    "transactionId": "99d32100-a7cc-46ed-a064-c21fce938aa9",
+    "previousStatus": "PENDING_APPROVAL",
+    "finalStatus": "REJECTED",
+    "resolvedBy": "c0eebc99-9c0b-4ef8-bb6d-6bb9bd380a33",
+    "resolvedAt": "2026-06-10T03:12:42.873Z",
+    "rejectionReason": "Motivo de prueba Paso 9"
+  },
+  "blockedCases": {
+    "buyerApprovalBlocked": true,
+    "buyerRejectionBlocked": true,
+    "doubleApprovalBlocked": true,
+    "approvalThenRejectBlocked": true,
+    "rejectWithoutReasonBlocked": true,
+    "doubleRejectBlocked": true
+  }
+}
