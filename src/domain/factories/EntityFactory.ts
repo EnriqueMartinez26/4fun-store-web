@@ -50,10 +50,9 @@ export class EntityFactory {
     const role = EntityFactory.VALID_ROLES.includes(rawRole) ? rawRole : 'BUYER';
 
     if (!EntityFactory.VALID_ROLES.includes(rawRole)) {
-      Logger.warn(
-        `[EntityFactory.createUser] Non-3NF role "${raw.role}" normalized to BUYER`,
-        { userId: raw.id }
-      );
+      Logger.warn(`[EntityFactory.createUser] Non-3NF role "${raw.role}" normalized to BUYER`, {
+        userId: raw.id,
+      });
     }
 
     const userData: User = {
@@ -102,10 +101,13 @@ export class EntityFactory {
     }
 
     // Si Zod falla, intentamos construir con datos parciales (comportamiento resiliente)
-    Logger.warn('[EntityFactory.createProduct] Schema validation failed, attempting partial build', {
-      id: raw.id,
-      issues: parsed.error.issues.length,
-    });
+    Logger.warn(
+      '[EntityFactory.createProduct] Schema validation failed, attempting partial build',
+      {
+        id: raw.id,
+        issues: parsed.error.issues.length,
+      }
+    );
 
     try {
       return new ProductEntity(raw as any);
@@ -121,7 +123,7 @@ export class EntityFactory {
   static createProducts(rawArray: Record<string, any>[]): ProductEntity[] {
     if (!Array.isArray(rawArray)) return [];
     return rawArray
-      .map(raw => EntityFactory.createProduct(raw))
+      .map((raw) => EntityFactory.createProduct(raw))
       .filter((entity): entity is ProductEntity => entity !== null);
   }
 
@@ -153,8 +155,11 @@ export class EntityFactory {
       createdAt: raw.createdAt ?? new Date().toISOString(),
       shippingAddress: raw.shippingAddress ?? { street: '', city: '', zip: '', country: '' },
       paymentMethod: raw.paymentMethod ?? '',
-      paymentLink: raw.paymentLink,
-      digitalKeys: raw.digitalKeys,
+      digitalKeys: (raw.digitalKeys ?? []).map((k: any) => ({
+        ...k,
+        productoId: k.productoId ?? k.productId,
+        clave: k.clave ?? k.key,
+      })),
     };
 
     return new OrderEntity(orderData);
@@ -167,7 +172,7 @@ export class EntityFactory {
   static createOrders(rawArray: Record<string, any>[]): OrderEntity[] {
     if (!Array.isArray(rawArray)) return [];
     return rawArray
-      .map(raw => {
+      .map((raw) => {
         try {
           return EntityFactory.createOrder(raw);
         } catch (e: any) {
