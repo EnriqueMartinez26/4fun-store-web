@@ -1,6 +1,10 @@
 # 4Fun Store Web
 
 <p align="center">
+  <img src="docs/assets/github/banner.png" alt="4Fun Store Web" />
+</p>
+
+<p align="center">
   <img src="https://img.shields.io/badge/Next.js-15-black" alt="Next.js" />
   <img src="https://img.shields.io/badge/React-18-blue" alt="React" />
   <img src="https://img.shields.io/badge/TypeScript-Strict-blue" alt="TypeScript" />
