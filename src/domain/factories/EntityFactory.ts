@@ -157,6 +157,8 @@ export class EntityFactory {
       paymentMethod: raw.paymentMethod ?? '',
       digitalKeys: (raw.digitalKeys ?? []).map((k: any) => ({
         ...k,
+        productId: k.productId ?? k.productoId,
+        key: k.key ?? k.clave,
         productoId: k.productoId ?? k.productId,
         clave: k.clave ?? k.key,
       })),
