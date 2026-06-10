@@ -1,5 +1,25 @@
 # 4Fun Store Web
 
+<p align="center">
+  <img src="https://img.shields.io/badge/Next.js-15-black" alt="Next.js" />
+  <img src="https://img.shields.io/badge/React-18-blue" alt="React" />
+  <img src="https://img.shields.io/badge/TypeScript-Strict-blue" alt="TypeScript" />
+  <img src="https://img.shields.io/badge/Deploy-Vercel-black" alt="Deploy" />
+  <img src="https://img.shields.io/badge/Thesis-v1.0.0--thesis-success" alt="Status" />
+</p>
+
+---
+
+## Links rápidos
+
+- **Web desplegada**: https://4fun-store-web.vercel.app
+- **API desplegada**: https://4fun-store-api.vercel.app
+- **Health check**: https://4fun-store-api.vercel.app/health
+- **Acta M6**: [docs/m6-acta-entrega-final.md](docs/m6-acta-entrega-final.md)
+- **Release final**: `v1.0.0-thesis`
+
+---
+
 Cliente web de **4Fun Store**, sistema e-commerce académico orientado a la venta de videojuegos digitales. Este repositorio contiene la versión final entregable de la tesis, incluyendo interfaz de usuario, catálogo, autenticación, carrito, checkout, panel administrativo básico e historial de compras.
 
 ## Estado académico final
