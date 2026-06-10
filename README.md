@@ -1,29 +1,82 @@
 # 4Fun Store Web
 
-Cliente web para 4Fun Store, un sistema e-commerce académico orientado a la venta de videojuegos digitales. La aplicación permite explorar el catálogo, gestionar carrito, iniciar sesión, crear órdenes y consumir los servicios expuestos por la API backend.
+Cliente web de **4Fun Store**, sistema e-commerce académico orientado a la venta de videojuegos digitales. Este repositorio contiene la versión final entregable de la tesis, incluyendo interfaz de usuario, catálogo, autenticación, carrito, checkout, panel administrativo básico e historial de compras.
 
-## Alcance del proyecto
+## Estado académico final
 
-Este frontend forma parte de una tesis de Tecnicatura en Programación. Su objetivo es demostrar la construcción de una interfaz web moderna conectada a una API REST, con manejo de estado, validaciones, autenticación, navegación por catálogo y flujo de compra.
+| Item                           | Estado                                   |
+| :----------------------------- | :--------------------------------------- |
+| Versión académica              | `v1.0.0-thesis`                          |
+| Rama final consolidada         | `main`                                   |
+| Rama de trazabilidad funcional | `tesis/flujo-principal`                  |
+| Deploy frontend                | https://4fun-store-web.vercel.app        |
+| API backend                    | https://4fun-store-api.vercel.app        |
+| Health check backend           | https://4fun-store-api.vercel.app/health |
+| Base de datos                  | Supabase PostgreSQL                      |
+| Estado de entrega              | Cerrado y validado como Hito M6          |
+
+## Alcance
+
+Este frontend forma parte de una tesis de Tecnicatura en Programación. Su objetivo es demostrar una interfaz web moderna conectada a una API REST, con manejo de estado, validaciones, autenticación por cookies HttpOnly, navegación por catálogo y flujo de compra para productos digitales.
+
+El sistema está enfocado exclusivamente en videojuegos digitales. No contempla productos físicos ni procesamiento real de pagos.
+
+## Deploy académico
+
+Frontend publicado:
+
+```text
+https://4fun-store-web.vercel.app
+```
+
+API consumida:
+
+```text
+https://4fun-store-api.vercel.app
+```
+
+Health check API:
+
+```text
+https://4fun-store-api.vercel.app/health
+```
+
+El despliegue fue validado durante el Hito M6 mediante smoke test productivo, verificando carga inicial, catálogo, conexión con API, persistencia en Supabase y ausencia de errores CORS.
 
 ## Funcionalidades principales
 
-- Página de inicio con taxonomías de productos.
+- Landing page del sistema.
 - Catálogo de videojuegos digitales.
 - Filtros por plataforma, género, búsqueda y precio.
 - Detalle de producto.
 - Registro e inicio de sesión.
-- Manejo de sesión autenticada.
-- Carrito de compras.
-- Creación de órdenes.
-- Panel administrativo para gestión básica.
-- Validación de formularios.
-- Manejo de estados de carga y errores.
+- Persistencia de sesión mediante cookies HttpOnly.
+- Carrito autenticado.
+- Validación de stock digital basado en claves disponibles.
+- Checkout y generación de orden.
+- Panel administrativo básico.
+- Historial de compras.
+- Visualización de claves digitales asignadas.
+- Manejo de estados de carga, errores y formularios.
+
+## Flujo principal validado
+
+```text
+registro/login
+  -> catálogo digital
+  -> carrito con stock por claves digitales
+  -> checkout y generación de orden
+  -> pago simulado/admin
+  -> asignación de claves digitales
+  -> transacción en custodia
+  -> aprobación/rechazo administrativo
+  -> historial del comprador
+```
 
 ## Tecnologías
 
-- Next.js
-- React
+- Next.js 15
+- React 18
 - TypeScript
 - Tailwind CSS
 - Radix UI
@@ -31,79 +84,86 @@ Este frontend forma parte de una tesis de Tecnicatura en Programación. Su objet
 - Zod
 - Vitest
 - Testing Library
+- Framer Motion
+- Recharts
 
 ## Arquitectura
 
-La aplicación se organiza en capas:
+| Capa         | Responsabilidad                                              |
+| :----------- | :----------------------------------------------------------- |
+| `app`        | Rutas y páginas de Next.js.                                  |
+| `components` | Componentes visuales reutilizables.                          |
+| `context`    | Estados globales como autenticación y carrito.               |
+| `hooks`      | Lógica reutilizable del cliente.                             |
+| `lib`        | Transporte HTTP, servicios, tipos y utilidades.              |
+| `domain`     | Entidades, factories y reglas de representación del dominio. |
 
-- **app**: rutas y páginas de Next.js.
-- **components**: componentes visuales reutilizables.
-- **context**: estados globales como autenticación y carrito.
-- **hooks**: lógica reutilizable del cliente.
-- **lib**: transporte HTTP, servicios y tipos.
-- **domain**: entidades y reglas de representación del dominio.
+## Variables de entorno
 
-## Integración con backend
+Local:
 
-El frontend consume la API REST de 4Fun Store API.
-
-Variable principal:
-
-```bash
+```env
 NEXT_PUBLIC_API_URL=http://localhost:9003
 ```
 
-Las requests autenticadas deben enviarse con credenciales para permitir el uso de cookies HttpOnly emitidas por el backend.
+Producción:
 
-## Instalación
+```env
+NEXT_PUBLIC_API_URL=https://4fun-store-api.vercel.app
+```
+
+No deben publicarse secretos ni credenciales privadas en el repositorio.
+
+## Instalación local
 
 ```bash
 npm install
 npm run dev
 ```
 
-La aplicación queda disponible en:
+La aplicación local queda disponible en:
+
+```text
 http://localhost:9002
+```
 
 ## Scripts
 
-- `npm run dev`: Inicia el servidor de desarrollo.
-- `npm run build`: Genera el bundle optimizado para producción.
-- `npm run lint`: Ejecuta el análisis estático del código (ESLint).
-- `npm run typecheck`: Valida la consistencia de tipos de TypeScript.
-- `npm run test`: Ejecuta las pruebas unitarias e integración con Vitest.
+| Script               | Descripción                         |
+| :------------------- | :---------------------------------- |
+| `npm run dev`        | Inicia Next.js en puerto 9002.      |
+| `npm run build`      | Genera build de producción.         |
+| `npm run start`      | Ejecuta el build de producción.     |
+| `npm run lint`       | Ejecuta ESLint.                     |
+| `npm run typecheck`  | Valida TypeScript.                  |
+| `npm run test`       | Ejecuta pruebas con Vitest.         |
+| `npm run test:ui`    | Abre UI de Vitest.                  |
+| `npm run test:watch` | Ejecuta Vitest en modo observación. |
 
-## Flujo principal
+## Documentación y evidencias
 
-1. El usuario ingresa al sitio.
-2. Explora el catálogo.
-3. Filtra productos.
-4. Consulta el detalle de un videojuego.
-5. Inicia sesión.
-6. Agrega productos al carrito.
-7. Crea una orden.
-8. Consulta su historial de compras.
+- `docs/m6-acta-entrega-final.md`: acta final de entrega y despliegue.
+- `docs/evidencias/m2/`: evidencias del flujo principal.
+- `docs/evidencias/m6/`: evidencia visual del smoke test productivo.
 
-## Pruebas
+## Repositorio relacionado
 
-Las pruebas se enfocan en componentes y lógica crítica:
+API backend:
 
-- Formularios de autenticación.
-- Carrito.
-- Catálogo.
-- Servicios HTTP.
-- Validaciones de dominio.
+```text
+https://github.com/EnriqueMartinez26/4fun-store-api
+```
 
 ## Limitaciones académicas
 
-- El sistema está orientado a demostrar un flujo académico completo.
-- El pago puede estar simulado según la configuración del backend.
-- El panel administrativo se limita a las funciones necesarias para validar el flujo principal.
-- La aplicación depende de la API backend para operar correctamente.
+- El sistema no procesa dinero real.
+- El pago se modela como flujo simulado o administrativo.
+- El panel administrativo se limita al flujo necesario para validar la tesis.
+- La entrega digital se basa en claves asociadas a órdenes pagadas.
+- El sistema depende de la API backend para operar correctamente.
 
-## Estado académico final
+## Release final
 
-Este repositorio contiene la versión final entregable de la tesis 4Fun Store.  
-La rama `main` representa el estado final consolidado, mientras que la rama `tesis/flujo-principal` conserva la trazabilidad del cierre funcional y del despliegue académico.
-
-Release final: `v1.0.0-thesis`.
+```text
+v1.0.0-thesis
+```
