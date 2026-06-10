@@ -1,0 +1,13 @@
+{
+  "orderId": "727f4b4e-3681-4b9b-a06c-17b11d75275f",
+  "buyerEmail": "buyer@4fun.test",
+  "transactionId": "25f06237-8452-40b2-b133-d659b8fbe61c",
+  "sellerId": "b0eebc99-9c0b-4ef8-bb6d-6bb9bd380a22",
+  "amount": 149.97,
+  "status": "PENDING_APPROVAL",
+  "approvedBy": null,
+  "approvedAt": null,
+  "rejectionReason": null,
+  "keysStillAssigned": true,
+  "totalAssignedKeys": 3
+}

@@ -1,0 +1,22 @@
+{
+  "orderId": "727f4b4e-3681-4b9b-a06c-17b11d75275f",
+  "buyerEmail": "buyer@4fun.test",
+  "isPaid": true,
+  "orderStatus": "PENDING",
+  "transactionStatus": "FUNDS_RELEASED",
+  "totalPrice": 149.97,
+  "products": [
+    {
+      "name": "Space Rift Digital",
+      "quantity": 2,
+      "assignedKeys": 2
+    },
+    {
+      "name": "Pixel Quest Digital",
+      "quantity": 1,
+      "assignedKeys": 1
+    }
+  ],
+  "totalVisibleKeys": 3,
+  "keysAreSanitizedInEvidence": true
+}

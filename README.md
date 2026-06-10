@@ -100,3 +100,10 @@ Las pruebas se enfocan en componentes y lógica crítica:
 - El pago puede estar simulado según la configuración del backend.
 - El panel administrativo se limita a las funciones necesarias para validar el flujo principal.
 - La aplicación depende de la API backend para operar correctamente.
+
+## Estado académico final
+
+Este repositorio contiene la versión final entregable de la tesis 4Fun Store.  
+La rama `main` representa el estado final consolidado, mientras que la rama `tesis/flujo-principal` conserva la trazabilidad del cierre funcional y del despliegue académico.
+
+Release final: `v1.0.0-thesis`.

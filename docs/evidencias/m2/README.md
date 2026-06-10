@@ -1,0 +1,39 @@
+# Índice Maestro de Evidencias (Hito M2)
+
+Este documento centraliza y organiza todas las evidencias de validación técnica y funcional recopiladas durante la ejecución del **Hito M2 (Cierre del Flujo Principal)**. Sirve como anexo de auditoría para la defensa de la tesis.
+
+---
+
+## Matriz Navegable de Evidencias
+
+| Paso        | Caso de Uso / Flujo    | Evidencia (Archivo/Vídeo)                                                                                                                                                                                                                                                               | Tipo de Recurso | Qué Demuestra                                                                                                                 |
+| :---------- | :--------------------- | :-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | :-------------: | :---------------------------------------------------------------------------------------------------------------------------- |
+| **Paso 1**  | Seed de base de datos  | [prisma/seed.ts](file:///d:/Programación/Proyectos/Facultad/tesis/4fun-store-api/prisma/seed.ts)                                                                                                                                                                                        |     Script      | Inicialización reproducible del catálogo de videojuegos y fijación de IDs constantes de prueba.                               |
+| **Paso 2**  | Autenticación HttpOnly | [test-cookie-auth.js](file:///d:/Programación/Proyectos/Facultad/tesis/4fun-store-api/tests/test-cookie-auth.js)                                                                                                                                                                        |   Test Script   | Generación de cookie `token` JWT con atributo `HttpOnly` y protección contra ataques XSS.                                     |
+| **Paso 3**  | Catálogo Digital       | [recording.webm](file:///d:/Programación/Proyectos/Facultad/tesis/4fun-store-web/docs/evidencias/m2/catalogo/recording.webm)                                                                                                                                                            |      Video      | Interfaz de catálogo interactiva, aplicación de filtros de plataforma/género/precio y SSR.                                    |
+| **Paso 4**  | Carrito y Stock        | [recording_cart.webm](file:///d:/Programación/Proyectos/Facultad/tesis/4fun-store-web/docs/evidencias/m2/carrito/recording_cart.webm)                                                                                                                                                   |      Video      | Persistencia del carrito en cliente y control en caliente/servidor del stock para evitar sobreventa.                          |
+| **Paso 5**  | Creación de Orden      | [recording_checkout.webm](file:///d:/Programación/Proyectos/Facultad/tesis/4fun-store-web/docs/evidencias/m2/checkout/recording_checkout.webm)<br>[m2-last-order.json](file:///d:/Programación/Proyectos/Facultad/tesis/4fun-store-web/docs/evidencias/m2/json/m2-last-order.json)      |  Video + JSON   | Generación de una orden persistida en base de datos con estado logístico inicial `PENDING` y vaciado de carrito.              |
+| **Paso 6**  | Pago Simulado / Admin  | [recording_payment.webm](file:///d:/Programación/Proyectos/Facultad/tesis/4fun-store-web/docs/evidencias/m2/pago/recording_payment.webm)<br>[m2-paid-order.json](file:///d:/Programación/Proyectos/Facultad/tesis/4fun-store-web/docs/evidencias/m2/json/m2-paid-order.json)            |  Video + JSON   | Transición del estado de pago de la orden a `isPaid = true` sin alterar logística ni liberar llaves aún.                      |
+| **Paso 7**  | Asignación de Keys     | [m2-assigned-keys.json](file:///d:/Programación/Proyectos/Facultad/tesis/4fun-store-web/docs/evidencias/m2/json/m2-assigned-keys.json)                                                                                                                                                  |      JSON       | Vinculación atómica de llaves digitales correspondientes a la orden y cambio de estado a `SOLD` (evitando sobreventa).        |
+| **Paso 8**  | Custodia Escrow        | [m2-escrow-transaction.json](file:///d:/Programación/Proyectos/Facultad/tesis/4fun-store-web/docs/evidencias/m2/json/m2-escrow-transaction.json)                                                                                                                                        |      JSON       | Creación de transacción financiera de escrow asociada al vendedor en estado `PENDING_APPROVAL`.                               |
+| **Paso 9**  | Aprobación / Rechazo   | [m2-admin-resolution.json](file:///d:/Programación/Proyectos/Facultad/tesis/4fun-store-web/docs/evidencias/m2/json/m2-admin-resolution.json)                                                                                                                                            |      JSON       | Resolución del escrow por el administrador liberando fondos (`FUNDS_RELEASED`) u operando rechazo auditado.                   |
+| **Paso 10** | Historial y Keys       | [recording_history.webm](file:///d:/Programación/Proyectos/Facultad/tesis/4fun-store-web/docs/evidencias/m2/historial/recording_history.webm)<br>[m2-buyer-history.json](file:///d:/Programación/Proyectos/Facultad/tesis/4fun-store-web/docs/evidencias/m2/json/m2-buyer-history.json) |  Video + JSON   | Visualización de la orden pagada en la cuenta del comprador e interactividad para desvelar llaves digitales de manera segura. |
+
+---
+
+## Cómo Ejecutar y Verificar Localmente
+
+Para reproducir los datos JSON mostrados en esta matriz, se puede ejecutar la suite de scripts de test del backend de forma secuencial:
+
+```powershell
+# En la terminal (4fun-store-api)
+node tests/test-cookie-auth.js
+node tests/test-catalog-flow.js
+node tests/test-cart-flow.js
+node tests/test-order-flow.js
+node tests/test-payment-flow.js
+node tests/test-key-assignment-flow.js
+node tests/test-escrow-flow.js
+node tests/test-admin-approval-flow.js
+node tests/test-buyer-history-flow.js
+```

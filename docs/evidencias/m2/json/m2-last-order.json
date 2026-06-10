@@ -1,0 +1,18 @@
+{
+  "orderId": "727f4b4e-3681-4b9b-a06c-17b11d75275f",
+  "buyerEmail": "buyer@4fun.test",
+  "status": "PENDING",
+  "isPaid": false,
+  "totalPrice": 149.97,
+  "paymentMethod": "MERCADOPAGO",
+  "products": [
+    {
+      "name": "Space Rift Digital",
+      "quantity": 2
+    },
+    {
+      "name": "Pixel Quest Digital",
+      "quantity": 1
+    }
+  ]
+}
