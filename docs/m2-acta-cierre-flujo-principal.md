@@ -9,7 +9,7 @@ Este documento certifica y documenta la validación de extremo a extremo (E2E) d
 | Paso        | Caso de Uso                  | Backend  | Frontend | Evidencia de Validación                               |   Estado   |
 | :---------- | :--------------------------- | :------: | :------: | :---------------------------------------------------- | :--------: |
 | **Paso 1**  | Seed mínimo de datos         | Aprobado |   N/A    | Script seed y `DISPUTE_WINDOW_DAYS=0` en `.env`       | ✅ Cerrado |
-| **Paso 2**  | Registro y Login por cookies | Aprobado | Aprobado | Cookie `HttpOnly` validada y persistencia en frontend | ✅ Cerrado |
+| **Paso 2**  | Registro y Login            | Aprobado | Aprobado | Alta de usuario, verificación de email y sesión autenticada en frontend | ✅ Cerrado |
 | **Paso 3**  | Catálogo Digital             | Aprobado | Aprobado | Filtros de catálogo, URL e interacción real en UI     | ✅ Cerrado |
 | **Paso 4**  | Carrito y Stock Digital      | Aprobado | Aprobado | Validación de stock y bloqueo de sobrestock           | ✅ Cerrado |
 | **Paso 5**  | Generación de Orden          | Aprobado | Aprobado | Creación de orden `PENDING` y vaciado de carrito      | ✅ Cerrado |
@@ -27,7 +27,7 @@ Este documento certifica y documenta la validación de extremo a extremo (E2E) d
 > **Nota de trazabilidad de IDs**: Las validaciones de backend y de interfaz de usuario (UI) fueron ejecutadas en sesiones de prueba independientes pero funcionalmente equivalentes, utilizando el mismo seed de base de datos y la misma lógica del flujo. La orden canónica de referencia para la continuidad de los scripts del backend es `727f4b4e-3681-4b9b-a06c-17b11d75275f`.
 
 > [!NOTE]
-> **Nota de dominio de estados**: En el modelo de dominio de este sistema, `Order.status` representa el estado operativo/logístico de la orden (por ejemplo, `PENDING`, `PROCESSING`, `DELIVERED`), mientras que `isPaid` y `Transaction.status` representan el estado financiero del pago y la custodia. Por lo tanto, una orden puede mantenerse en estado logístico `PENDING` aunque su pago haya sido confirmado (`isPaid = true`) y los fondos de la transacción hayan sido liberados al vendedor (`FUNDS_RELEASED`).
+> **Nota de dominio de estados**: En el modelo de dominio de este sistema, `Order.status` representa el estado operativo/logístico de la orden (por ejemplo, `PENDING`, `PROCESSING`, `SHIPPED`, `DELIVERED` o `CANCELLED`), mientras que `isPaid` y `Transaction.status` representan el estado financiero del pago y la custodia. Por lo tanto, una orden puede mantenerse en estado logístico `PENDING` aunque su pago haya sido confirmado (`isPaid = true`) y los fondos de la transacción hayan sido liberados al vendedor (`FUNDS_RELEASED`).
 
 > [!TIP]
 > **Decisión de diseño académico**: El flujo transaccional se ha dividido en endpoints independientes y llamadas de API separadas (pago, asignación de llaves, creación de custodia) para permitir la medición, testing y defensa de cada transición de estado de manera granular y aislada. En un entorno de producción real, algunas de estas transiciones podrían automatizarse y encadenarse de manera reactiva tras la confirmación de pago.
@@ -68,8 +68,8 @@ Este documento certifica y documenta la validación de extremo a extremo (E2E) d
 ### Paso 2 — Registro/Login
 
 - **Fecha**: 2026-06-08
-- **Evidencia técnica backend**: Script `test-cookie-auth.js` validó la obtención de la cookie de sesión de forma exitosa y la protección `HttpOnly` del token JWT.
-- **Evidencia técnica frontend**: El script `test-frontend-proxy-login.js` constató que el proxy/rewrites de Next.js redirige de forma transparente al puerto del backend transmitiendo las cookies.
+- **Evidencia técnica backend**: Script `test-register-flow.js` validó el alta de usuario, la verificación de email y el login posterior con sesión autenticada.
+- **Evidencia técnica frontend**: La sesión quedó disponible en el frontend a través del proxy/rewrites de Next.js y `credentials: 'include'`, permitiendo navegación autenticada sin exponer el token al cliente.
 
 ---
 

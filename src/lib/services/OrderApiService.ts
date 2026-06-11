@@ -12,7 +12,6 @@ import type { OrderEntity } from '@/domain/entities/OrderEntity';
  *   Solo conoce cómo comunicarse con /api/orders y /api/transactions.
  *   No sabe nada de estado de UI ni de autenticación.
  *
- * Absorbe la responsabilidad de fetch de TransactionViewModel.ts (Capa de Purga).
  */
 export class OrderApiService {
   /**
