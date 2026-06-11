@@ -60,6 +60,8 @@ Este documento certifica la correcta publicación, configuración y validación 
 ### Frontend (Vercel Project `4fun-store-web`)
 
 - `NEXT_PUBLIC_API_URL`: `https://4fun-store-api.vercel.app`
+- `NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME`: Identificador público de Cloudinary para las portadas.
+- `NEXT_PUBLIC_CLOUDINARY_UPLOAD_PRESET`: Preset `unsigned` utilizado por la carga de imágenes.
 - `NEXT_PUBLIC_SUPABASE_URL`: `https://rfcskmjpoponcqjembmv.supabase.co`
 - `NEXT_PUBLIC_SUPABASE_ANON_KEY`: Token anónimo para validaciones directas en cliente.
 
@@ -69,7 +71,7 @@ Este documento certifica la correcta publicación, configuración y validación 
 
 Para verificar el correcto funcionamiento del despliegue:
 
-- **Video del Smoke Test en Producción**: [recording.webm](file:///d:/Programación/Proyectos/Facultad/tesis/4fun-store-web/docs/evidencias/m6/recording.webm)
+- **Video del Smoke Test en Producción**: [recording.webm](evidencias/m6/recording.webm)
 
 1.  Ingresar a [https://4fun-store-web.vercel.app](https://4fun-store-web.vercel.app).
 2.  Iniciar sesión con un usuario comprador del seed de prueba.

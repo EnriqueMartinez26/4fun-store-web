@@ -427,10 +427,17 @@ export default function SellerEditProductPage({ params }: { params: Promise<{ id
               </div>
               <Input
                 type="file"
+                accept="image/*"
                 onChange={vm.handleImageUpload}
                 disabled={vm.isUploading}
                 className="bg-white/5 border-white/10 rounded-xl"
               />
+              {vm.isUploading && (
+                <div className="flex items-center justify-center gap-3 text-primary animate-pulse mt-4">
+                  <Loader2 className="animate-spin h-4 w-4" />
+                  <span className="text-[10px] font-black uppercase tracking-widest">Subiendo...</span>
+                </div>
+              )}
             </CardContent>
           </Card>
         </div>

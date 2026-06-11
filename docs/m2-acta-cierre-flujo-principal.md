@@ -77,7 +77,7 @@ Este documento certifica y documenta la validación de extremo a extremo (E2E) d
 
 - **Fecha**: 2026-06-09
 - **Evidencia técnica backend**: Script `test-catalog-flow.js` comprobó filtros por plataforma, género, rango de precio y respuesta HTTP 404 al solicitar detalles de un producto inactivo.
-- **Evidencia visual**: Grabación interactiva de búsqueda y filtros en [docs/evidencias/m2/catalogo/recording.webm](docs/evidencias/m2/catalogo/recording.webm).
+- **Evidencia visual**: Grabación interactiva de búsqueda y filtros en [evidencias/m2/catalogo/recording.webm](evidencias/m2/catalogo/recording.webm).
 
 ---
 
@@ -85,7 +85,7 @@ Este documento certifica y documenta la validación de extremo a extremo (E2E) d
 
 - **Fecha**: 2026-06-09
 - **Evidencia técnica backend**: Script `test-cart-flow.js` validó la persistencia y la restricción contra la cantidad máxima basada en las llaves `AVAILABLE` de base de datos.
-- **Evidencia visual**: Registro de toast de stock insuficiente y rebote de cantidades en [docs/evidencias/m2/carrito/recording_cart.webm](docs/evidencias/m2/carrito/recording_cart.webm).
+- **Evidencia visual**: Registro de toast de stock insuficiente y rebote de cantidades en [evidencias/m2/carrito/recording_cart.webm](evidencias/m2/carrito/recording_cart.webm).
 
 ---
 
@@ -93,8 +93,8 @@ Este documento certifica y documenta la validación de extremo a extremo (E2E) d
 
 - **Fecha**: 2026-06-09
 - **Evidencia técnica backend**: Script `test-order-flow.js` validó la creación de la orden `727f...` con items persistidos y el vaciado del carrito.
-- **Archivo JSON de salida**: [docs/evidencias/m2/json/m2-last-order.json](docs/evidencias/m2/json/m2-last-order.json).
-- **Evidencia visual**: Formulario de envío y redirección a checkout/success en [docs/evidencias/m2/checkout/recording_checkout.webm](docs/evidencias/m2/checkout/recording_checkout.webm).
+- **Archivo JSON de salida**: [evidencias/m2/json/m2-last-order.json](evidencias/m2/json/m2-last-order.json).
+- **Evidencia visual**: Formulario de envío y redirección a checkout/success en [evidencias/m2/checkout/recording_checkout.webm](evidencias/m2/checkout/recording_checkout.webm).
 
 ---
 
@@ -102,8 +102,8 @@ Este documento certifica y documenta la validación de extremo a extremo (E2E) d
 
 - **Fecha**: 2026-06-10
 - **Evidencia técnica backend**: Script `test-payment-flow.js` validó el cambio a `isPaid = true` en base de datos sin asignar claves ni generar transacciones de custodia.
-- **Archivo JSON de salida**: [docs/evidencias/m2/json/m2-paid-order.json](docs/evidencias/m2/json/m2-paid-order.json).
-- **Evidencia visual**: Dashboard administrativo y cambio a badge "LIQUIDADO" en [docs/evidencias/m2/pago/recording_payment.webm](docs/evidencias/m2/pago/recording_payment.webm).
+- **Archivo JSON de salida**: [evidencias/m2/json/m2-paid-order.json](evidencias/m2/json/m2-paid-order.json).
+- **Evidencia visual**: Dashboard administrativo y cambio a badge "LIQUIDADO" en [evidencias/m2/pago/recording_payment.webm](evidencias/m2/pago/recording_payment.webm).
 
 ---
 
@@ -111,7 +111,7 @@ Este documento certifica y documenta la validación de extremo a extremo (E2E) d
 
 - **Fecha**: 2026-06-10
 - **Evidencia técnica backend**: Script `test-key-assignment-flow.js` validó el cambio de estado de las llaves correspondientes a `SOLD` y su vinculación con la orden.
-- **Archivo JSON de salida**: [docs/evidencias/m2/json/m2-assigned-keys.json](docs/evidencias/m2/json/m2-assigned-keys.json).
+- **Archivo JSON de salida**: [evidencias/m2/json/m2-assigned-keys.json](evidencias/m2/json/m2-assigned-keys.json).
 
 ---
 
@@ -119,7 +119,7 @@ Este documento certifica y documenta la validación de extremo a extremo (E2E) d
 
 - **Fecha**: 2026-06-10
 - **Evidencia técnica backend**: Script `test-escrow-flow.js` validó que se generara una única transacción en la tabla `Transaction` en estado `PENDING_APPROVAL` vinculada al vendedor de los productos.
-- **Archivo JSON de salida**: [docs/evidencias/m2/json/m2-escrow-transaction.json](docs/evidencias/m2/json/m2-escrow-transaction.json).
+- **Archivo JSON de salida**: [evidencias/m2/json/m2-escrow-transaction.json](evidencias/m2/json/m2-escrow-transaction.json).
 
 ---
 
@@ -127,7 +127,7 @@ Este documento certifica y documenta la validación de extremo a extremo (E2E) d
 
 - **Fecha**: 2026-06-10
 - **Evidencia técnica backend**: Script `test-admin-approval-flow.js` validó la aprobación administrativa del escrow a `FUNDS_RELEASED`, el bloqueo de doble resolución, y el flujo de rechazo con motivo auditado sobre una transacción auxiliar.
-- **Archivo JSON de salida**: [docs/evidencias/m2/json/m2-admin-resolution.json](docs/evidencias/m2/json/m2-admin-resolution.json).
+- **Archivo JSON de salida**: [evidencias/m2/json/m2-admin-resolution.json](evidencias/m2/json/m2-admin-resolution.json).
 
 ---
 
@@ -135,8 +135,8 @@ Este documento certifica y documenta la validación de extremo a extremo (E2E) d
 
 - **Fecha**: 2026-06-10
 - **Evidencia técnica backend**: Script `test-buyer-history-flow.js` validó el acceso autenticado con cookies `HttpOnly`, el aislamiento de la orden contra accesos de otros compradores (HTTP 403), y la pertenencia correcta de las claves asignadas.
-- **Archivo JSON de salida**: [docs/evidencias/m2/json/m2-buyer-history.json](docs/evidencias/m2/json/m2-buyer-history.json).
-- **Evidencia visual**: Tablero `/account` con la orden listada, estado pagada, claves ocultas y revelado interactivo en [docs/evidencias/m2/historial/recording_history.webm](docs/evidencias/m2/historial/recording_history.webm).
+- **Archivo JSON de salida**: [evidencias/m2/json/m2-buyer-history.json](evidencias/m2/json/m2-buyer-history.json).
+- **Evidencia visual**: Tablero `/account` con la orden listada, estado pagada, claves ocultas y revelado interactivo en [evidencias/m2/historial/recording_history.webm](evidencias/m2/historial/recording_history.webm).
 
 ---
 

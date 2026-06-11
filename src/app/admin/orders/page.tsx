@@ -173,7 +173,7 @@ export default function AdminOrdersPage() {
     autoTable(doc, {
       startY: 45,
       head: [
-        ['ID TICKET', 'CLIENTE / ENTIDAD', 'TOTALIZACIÓN', 'ESTADO', 'LIQUIDACIÓN', 'CRONOLOGÍA'],
+        ['ID TICKET', 'COMPRADOR / ENTIDAD', 'TOTALIZACIÓN', 'ESTADO', 'LIQUIDACIÓN', 'CRONOLOGÍA'],
       ],
       body: filteredOrders.map((o) => o.toReportRow()),
       styles: { fontSize: 8, cellPadding: 4 },
@@ -187,7 +187,7 @@ export default function AdminOrdersPage() {
 
   const handleExportCSV = () => {
     if (!filteredOrders.length) return;
-    const headers = ['ID', 'Cliente', 'Email', 'Método', 'Total', 'Estado', 'Pago', 'Fecha'];
+    const headers = ['ID', 'Comprador', 'Email', 'Método', 'Total', 'Estado', 'Pago', 'Fecha'];
     const rows = filteredOrders.map((o) => o.toReportRow());
     const csvContent = [headers.join(','), ...rows.map((e) => e.join(','))].join('\n');
     const blob = new Blob(['\uFEFF' + csvContent], { type: 'text/csv;charset=utf-8;' });

@@ -16,6 +16,15 @@ import type { Meta, ProductInput } from '@/lib/types';
  *   La deserialización y validación son detalles internos de este servicio.
  */
 export class ProductApiService {
+  private static normalizeImagePayload<T extends { imageId?: string; imageUrl?: string }>(data: T): T {
+    const imageValue = data.imageId ?? data.imageUrl;
+    if (imageValue !== undefined) {
+      data.imageId = imageValue;
+      data.imageUrl = imageValue;
+    }
+    return data;
+  }
+
   /**
    * Obtiene el catálogo paginado como entidades de dominio.
    *
@@ -101,13 +110,19 @@ export class ProductApiService {
   static async create(data: ProductInput) {
     // Normalización defensiva (Design by Contract): Enums en SCREAMING_CASE
     if (data.specPreset) data.specPreset = data.specPreset.toUpperCase();
-    return HttpTransport.request<any>('/products', { method: 'POST', body: JSON.stringify(data) });
+    return HttpTransport.request<any>(
+      '/products',
+      { method: 'POST', body: JSON.stringify(ProductApiService.normalizeImagePayload(data)) }
+    );
   }
 
   static async update(id: string, data: Partial<ProductInput>) {
     // Normalización defensiva (Design by Contract)
     if (data.specPreset) data.specPreset = data.specPreset.toUpperCase();
-    return HttpTransport.request<any>(`/products/${id}`, { method: 'PUT', body: JSON.stringify(data) });
+    return HttpTransport.request<any>(
+      `/products/${id}`,
+      { method: 'PUT', body: JSON.stringify(ProductApiService.normalizeImagePayload(data)) }
+    );
   }
 
   static async delete(id: string) {
