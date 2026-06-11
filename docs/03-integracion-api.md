@@ -32,7 +32,7 @@ De esta manera, todas las llamadas iniciadas desde el cliente hacia `/api/*` se 
 
 Se eliminó por completo el uso de tokens JWT dentro del almacenamiento persistente expuesto de JS (`localStorage` / `sessionStorage`) para mitigar vulnerabilidades de inyección de script de sitio cruzado (XSS).
 
-1.  **Establecimiento**: Al iniciar sesión (`/auth/login`) o registrarse (`/auth/register`), el backend emite una cookie de sesión cifrada marcada como `HttpOnly`, `Secure` (en producción) y `SameSite=Strict`.
+1.  **Establecimiento**: Al iniciar sesión (`/auth/login`) o registrarse (`/auth/register`), el backend emite una cookie de sesión cifrada marcada como `HttpOnly`, `Secure` (en producción) y `SameSite=None` en producción o `Lax` en desarrollo.
 2.  **Transporte**: Cada petición iniciada en el frontend mediante `HttpTransport` incluye de forma explícita la directiva `credentials: 'include'`:
     ```typescript
     const response = await fetch(url, { ...options, credentials: 'include', headers });
