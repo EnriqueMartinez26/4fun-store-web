@@ -18,9 +18,9 @@
 
 - **Web desplegada**: https://4fun-store-web.vercel.app
 - **API desplegada**: https://4fun-store-api.vercel.app
-- **Health check**: https://4fun-store-api.vercel.app/health
+- **Verificación de estado (Health check)**: https://4fun-store-api.vercel.app/health
 - **Acta M6**: [docs/m6-acta-entrega-final.md](docs/m6-acta-entrega-final.md)
-- **Release final**: `v1.0.0-thesis`
+- **Entrega académica final**: `v1.0.0-thesis`
 
 ---
 
@@ -28,16 +28,16 @@ Cliente web de **4Fun Store**, sistema e-commerce académico orientado a la vent
 
 ## Estado académico final
 
-| Item                           | Estado                                   |
-| :----------------------------- | :--------------------------------------- |
-| Versión académica              | `v1.0.0-thesis`                          |
-| Rama final consolidada         | `main`                                   |
-| Rama de trazabilidad funcional | `tesis/flujo-principal`                  |
-| Deploy frontend                | https://4fun-store-web.vercel.app        |
-| API backend                    | https://4fun-store-api.vercel.app        |
-| Health check backend           | https://4fun-store-api.vercel.app/health |
-| Base de datos                  | Supabase PostgreSQL                      |
-| Estado de entrega              | Cerrado y validado como Hito M6          |
+| Item                                          | Estado                                   |
+| :-------------------------------------------- | :--------------------------------------- |
+| Versión académica                             | `v1.0.0-thesis`                          |
+| Rama final consolidada                        | `main`                                   |
+| Rama de trazabilidad funcional                | `tesis/flujo-principal`                  |
+| Despliegue frontend                           | https://4fun-store-web.vercel.app        |
+| API backend                                   | https://4fun-store-api.vercel.app        |
+| Verificación de estado backend (Health check) | https://4fun-store-api.vercel.app/health |
+| Base de datos                                 | Supabase PostgreSQL                      |
+| Estado de entrega                             | Cerrado y validado como Hito M6          |
 
 ## Alcance
 
@@ -45,7 +45,7 @@ Este frontend forma parte de una tesis de Tecnicatura en Programación. Su objet
 
 El sistema está enfocado exclusivamente en videojuegos digitales. No contempla productos físicos ni procesamiento real de pagos.
 
-## Deploy académico
+## Despliegue académico
 
 Frontend publicado:
 
@@ -59,7 +59,7 @@ API consumida:
 https://4fun-store-api.vercel.app
 ```
 
-Health check API:
+Verificación de estado API (Health check):
 
 ```text
 https://4fun-store-api.vercel.app/health
@@ -186,7 +186,7 @@ https://github.com/EnriqueMartinez26/4fun-store-api
 - La entrega digital se basa en claves asociadas a órdenes pagadas.
 - El sistema depende de la API backend para operar correctamente.
 
-## Release final
+## Versión de entrega final
 
 ```text
 v1.0.0-thesis
