@@ -16,9 +16,9 @@
 
 ## Links rápidos
 
-- **Web desplegada**: https://4fun-store-web.vercel.app
-- **API desplegada**: https://4fun-store-api.vercel.app
-- **Verificación de estado (Health check)**: https://4fun-store-api.vercel.app/health
+- **Web desplegada**: [https://4fun-store-web.vercel.app](https://4fun-store-web.vercel.app)
+- **API desplegada**: [https://4fun-store-api.vercel.app](https://4fun-store-api.vercel.app)
+- **Verificación de estado (Health check)**: [https://4fun-store-api.vercel.app/health](https://4fun-store-api.vercel.app/health)
 - **Acta M6**: [docs/m6-acta-entrega-final.md](docs/m6-acta-entrega-final.md)
 - **Entrega académica final**: `v1.0.0-thesis`
 
@@ -33,9 +33,9 @@ Cliente web de **4Fun Store**, sistema e-commerce académico orientado a la vent
 | Versión académica                             | `v1.0.0-thesis`                          |
 | Rama final consolidada                        | `main`                                   |
 | Rama de trazabilidad funcional                | `tesis/flujo-principal`                  |
-| Despliegue frontend                           | https://4fun-store-web.vercel.app        |
-| API backend                                   | https://4fun-store-api.vercel.app        |
-| Verificación de estado backend (Health check) | https://4fun-store-api.vercel.app/health |
+| Despliegue frontend                           | [https://4fun-store-web.vercel.app](https://4fun-store-web.vercel.app)        |
+| API backend                                   | [https://4fun-store-api.vercel.app](https://4fun-store-api.vercel.app)        |
+| Verificación de estado backend (Health check) | [https://4fun-store-api.vercel.app/health](https://4fun-store-api.vercel.app/health) |
 | Base de datos                                 | Supabase PostgreSQL                      |
 | Estado de entrega                             | Cerrado y validado como Hito M6          |
 
@@ -47,23 +47,9 @@ El sistema está enfocado exclusivamente en videojuegos digitales. No contempla 
 
 ## Despliegue académico
 
-Frontend publicado:
-
-```text
-https://4fun-store-web.vercel.app
-```
-
-API consumida:
-
-```text
-https://4fun-store-api.vercel.app
-```
-
-Verificación de estado API (Health check):
-
-```text
-https://4fun-store-api.vercel.app/health
-```
+- Frontend publicado: [https://4fun-store-web.vercel.app](https://4fun-store-web.vercel.app)
+- API consumida: [https://4fun-store-api.vercel.app](https://4fun-store-api.vercel.app)
+- Verificación de estado API (Health check): [https://4fun-store-api.vercel.app/health](https://4fun-store-api.vercel.app/health)
 
 El despliegue fue validado durante el Hito M6 mediante smoke test productivo, verificando carga inicial, catálogo, conexión con API, persistencia en Supabase y ausencia de errores CORS.
 
