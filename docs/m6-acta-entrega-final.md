@@ -53,6 +53,9 @@ Este documento certifica la correcta publicación, configuración y validación 
 - `JWT_SECRET`: Firma simétrica criptográfica de 256 bits.
 - `JWT_EXPIRE`: `7d`
 - `JWT_COOKIE_EXPIRE`: `30` (Días de expiración de la cookie de sesión).
+- `SMTP_EMAIL`: Cuenta SMTP emisora.
+- `SMTP_PASSWORD`: App password o clave SMTP.
+- `ADMIN_EMAIL`: Destinatario de los correos de contacto.
 
 ### Frontend (Vercel Project `4fun-store-web`)
 
