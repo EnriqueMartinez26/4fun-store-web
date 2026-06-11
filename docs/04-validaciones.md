@@ -35,5 +35,5 @@ Los esquemas de validación se centralizan en `src/lib/schemas.ts`:
 
 Además de los esquemas estáticos, la aplicación ejecuta lógica de validación transaccional sobre las operaciones en caliente:
 
-- **Pre-carga**: Antes de despachar una acción al carrito (`addToCart` o `updateQuantity`), se evalúa la cantidad total pretendida contra el stock físico informado en el objeto de datos del videojuego digital.
+- **Pre-carga**: Antes de despachar una acción al carrito (`addToCart` o `updateQuantity`), se evalúa la cantidad total pretendida contra el stock digital informado en el objeto de datos del videojuego.
 - **Bloqueo**: Si la cantidad solicitada excede la disponibilidad actual, la interfaz detiene la ejecución, emite una notificación visual al usuario (Toast de alerta) y no ejecuta la llamada HTTP ni actualiza el estado local.
