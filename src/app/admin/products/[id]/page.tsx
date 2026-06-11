@@ -77,7 +77,7 @@ export default function EditProductPage({ params }: { params: Promise<{ id: stri
   });
 
   const { isUploading, handleImageUpload } = useImageUpload({
-    onSuccess: (url) => form.setValue('imageId', url),
+    onSuccess: (url) => form.setValue('imageId', url, { shouldDirty: true, shouldTouch: true, shouldValidate: true }),
     successMessage: 'Imagen de portada actualizada.',
   });
 
@@ -529,10 +529,17 @@ export default function EditProductPage({ params }: { params: Promise<{ id: stri
               </div>
               <Input
                 type="file"
+                accept="image/*"
                 onChange={handleImageUpload}
                 disabled={isUploading}
                 className="bg-white/5 border-white/10 rounded-xl"
               />
+              {isUploading && (
+                <div className="flex items-center justify-center gap-3 text-primary animate-pulse mt-4">
+                  <Loader2 className="animate-spin h-4 w-4" />
+                  <span className="text-[10px] font-black uppercase tracking-widest">Subiendo...</span>
+                </div>
+              )}
             </CardContent>
           </Card>
         </div>

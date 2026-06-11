@@ -76,7 +76,7 @@ interface User {
   _id: string;
   name: string;
   email: string;
-  role: 'USER' | 'ADMIN';
+  role: 'BUYER' | 'ADMIN';
   isVerified: boolean;
   avatar?: string | null;
   createdAt: string;
@@ -139,7 +139,7 @@ export default function UsersPage() {
    * Gestión de Roles: Permite cambiar los permisos de acceso del usuario.
    */
   const handleRoleUpdate = async (userId: string, currentRole: string) => {
-    const newRole = currentRole === 'ADMIN' ? 'USER' : 'ADMIN';
+    const newRole = currentRole === 'ADMIN' ? 'BUYER' : 'ADMIN';
     setActionLoading(userId);
     try {
       await UserApiService.updateUser(userId, { role: newRole });
@@ -232,7 +232,7 @@ export default function UsersPage() {
       body: users.map((u) => [
         u.name,
         u.email,
-        u.role === 'ADMIN' ? 'ADMINISTRADOR' : 'CLIENTE',
+        u.role === 'ADMIN' ? 'ADMINISTRADOR' : 'COMPRADOR',
         u.isVerified ? 'ACTIVO' : 'PENDIENTE',
         new Date(u.createdAt).toLocaleDateString('es-AR'),
       ]),
@@ -292,7 +292,7 @@ export default function UsersPage() {
                 <SelectContent className="bg-card/95 backdrop-blur-xl border-white/10 text-white">
                   <SelectItem value="all">TODOS LOS PERFILES</SelectItem>
                   <SelectItem value="ADMIN">ADMINISTRADORES</SelectItem>
-                  <SelectItem value="USER">SOLO USUARIOS</SelectItem>
+                  <SelectItem value="BUYER">COMPRADORES</SelectItem>
                 </SelectContent>
               </Select>
             </div>
@@ -449,7 +449,7 @@ export default function UsersPage() {
                             >
                               <RefreshCw className="mr-3 h-5 w-5" />{' '}
                               {user.role === 'ADMIN'
-                                ? 'Degradar a Cliente'
+                                ? 'Degradar a Comprador'
                                 : 'Elevar a Administrador'}
                             </DropdownMenuItem>
 

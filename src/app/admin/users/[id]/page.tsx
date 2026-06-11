@@ -75,7 +75,7 @@ interface UserProfile {
     avatar?: string | null;
     phone?: string | null;
     address?: string | null;
-    role: "USER" | "ADMIN" | "SELLER";
+    role: "BUYER" | "ADMIN" | "SELLER";
     isVerified: boolean;
     createdAt: string;
     stats: {
@@ -307,7 +307,7 @@ export default function UserProfilePage() {
                                     </Badge>
                                 ) : (
                                     <Badge variant="secondary" className="gap-2 py-1 px-4 font-black uppercase text-[10px] bg-muted/40">
-                                        <UserIcon className="h-3.5 w-3.5" /> Cliente
+                                        <UserIcon className="h-3.5 w-3.5" /> Comprador
                                     </Badge>
                                 )}
                                 
@@ -366,7 +366,7 @@ export default function UserProfilePage() {
                             "text-xs font-black uppercase tracking-widest py-1.5 px-4",
                             profile.role === "SELLER" ? "bg-green-500 text-white" : "text-yellow-500 border-yellow-500/30"
                         )}>
-                            {profile.role === "SELLER" ? "VENDEDOR ACTIVO" : "PENDIENTE DE APROBACIÓN"}
+                            {profile.role === "SELLER" ? "VENDEDOR ACTIVO" : "SIN PERFIL DE VENTA"}
                         </Badge>
                     </div>
                 </CardHeader>

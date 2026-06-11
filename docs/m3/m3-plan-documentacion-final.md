@@ -123,7 +123,7 @@ La inclusión de una matriz de riesgos y limitaciones en la tesis demuestra madu
 | Limitación Identificada                                | Justificación Académica / Mitigación |
 | :----------------------------------------------------- | :----------------------------------- |
 | **No procesa dinero real**                             | **Justificación**: El objetivo de la tesis se centra en modelar los cambios de estado transaccionales y el ciclo de vida del depósito en custodia (escrow). El cobro se realiza simulado por un rol administrativo para conservar el entorno de pruebas seguro y gratuito. |
-| **Despliegue local validado**                          | **Justificación**: Para fines de evaluación técnica, la plataforma está configurada y optimizada para ejecutarse localmente con bases de datos reproducibles y seeds controlados, asegurando que el jurado pueda auditar el flujo de punta a punta sin dependencias de infraestructura en la nube. |
+| **Despliegue local y en Vercel validados**            | **Justificación**: Para fines de evaluación técnica, la plataforma está configurada con bases de datos reproducibles y seeds controlados tanto en entorno local como en producción en Vercel, asegurando que el jurado pueda auditar el flujo de punta a punta sin depender de una única infraestructura. |
 | **Sin integración comercial de Mercado Pago / PayPal** | **Justificación**: Las pasarelas comerciales cambian sus APIs con frecuencia y añaden complejidad de red innecesaria para el núcleo del estudio de investigación de la tesis. Se mitiga mediante un endpoint simulado de pasarela que imita la respuesta asíncrona (Webhooks) de pago exitoso. |
 | **Acciones de administración por API / Script**        | **Justificación**: Ciertas transiciones (marcado de pago, resolución de escrow por el administrador) se prueban y auditan mediante scripts del lado del servidor para garantizar la reproducibilidad técnica rigurosa de los flujos del backend sin requerir una sobrecarga de desarrollo en pantallas de UI de administración secundarias. |
 
@@ -159,7 +159,7 @@ Un guion estructurado evita improvisaciones durante la demostración al jurado:
 ## 6. Checklist y Cronograma de Entrega
 
 - [x] **Fase 1**: Congelar el Hito M2 (Commit y etiquetas creadas en repositorios API y Web).
-- [x] **Fase 2**: Crear el Índice Maestro de Evidencias en [README.md](file:///d:/Programación/Proyectos/Facultad/tesis/4fun-store-web/docs/evidencias/m2/README.md).
+- [x] **Fase 2**: Crear el Índice Maestro de Evidencias en [README.md](../evidencias/m2/README.md).
 - [ ] **Fase 3**: Redacción formal del capítulo "Narrativa de Defensa" en el borrador de la tesis.
 - [ ] **Fase 4**: Redacción formal del capítulo "Arquitectura y Patrones" en la memoria de tesis.
 - [ ] **Fase 5**: Grabación de un simulacro de demo en vídeo de 8 minutos para previsualizar el ritmo de la presentación.

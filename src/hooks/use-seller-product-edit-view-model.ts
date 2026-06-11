@@ -61,7 +61,7 @@ export function useSellerProductEditViewModel(productId: string) {
 
   // -- LOGICA DE IMÁGENES --
   const { isUploading, handleImageUpload } = useImageUpload({
-    onSuccess: (url) => form.setValue('imageId', url),
+    onSuccess: (url) => form.setValue('imageId', url, { shouldDirty: true, shouldTouch: true, shouldValidate: true }),
     successMessage: 'Imagen de portada actualizada.',
   });
 

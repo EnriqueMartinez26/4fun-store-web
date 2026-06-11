@@ -3,7 +3,7 @@
 Este documento certifica la correcta publicación, configuración y validación en producción de la plataforma académica **4Fun Store**, consolidando formalmente el **Hito M6 (Entrega Final)**.
 
 > [!NOTE]
-> **Nota de release**: Los tags `tesis-m2-flujo-principal-cerrado` y `v0.2.0-thesis-main-flow` fueron actualizados durante el cierre M6 para apuntar al último estado integrado con despliegue y evidencias finales. El cierre académico final queda representado por el estado actual de la rama `tesis/flujo-principal` y los tags definitivos `tesis-m6-entrega-final` y `v1.0.0-thesis`.
+> **Nota de release**: Los tags `tesis-m2-flujo-principal-cerrado` y `v0.2.0-thesis-main-flow` fueron actualizados durante el cierre M6 para apuntar al último estado integrado con despliegue y evidencias finales. Este acta conserva el snapshot histórico validado en producción al momento del cierre; el cierre académico final queda representado por el estado de la rama `tesis/flujo-principal` y los tags definitivos `tesis-m6-entrega-final` y `v1.0.0-thesis`.
 
 ---
 
@@ -15,8 +15,8 @@ Este documento certifica la correcta publicación, configuración y validación 
 | **Backend Desplegado**         | [https://4fun-store-api.vercel.app](https://4fun-store-api.vercel.app) |
 | **Base de Datos**              | Supabase (PostgreSQL 15)                                               |
 | **Rama Git Desplegada**        | `tesis/flujo-principal`                                                |
-| **Commit Backend Desplegado**  | `89cd81c`                                                              |
-| **Commit Frontend Desplegado** | `52ba307`                                                              |
+| **Commit Backend Desplegado**  | `89cd81c` *(snapshot histórico de despliegue)*                          |
+| **Commit Frontend Desplegado** | `52ba307` *(snapshot histórico de despliegue)*                         |
 
 ---
 
@@ -60,6 +60,8 @@ Este documento certifica la correcta publicación, configuración y validación 
 ### Frontend (Vercel Project `4fun-store-web`)
 
 - `NEXT_PUBLIC_API_URL`: `https://4fun-store-api.vercel.app`
+- `NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME`: Identificador público de Cloudinary para las portadas.
+- `NEXT_PUBLIC_CLOUDINARY_UPLOAD_PRESET`: Preset `unsigned` utilizado por la carga de imágenes.
 - `NEXT_PUBLIC_SUPABASE_URL`: `https://rfcskmjpoponcqjembmv.supabase.co`
 - `NEXT_PUBLIC_SUPABASE_ANON_KEY`: Token anónimo para validaciones directas en cliente.
 
@@ -69,7 +71,7 @@ Este documento certifica la correcta publicación, configuración y validación 
 
 Para verificar el correcto funcionamiento del despliegue:
 
-- **Video del Smoke Test en Producción**: [recording.webm](file:///d:/Programación/Proyectos/Facultad/tesis/4fun-store-web/docs/evidencias/m6/recording.webm)
+- **Video del Smoke Test en Producción**: [recording.webm](evidencias/m6/recording.webm)
 
 1.  Ingresar a [https://4fun-store-web.vercel.app](https://4fun-store-web.vercel.app).
 2.  Iniciar sesión con un usuario comprador del seed de prueba.

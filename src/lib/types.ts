@@ -37,7 +37,7 @@ export interface ProductInput {
   genreId: string;
   type: string;
   developer: string;
-  imageUrl?: string;
+  imageId?: string;
   trailerUrl?: string;
   stock: number | string;
   specPreset?: string;

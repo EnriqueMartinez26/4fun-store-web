@@ -128,12 +128,16 @@ Local:
 
 ```env
 NEXT_PUBLIC_API_URL=http://localhost:9003
+NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME=<cloud_name>
+NEXT_PUBLIC_CLOUDINARY_UPLOAD_PRESET=<unsigned_upload_preset>
 ```
 
 Producción:
 
 ```env
 NEXT_PUBLIC_API_URL=https://4fun-store-api.vercel.app
+NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME=<cloud_name>
+NEXT_PUBLIC_CLOUDINARY_UPLOAD_PRESET=<unsigned_upload_preset>
 ```
 
 No deben publicarse secretos ni credenciales privadas en el repositorio.

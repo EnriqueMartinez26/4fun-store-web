@@ -121,6 +121,25 @@ function KpiCard({
   );
 }
 
+function getOrderStatusPresentation(status?: string) {
+  const normalized = (status || '').toUpperCase();
+
+  switch (normalized) {
+    case 'PENDING':
+      return { label: 'Pendiente', className: 'bg-yellow-500/10 text-yellow-500' };
+    case 'PROCESSING':
+      return { label: 'Procesando', className: 'bg-blue-500/10 text-blue-400' };
+    case 'SHIPPED':
+      return { label: 'Enviada', className: 'bg-purple-500/10 text-purple-400' };
+    case 'DELIVERED':
+      return { label: 'Entregada', className: 'bg-emerald-500/10 text-emerald-400' };
+    case 'CANCELLED':
+      return { label: 'Cancelada', className: 'bg-red-500/10 text-red-400' };
+    default:
+      return { label: normalized || 'Desconocida', className: 'bg-slate-500/10 text-slate-300' };
+  }
+}
+
 /**
  * ATÓMICO: Fila de Producto en el Ranking de Ventas
  */
@@ -233,7 +252,7 @@ export default function AdminDashboardPage() {
         <KpiCard
           title="Base de Usuarios"
           value={stats?.totalUsers || 0}
-          subtitle="Clientes registrados en el nodo"
+          subtitle="Compradores registrados en el nodo"
           icon={Users}
         />
         <KpiCard
@@ -402,55 +421,57 @@ export default function AdminDashboardPage() {
             <table className="w-full">
               <thead>
                 <tr className="border-b border-white/5 text-[9px] font-bold uppercase tracking-[0.2em] text-muted-foreground/40">
-                  <th className="px-8 py-5 text-left">Cliente</th>
+                  <th className="px-8 py-5 text-left">Comprador</th>
                   <th className="px-8 py-5 text-left">Estado</th>
                   <th className="px-8 py-5 text-right">Monto</th>
                   <th className="px-8 py-5 text-right">Fecha</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-white/[0.02]">
-                {recentActivity.map((order) => (
-                  <tr
-                    key={order.id}
-                    className="group hover:bg-white/[0.02] transition-colors duration-200"
-                  >
-                    <td className="px-8 py-5">
-                      <div className="flex flex-col">
-                        <span className="text-sm font-bold text-white/80 group-hover:text-white transition-colors">
-                          {order.user.name}
+                {recentActivity.map((order) => {
+                  const status = getOrderStatusPresentation(order.status);
+
+                  return (
+                    <tr
+                      key={order.id}
+                      className="group hover:bg-white/[0.02] transition-colors duration-200"
+                    >
+                      <td className="px-8 py-5">
+                        <div className="flex flex-col">
+                          <span className="text-sm font-bold text-white/80 group-hover:text-white transition-colors">
+                            {order.user.name}
+                          </span>
+                          <span className="text-[10px] font-bold text-muted-foreground/40 lowercase tracking-tight">
+                            {order.user.email}
+                          </span>
+                        </div>
+                      </td>
+                      <td className="px-8 py-5">
+                        <div
+                          className={cn(
+                            'inline-flex items-center px-3 py-1 rounded-full text-[9px] font-bold uppercase tracking-widest',
+                            status.className
+                          )}
+                        >
+                          {status.label}
+                        </div>
+                      </td>
+                      <td className="px-8 py-5 text-right">
+                        <span className="text-sm font-bold text-white/80 tabular-nums">
+                          {formatCurrency(order.amount)}
                         </span>
-                        <span className="text-[10px] font-bold text-muted-foreground/40 lowercase tracking-tight">
-                          {order.user.email}
+                      </td>
+                      <td className="px-8 py-5 text-right">
+                        <span className="text-[10px] font-bold text-muted-foreground/40 uppercase tracking-widest">
+                          {new Date(order.date).toLocaleDateString('es-AR', {
+                            day: '2-digit',
+                            month: '2-digit',
+                          })}
                         </span>
-                      </div>
-                    </td>
-                    <td className="px-8 py-5">
-                      <div
-                        className={cn(
-                          'inline-flex items-center px-3 py-1 rounded-full text-[9px] font-bold uppercase tracking-widest',
-                          order.status === 'COMPLETED'
-                            ? 'bg-emerald-500/10 text-emerald-400'
-                            : 'bg-yellow-500/10 text-yellow-500'
-                        )}
-                      >
-                        {order.status === 'COMPLETED' ? 'Completada' : 'Pendiente'}
-                      </div>
-                    </td>
-                    <td className="px-8 py-5 text-right">
-                      <span className="text-sm font-bold text-white/80 tabular-nums">
-                        {formatCurrency(order.amount)}
-                      </span>
-                    </td>
-                    <td className="px-8 py-5 text-right">
-                      <span className="text-[10px] font-bold text-muted-foreground/40 uppercase tracking-widest">
-                        {new Date(order.date).toLocaleDateString('es-AR', {
-                          day: '2-digit',
-                          month: '2-digit',
-                        })}
-                      </span>
-                    </td>
-                  </tr>
-                ))}
+                      </td>
+                    </tr>
+                  );
+                })}
               </tbody>
             </table>
           </div>
