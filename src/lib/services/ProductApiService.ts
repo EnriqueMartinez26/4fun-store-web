@@ -18,11 +18,23 @@ import type { Meta, ProductInput } from '@/lib/types';
 export class ProductApiService {
   private static normalizeImagePayload<T extends { imageId?: string; imageUrl?: string }>(data: T): T {
     const imageValue = data.imageId ?? data.imageUrl;
-    if (imageValue !== undefined) {
-      data.imageId = imageValue;
-      data.imageUrl = imageValue;
+    if (imageValue === undefined) {
+      return { ...data };
     }
-    return data;
+    return {
+      ...data,
+      imageId: imageValue,
+      imageUrl: imageValue,
+    };
+  }
+
+  private static preparePayload<T extends { specPreset?: string; imageId?: string; imageUrl?: string }>(data: T): T {
+    const payload = {
+      ...data,
+      ...(data.specPreset ? { specPreset: data.specPreset.toUpperCase() } : {}),
+    };
+
+    return ProductApiService.normalizeImagePayload(payload);
   }
 
   /**
@@ -108,20 +120,16 @@ export class ProductApiService {
   // ─── Mutaciones ───
 
   static async create(data: ProductInput) {
-    // Normalización defensiva (Design by Contract): Enums en SCREAMING_CASE
-    if (data.specPreset) data.specPreset = data.specPreset.toUpperCase();
     return HttpTransport.request<any>(
       '/products',
-      { method: 'POST', body: JSON.stringify(ProductApiService.normalizeImagePayload(data)) }
+      { method: 'POST', body: JSON.stringify(ProductApiService.preparePayload(data)) }
     );
   }
 
   static async update(id: string, data: Partial<ProductInput>) {
-    // Normalización defensiva (Design by Contract)
-    if (data.specPreset) data.specPreset = data.specPreset.toUpperCase();
     return HttpTransport.request<any>(
       `/products/${id}`,
-      { method: 'PUT', body: JSON.stringify(ProductApiService.normalizeImagePayload(data)) }
+      { method: 'PUT', body: JSON.stringify(ProductApiService.preparePayload(data)) }
     );
   }
 
