@@ -49,10 +49,6 @@ project.tar.gz
 # temp files
 tmpclaude-*
 
-# tests
-**/*.test.ts
-**/*.test.tsx
-
 # documentation (reports only)
 qa_report_*.md
 diagnostic_*.md
