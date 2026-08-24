@@ -1,4 +1,4 @@
-import type {Config} from 'tailwindcss';
+import type { Config } from 'tailwindcss';
 
 /**
  * Capa de Infraestructura Visual: Configuración de Tailwind CSS
@@ -11,20 +11,20 @@ import type {Config} from 'tailwindcss';
 export default {
   // RN - Mantenibilidad: Habilita el soporte para modo oscuro basado en clases.
   darkMode: ['class'],
-  
+
   // RN - Optimización: Define las rutas de escaneo para el motor JIT (Just-In-Time).
   content: [
     './src/pages/**/*.{js,ts,jsx,tsx,mdx}',
     './src/components/**/*.{js,ts,jsx,tsx,mdx}',
     './src/app/**/*.{js,ts,jsx,tsx,mdx}',
   ],
-  
+
   theme: {
     container: {
       center: true,
-      padding: "2rem",
+      padding: '2rem',
       screens: {
-        "2xl": "1400px", // RN - UX: Límite máximo para pantallas ultra-anchas.
+        '2xl': '1400px', // RN - UX: Límite máximo para pantallas ultra-anchas.
       },
     },
     extend: {
@@ -37,7 +37,7 @@ export default {
         headline: ['var(--font-inter)', 'sans-serif'],
         mono: ['var(--font-mono)', 'monospace'],
       },
-      
+
       /**
        * RN - Tokens de Diseño: Mapeo semántico de colores.
        * Utiliza variables HSL para permitir cambios dinámicos de tema (Theming)
@@ -95,10 +95,24 @@ export default {
           ring: 'hsl(var(--sidebar-ring))',
         },
       },
+      /**
+       * RN - Identidad Visual: Escala de radios deliberadamente angular.
+       * Todo el sistema tiende a la esquina recta. `search` es la única
+       * excepción: el buscador conserva su curva para destacarse del resto.
+       * `full` se mantiene intacto porque no describe una esquina redondeada,
+       * sino elementos circulares (avatares, indicadores, insignias).
+       */
       borderRadius: {
+        none: '0px',
+        sm: '2px',
+        DEFAULT: '2px',
+        md: '2px',
         lg: 'var(--radius)',
-        md: 'calc(var(--radius) - 2px)',
-        sm: 'calc(var(--radius) - 4px)',
+        xl: '3px',
+        '2xl': '4px',
+        '3xl': '4px',
+        search: '12px',
+        promo: '6px',
       },
       keyframes: {
         'accordion-down': {

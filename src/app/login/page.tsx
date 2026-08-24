@@ -45,7 +45,7 @@ function LoginForm() {
 
   return (
     <div className="container mx-auto flex items-center justify-center min-h-[85vh] py-8 px-4 animate-in fade-in zoom-in-95 duration-700">
-      <Card className="w-full max-w-md border-none bg-card/40 backdrop-blur-3xl shadow-3xl rounded-[2.5rem] overflow-hidden ring-1 ring-white/10">
+      <Card className="w-full max-w-md border-none bg-card/40 backdrop-blur-3xl shadow-3xl rounded-[4px] overflow-hidden ring-1 ring-white/10">
         <CardHeader className="pt-12 pb-6 text-center space-y-4">
           <div className="flex justify-center mb-2">
             <div className="relative group">
@@ -122,7 +122,7 @@ function LoginForm() {
               </div>
               <Button
                 type="submit"
-                className="w-full h-14 mt-6 bg-white/5 text-white hover:bg-primary hover:text-black border border-white/10 hover:border-primary font-black uppercase text-xs tracking-[0.15em] rounded-2xl shadow-xl hover:shadow-primary/20 transition-all duration-300 group"
+                className="w-full h-14 mt-6 bg-white/5 text-white hover:bg-primary/10 hover:text-primary border border-white/10 hover:border-primary font-black uppercase text-xs tracking-[0.15em] rounded-2xl shadow-xl hover:shadow-primary/20 transition-all duration-300 group"
                 disabled={isSubmitting}
               >
                 {isSubmitting ? (

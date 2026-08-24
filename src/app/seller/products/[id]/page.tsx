@@ -74,7 +74,7 @@ export default function SellerEditProductPage({ params }: { params: Promise<{ id
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
         <div className="lg:col-span-2 space-y-8">
-          <Card className="border-none bg-card/40 backdrop-blur-3xl shadow-2xl rounded-[3rem] overflow-hidden">
+          <Card className="border-none bg-card/40 backdrop-blur-3xl shadow-2xl rounded-[4px] overflow-hidden">
             <CardHeader className="p-10 border-b border-white/5 bg-primary/5">
               <div className="flex items-center gap-4">
                 <div className="p-3 bg-primary/20 rounded-2xl">
@@ -249,7 +249,7 @@ export default function SellerEditProductPage({ params }: { params: Promise<{ id
                     control={vm.form.control}
                     name="isDiscounted"
                     render={({ field }) => (
-                      <FormItem className="flex flex-row items-center space-x-4 space-y-0 rounded-[2rem] border border-white/5 p-6 bg-white/5">
+                      <FormItem className="flex flex-row items-center space-x-4 space-y-0 rounded-[4px] border border-white/5 p-6 bg-white/5">
                         <FormControl>
                           <Checkbox checked={field.value} onCheckedChange={field.onChange} />
                         </FormControl>
@@ -290,7 +290,7 @@ export default function SellerEditProductPage({ params }: { params: Promise<{ id
                       />
 
                       {/* RN - Don Norman (Feedback/Feedforward): Visualización del impacto inmediato del cambio */}
-                      <div className="p-6 rounded-[2rem] bg-green-500/10 border border-green-500/20 flex items-center justify-between">
+                      <div className="p-6 rounded-[4px] bg-green-500/10 border border-green-500/20 flex items-center justify-between">
                         <div className="space-y-1">
                           <p className="text-[10px] font-black uppercase tracking-widest text-green-500/60">
                             Precio Resultante
@@ -356,7 +356,7 @@ export default function SellerEditProductPage({ params }: { params: Promise<{ id
                     control={vm.form.control}
                     name="active"
                     render={({ field }) => (
-                      <FormItem className="flex flex-row items-center space-x-4 space-y-0 rounded-[2rem] border border-primary/20 p-6 bg-primary/5">
+                      <FormItem className="flex flex-row items-center space-x-4 space-y-0 rounded-[4px] border border-primary/20 p-6 bg-primary/5">
                         <FormControl>
                           <Checkbox
                             checked={field.value}
@@ -378,7 +378,7 @@ export default function SellerEditProductPage({ params }: { params: Promise<{ id
 
                   <Button
                     type="submit"
-                    className="w-full h-16 bg-primary text-white font-bold text-lg tracking-widest rounded-[2rem] shadow-xl hover:-translate-y-1 transition-all"
+                    className="w-full h-16 bg-primary text-white font-bold text-lg tracking-widest rounded-[4px] shadow-xl hover:-translate-y-1 transition-all"
                     disabled={vm.isSubmitting || vm.isUploading}
                   >
                     {vm.isSubmitting ? (
@@ -404,7 +404,7 @@ export default function SellerEditProductPage({ params }: { params: Promise<{ id
         </div>
 
         <div className="space-y-8">
-          <Card className="border-none bg-card/40 backdrop-blur-3xl shadow-2xl rounded-[3rem] overflow-hidden">
+          <Card className="border-none bg-card/40 backdrop-blur-3xl shadow-2xl rounded-[4px] overflow-hidden">
             <CardHeader className="p-8 pb-4 border-b border-white/5 bg-primary/5">
               <CardTitle className="text-sm font-black uppercase tracking-widest flex items-center gap-2">
                 <ImageIcon className="h-4 w-4 text-primary" /> Imagen de Portada
@@ -435,7 +435,9 @@ export default function SellerEditProductPage({ params }: { params: Promise<{ id
               {vm.isUploading && (
                 <div className="flex items-center justify-center gap-3 text-primary animate-pulse mt-4">
                   <Loader2 className="animate-spin h-4 w-4" />
-                  <span className="text-[10px] font-black uppercase tracking-widest">Subiendo...</span>
+                  <span className="text-[10px] font-black uppercase tracking-widest">
+                    Subiendo...
+                  </span>
                 </div>
               )}
             </CardContent>

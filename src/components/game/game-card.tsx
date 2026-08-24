@@ -1,4 +1,4 @@
-"use client";
+'use client';
 
 /**
  * Capa de Interfaz: Componente Atómico de Visualización (Game Card)
@@ -10,20 +10,20 @@
  * modelo de datos y la vista. (MVC / Component)
  */
 
-import Link from "next/link";
-import Image from "next/image";
-import { Badge } from "@/components/ui/badge";
-import { Card, CardContent, CardFooter, CardHeader } from "@/components/ui/card";
-import { useWishlist } from "@/context/WishlistContext";
-import { Heart, ShoppingCart, Info } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { useCart } from "@/context/CartContext";
-import { ProductEntity } from "@/domain/entities/ProductEntity";
-import type { Game } from "@/lib/types";
-import { cn } from "@/lib/utils";
-import { useState } from "react";
-import { Check } from "lucide-react";
-import { motion, AnimatePresence } from "framer-motion";
+import Link from 'next/link';
+import Image from 'next/image';
+import { Badge } from '@/components/ui/badge';
+import { Card, CardContent, CardFooter, CardHeader } from '@/components/ui/card';
+import { useWishlist } from '@/context/WishlistContext';
+import { Heart, ShoppingCart, Info } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { useCart } from '@/context/CartContext';
+import { ProductEntity } from '@/domain/entities/ProductEntity';
+import type { Game } from '@/lib/types';
+import { cn } from '@/lib/utils';
+import { useState } from 'react';
+import { Check } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
 
 interface GameCardProps {
   game: Game;
@@ -36,14 +36,14 @@ export function GameCard({ game }: GameCardProps) {
    * Refactor: ViewModel eliminado para reducir entropía.
    */
   const vm = new ProductEntity(game as any);
-  
+
   const { toggleWishlist, isInWishlist } = useWishlist();
   const { addToCart, cart } = useCart();
   const [isAdding, setIsAdding] = useState(false);
   const isFavorite = isInWishlist(vm.getDisplayId());
 
   // RN - Prevención de Errores: Detectar si el producto ya está en el carrito y alcanzó el stock máximo.
-  const cartItem = cart.find(item => item.productId === vm.getDisplayId());
+  const cartItem = cart.find((item) => item.productId === vm.getDisplayId());
   const hasReachedStockLimit = cartItem ? cartItem.quantity >= vm.stock : false;
   const isAlreadyInCart = !!cartItem;
 
@@ -55,11 +55,10 @@ export function GameCard({ game }: GameCardProps) {
 
   return (
     <Card className="group relative overflow-hidden bg-card/40 backdrop-blur-md transition-all duration-300 hover:bg-card/60 hover:shadow-xl hover:-translate-y-1 rounded-2xl border border-white/5 hover:border-primary/30 shadow-md flex flex-col h-full">
-      
       {/* RN - Gestión Promocional: Badge dinámico de bonificación. */}
       {vm.isOnSale() && (
         <div className="absolute left-4 top-4 z-20">
-          <Badge className="bg-green-600 hover:bg-green-500 text-white font-black text-xs px-4 py-1.5 shadow-[0_0_20px_-5px_rgba(34,197,94,0.4)] border border-green-400/50 uppercase tracking-wider rounded-md">
+          <Badge className="bg-green-600 hover:bg-green-500 text-white font-black text-xs px-4 py-1.5 shadow-[0_0_20px_-5px_rgba(34,197,94,0.4)] border border-green-400/50 uppercase tracking-wider rounded-promo">
             {vm.getDiscountBadge()} OFF
           </Badge>
         </div>
@@ -69,20 +68,29 @@ export function GameCard({ game }: GameCardProps) {
       <button
         onClick={() => toggleWishlist(game)}
         className={cn(
-          "absolute right-4 top-4 z-20 h-10 w-10 rounded-full transition-all duration-300 flex items-center justify-center hover:scale-110 hover:shadow-lg border backdrop-blur-md",
-          isFavorite 
-            ? "bg-red-500 border-red-500 text-white shadow-[0_0_20px_rgba(239,68,68,0.5)]" 
-            : "bg-white/10 border-white/20 text-white/70 hover:bg-white/20 hover:border-white/40"
+          'absolute right-4 top-4 z-20 h-10 w-10 rounded-full transition-all duration-300 flex items-center justify-center hover:scale-110 hover:shadow-lg border backdrop-blur-md',
+          isFavorite
+            ? 'bg-red-500 border-red-500 text-white shadow-[0_0_20px_rgba(239,68,68,0.5)]'
+            : 'bg-white/10 border-white/20 text-white/70 hover:bg-white/20 hover:border-white/40'
         )}
         aria-label="Alternar Favorito"
       >
         <motion.div
-          animate={isFavorite ? {
-            scale: [1, 1.2, 1],
-            transition: { duration: 0.4, ease: "easeInOut" }
-          } : {}}
+          animate={
+            isFavorite
+              ? {
+                  scale: [1, 1.2, 1],
+                  transition: { duration: 0.4, ease: 'easeInOut' },
+                }
+              : {}
+          }
         >
-          <Heart className={cn("h-5 w-5 transition-all", isFavorite ? "fill-current scale-110" : "group-hover:scale-125")} />
+          <Heart
+            className={cn(
+              'h-5 w-5 transition-all',
+              isFavorite ? 'fill-current scale-110' : 'group-hover:scale-125'
+            )}
+          />
         </motion.div>
       </button>
 
@@ -104,25 +112,37 @@ export function GameCard({ game }: GameCardProps) {
 
         <CardContent className="p-5 relative flex-1 flex flex-col">
           <div className="mb-3 flex items-center gap-2 flex-wrap">
-            <Badge variant="outline" className="text-[8px] font-bold uppercase tracking-widest border-primary/30 text-primary bg-primary/5 px-2.5 py-1">
+            <Badge
+              variant="outline"
+              className="text-[8px] font-bold uppercase tracking-widest border-primary/30 text-primary bg-primary/5 px-2.5 py-1"
+            >
               {vm.getPlatformName()}
             </Badge>
-            {!vm.hasStock() && <Badge variant="secondary" className="text-[8px] font-bold uppercase tracking-widest bg-destructive/10 text-destructive border-destructive/20">Agotado</Badge>}
+            {!vm.hasStock() && (
+              <Badge
+                variant="secondary"
+                className="text-[8px] font-bold uppercase tracking-widest bg-destructive/10 text-destructive border-destructive/20"
+              >
+                Agotado
+              </Badge>
+            )}
           </div>
 
           <h3 className="line-clamp-2 font-headline text-lg font-semibold text-white group-hover:text-primary transition-colors mb-2 tracking-tight leading-tight">
             {game.name}
           </h3>
-          
+
           <div className="border-t border-white/5 pt-4 mb-4" />
-          
+
           <div className="flex items-baseline gap-2 mb-4">
             {/**
-              * RN - Localización Monetaria: El ViewModel garantiza el formato ARS (Pesos Argentinos)
-              * operando bajo los estándares transaccionales del TFI.
-              */}
-            <span className="text-2xl font-bold text-white/60 tracking-tighter">{vm.toDisplayPrice()}</span>
-            
+             * RN - Localización Monetaria: El ViewModel garantiza el formato ARS (Pesos Argentinos)
+             * operando bajo los estándares transaccionales del TFI.
+             */}
+            <span className="text-2xl font-bold text-white/60 tracking-tighter">
+              {vm.toDisplayPrice()}
+            </span>
+
             {vm.isOnSale() && (
               <span className="text-xs text-muted-foreground line-through decoration-red-500 opacity-50 font-medium">
                 {vm.getOriginalPrice()}
@@ -136,12 +156,12 @@ export function GameCard({ game }: GameCardProps) {
         <Button
           onClick={handleAddToCart}
           className={cn(
-            "w-full h-11 rounded-lg transition-all duration-300 font-bold uppercase text-[9px] tracking-widest shadow-sm hover:shadow-md group/btn disabled:opacity-50 disabled:cursor-not-allowed",
-            isAdding 
-              ? "bg-green-500 text-white border-green-500 hover:bg-green-600" 
+            'w-full h-11 rounded-lg transition-all duration-300 font-bold uppercase text-[9px] tracking-widest shadow-sm hover:shadow-md group/btn disabled:opacity-50 disabled:cursor-not-allowed',
+            isAdding
+              ? 'bg-green-500 text-white border-green-500 hover:bg-green-600'
               : hasReachedStockLimit
-                ? "bg-white/5 text-white/40 border-white/5 cursor-not-allowed"
-                : "bg-white/5 text-white hover:bg-primary hover:text-black border border-white/10 hover:border-primary"
+                ? 'bg-white/5 text-white/40 border-white/5 cursor-not-allowed'
+                : 'bg-white/5 text-white hover:bg-primary/10 hover:text-primary border border-white/10 hover:border-primary'
           )}
           disabled={!vm.hasStock() || isAdding || hasReachedStockLimit}
         >
@@ -166,7 +186,7 @@ export function GameCard({ game }: GameCardProps) {
                 className="flex items-center gap-2"
               >
                 {!vm.hasStock() ? (
-                  "Agotado"
+                  'Agotado'
                 ) : hasReachedStockLimit ? (
                   <>
                     <Check className="h-5 w-5 text-green-500" />

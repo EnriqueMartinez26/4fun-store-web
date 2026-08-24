@@ -150,7 +150,7 @@ export default function CheckoutPage() {
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -20 }}
               >
-                <Card className="border-none bg-card/40 backdrop-blur-3xl shadow-3xl rounded-[2.5rem] overflow-hidden">
+                <Card className="border-none bg-card/40 backdrop-blur-3xl shadow-3xl rounded-[4px] overflow-hidden">
                   <CardHeader className="pt-10 px-10">
                     <CardTitle className="text-2xl font-semibold font-headline text-white">
                       Datos de Envío
@@ -252,7 +252,7 @@ export default function CheckoutPage() {
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -20 }}
               >
-                <Card className="border-none bg-card/40 backdrop-blur-3xl shadow-3xl rounded-[2.5rem] overflow-hidden">
+                <Card className="border-none bg-card/40 backdrop-blur-3xl shadow-3xl rounded-[4px] overflow-hidden">
                   <CardHeader className="pt-10 px-10">
                     <CardTitle className="text-2xl font-semibold font-headline text-white">
                       Medio de Pago
@@ -329,7 +329,7 @@ export default function CheckoutPage() {
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -20 }}
               >
-                <Card className="border-none bg-card/40 backdrop-blur-3xl shadow-3xl rounded-[2.5rem] overflow-hidden">
+                <Card className="border-none bg-card/40 backdrop-blur-3xl shadow-3xl rounded-[4px] overflow-hidden">
                   <CardHeader className="pt-10 px-10">
                     <CardTitle className="text-2xl font-semibold font-headline text-white">
                       Resumen de Compra
@@ -402,7 +402,7 @@ export default function CheckoutPage() {
 
         {/* Panel Sidebar: Ticket Maestro */}
         <div className="lg:col-span-4">
-          <Card className="sticky top-24 border-none bg-card/60 backdrop-blur-3xl shadow-3xl rounded-[2.5rem] overflow-hidden ring-1 ring-primary/20">
+          <Card className="sticky top-24 border-none bg-card/60 backdrop-blur-3xl shadow-3xl rounded-[4px] overflow-hidden ring-1 ring-primary/20">
             <CardHeader className="bg-primary/10 py-8 text-center border-b border-white/5">
               <CardTitle className="text-xl font-headline font-bold text-white tracking-widest uppercase">
                 Ticket de Pedido

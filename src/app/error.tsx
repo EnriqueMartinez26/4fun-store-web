@@ -1,79 +1,86 @@
-'use client'
+'use client';
 
 /**
  * Capa de Infraestructura: Manejador de Excepciones Críticas (Runtime Error)
  * --------------------------------------------------------------------------
  * Orquesta la captura y recuperación de errores no controlados durante el
- * ciclo de renderizado de componentes. 
+ * ciclo de renderizado de componentes.
  * Responsabilidades:
  * 1. Auditoría de Fallos: Registra la traza del error para monitoreo técnico.
- * 2. Gestión de Recuperación: Provee el mecanismo 'reset' para reintentar la 
+ * 2. Gestión de Recuperación: Provee el mecanismo 'reset' para reintentar la
  *    montura del subárbol de componentes damnificado.
  * 3. Fallback UX: Normaliza la visualización de fallos para el usuario final.
  * (Infrastructure / Error Boundary)
  */
 
-import { useEffect } from 'react'
-import { Button } from '@/components/ui/button'
-import { AlertTriangle, RefreshCw, Home, ShieldAlert } from 'lucide-react'
+import { useEffect } from 'react';
+import { Button } from '@/components/ui/button';
+import { AlertTriangle, RefreshCw, Home, ShieldAlert } from 'lucide-react';
 
 export default function Error({
-    error,
-    reset,
+  error,
+  reset,
 }: {
-    error: Error & { digest?: string }
-    reset: () => void
+  error: Error & { digest?: string };
+  reset: () => void;
 }) {
-    useEffect(() => {
-        /**
-         * RN - Trazabilidad: Despacho de la traza de error al motor de logs.
-         * En entornos productivos, esto se sincronizaría con Sentry o similares.
-         */
-        console.error("[RuntimeErrorEngine]:", error);
-    }, [error]);
+  useEffect(() => {
+    /**
+     * RN - Trazabilidad: Despacho de la traza de error al motor de logs.
+     * En entornos productivos, esto se sincronizaría con Sentry o similares.
+     */
+    console.error('[RuntimeErrorEngine]:', error);
+  }, [error]);
 
-    return (
-        <div className="flex min-h-[85vh] flex-col items-center justify-center gap-8 text-center px-4 animate-in fade-in zoom-in-95 duration-700">
-            
-            {/* Componente Visual de Excepción Técnica */}
-            <div className="relative group">
-                <div className="absolute inset-0 bg-red-500/20 blur-3xl rounded-full opacity-50" />
-                <div className="relative bg-card/40 backdrop-blur-2xl border border-red-500/20 p-12 rounded-[3.5rem] shadow-3xl">
-                    <ShieldAlert className="h-20 w-20 text-red-500 relative z-10 mx-auto animate-pulse" />
-                    <div className="mt-8 space-y-2">
-                        <h2 className="text-3xl font-bold text-white/60 tracking-tighter italic">Algo no salió bien</h2>
-                        <p className="text-[10px] font-bold uppercase tracking-[0.4em] text-red-500/60">Error inesperado detectado</p>
-                    </div>
-                </div>
-            </div>
-
-            <div className="max-w-md space-y-8">
-                <p className="text-muted-foreground text-sm leading-relaxed">
-                    ¡Uy! Parece que algo no salió como esperábamos. Tuvimos un pequeño problema técnico, pero no te preocupes: ya estamos al tanto para que todo vuelva a la normalidad lo antes posible.
-                </p>
-
-                {error.digest && (
-                    <div className="bg-black/20 p-3 rounded-xl border border-white/5">
-                        <p className="text-[9px] font-mono text-muted-foreground uppercase opacity-40">Identificador Digest: {error.digest}</p>
-                    </div>
-                )}
-
-                <div className="flex flex-col sm:flex-row gap-4 justify-center pt-4">
-                    <Button 
-                        onClick={() => reset()} 
-                        className="h-14 px-8 rounded-xl font-bold uppercase tracking-widest text-[10px] bg-white text-black hover:bg-white/90 shadow-xl transition-all"
-                    >
-                        <RefreshCw className="mr-2 h-4 w-4" /> Reintentar Operación
-                    </Button>
-                    <Button 
-                        variant="outline" 
-                        onClick={() => window.location.href = '/'} 
-                        className="h-14 px-8 rounded-xl border-white/10 text-white font-bold uppercase tracking-widest text-[10px] hover:bg-white/5 transition-all"
-                    >
-                        <Home className="mr-2 h-4 w-4" /> Volver al Inicio
-                    </Button>
-                </div>
-            </div>
+  return (
+    <div className="flex min-h-[85vh] flex-col items-center justify-center gap-8 text-center px-4 animate-in fade-in zoom-in-95 duration-700">
+      {/* Componente Visual de Excepción Técnica */}
+      <div className="relative group">
+        <div className="absolute inset-0 bg-red-500/20 blur-3xl rounded-full opacity-50" />
+        <div className="relative bg-card/40 backdrop-blur-2xl border border-red-500/20 p-12 rounded-[4px] shadow-3xl">
+          <ShieldAlert className="h-20 w-20 text-red-500 relative z-10 mx-auto animate-pulse" />
+          <div className="mt-8 space-y-2">
+            <h2 className="text-3xl font-bold text-white/60 tracking-tighter italic">
+              Algo no salió bien
+            </h2>
+            <p className="text-[10px] font-bold uppercase tracking-[0.4em] text-red-500/60">
+              Error inesperado detectado
+            </p>
+          </div>
         </div>
-    );
+      </div>
+
+      <div className="max-w-md space-y-8">
+        <p className="text-muted-foreground text-sm leading-relaxed">
+          ¡Uy! Parece que algo no salió como esperábamos. Tuvimos un pequeño problema técnico, pero
+          no te preocupes: ya estamos al tanto para que todo vuelva a la normalidad lo antes
+          posible.
+        </p>
+
+        {error.digest && (
+          <div className="bg-black/20 p-3 rounded-xl border border-white/5">
+            <p className="text-[9px] font-mono text-muted-foreground uppercase opacity-40">
+              Identificador Digest: {error.digest}
+            </p>
+          </div>
+        )}
+
+        <div className="flex flex-col sm:flex-row gap-4 justify-center pt-4">
+          <Button
+            onClick={() => reset()}
+            className="h-14 px-8 rounded-xl font-bold uppercase tracking-widest text-[10px] bg-white text-black hover:bg-white/90 shadow-xl transition-all"
+          >
+            <RefreshCw className="mr-2 h-4 w-4" /> Reintentar Operación
+          </Button>
+          <Button
+            variant="outline"
+            onClick={() => (window.location.href = '/')}
+            className="h-14 px-8 rounded-xl border-white/10 text-white font-bold uppercase tracking-widest text-[10px] hover:bg-white/5 transition-all"
+          >
+            <Home className="mr-2 h-4 w-4" /> Volver al Inicio
+          </Button>
+        </div>
+      </div>
+    </div>
+  );
 }

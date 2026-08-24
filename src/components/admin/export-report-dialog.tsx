@@ -40,7 +40,7 @@ export function ExportReportDialog({
           DESCARGAR REPORTE
         </Button>
       </DialogTrigger>
-      <DialogContent className="bg-slate-950/95 backdrop-blur-2xl border border-white/10 rounded-[2.5rem] shadow-2xl p-10 max-w-md">
+      <DialogContent className="bg-slate-950/95 backdrop-blur-2xl border border-white/10 rounded-[4px] shadow-2xl p-10 max-w-md">
         <DialogHeader className="space-y-3">
           <DialogTitle className="text-3xl font-bold tracking-tight text-white">
             {title}

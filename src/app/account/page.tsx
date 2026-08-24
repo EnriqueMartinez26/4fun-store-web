@@ -190,7 +190,7 @@ export default function AccountPage() {
       </div>
 
       {/* Cabecera Técnica de Cuenta */}
-      <header className="mb-16 flex flex-col md:flex-row items-center gap-10 bg-white/[0.08] backdrop-blur-3xl p-12 rounded-[3rem] border border-white/10 relative overflow-hidden group hover:bg-white/[0.12] transition-colors duration-500 shadow-2xl shadow-primary/5">
+      <header className="mb-16 flex flex-col md:flex-row items-center gap-10 bg-white/[0.08] backdrop-blur-3xl p-12 rounded-[4px] border border-white/10 relative overflow-hidden group hover:bg-white/[0.12] transition-colors duration-500 shadow-2xl shadow-primary/5">
         <div className="absolute inset-0 bg-gradient-to-br from-primary/15 via-transparent to-primary/5 opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
 
         <div className="relative z-10">
@@ -291,7 +291,7 @@ export default function AccountPage() {
                   }
                 }}
                 disabled={vm.resendingVerification}
-                className="h-12 px-8 bg-white/5 text-white hover:bg-primary hover:text-black border border-white/10 hover:border-primary font-black uppercase text-[10px] tracking-[0.15em] rounded-xl shadow-xl hover:shadow-primary/20 transition-all duration-300 group"
+                className="h-12 px-8 bg-white/5 text-white hover:bg-primary/10 hover:text-primary border border-white/10 hover:border-primary font-black uppercase text-[10px] tracking-[0.15em] rounded-xl shadow-xl hover:shadow-primary/20 transition-all duration-300 group"
               >
                 {vm.resendingVerification ? (
                   <Loader2 className="h-4 w-4 animate-spin mr-2" />
@@ -306,25 +306,25 @@ export default function AccountPage() {
       </header>
 
       <Tabs defaultValue="orders" className="w-full space-y-12">
-        <TabsList className="h-16 w-full max-w-2xl mx-auto bg-white/[0.05] backdrop-blur-2xl border border-white/10 rounded-[1.5rem] p-1.5 shadow-2xl flex items-center relative overflow-hidden">
+        <TabsList className="h-16 w-full max-w-2xl mx-auto bg-white/[0.05] backdrop-blur-2xl border border-white/10 rounded-[3px] p-1.5 shadow-2xl flex items-center relative overflow-hidden">
           {/* Luz de fondo vibrante en todo el contenedor */}
           <div className="absolute inset-0 bg-gradient-to-r from-transparent via-primary/15 to-transparent blur-xl pointer-events-none" />
 
           <TabsTrigger
             value="orders"
-            className="relative flex-1 h-full rounded-[1.2rem] font-bold uppercase tracking-[0.15em] text-[11px] text-white/40 border border-transparent hover:bg-white/5 hover:border-white/10 hover:text-white data-[state=active]:text-white data-[state=active]:bg-primary data-[state=active]:border-primary data-[state=active]:shadow-[0_0_30px_rgba(214,88,250,0.3)] transition-all duration-500 z-10"
+            className="relative flex-1 h-full rounded-[3px] font-bold uppercase tracking-[0.15em] text-[11px] text-white/40 border border-transparent hover:bg-white/5 hover:border-white/10 hover:text-white data-[state=active]:text-white data-[state=active]:bg-primary data-[state=active]:border-primary data-[state=active]:shadow-[0_0_30px_rgba(214,88,250,0.3)] transition-all duration-500 z-10"
           >
             <Package className="h-4 w-4 mr-2" /> Mis Órdenes
           </TabsTrigger>
           <TabsTrigger
             value="seller"
-            className="relative flex-1 h-full rounded-[1.2rem] font-bold uppercase tracking-[0.15em] text-[11px] text-white/40 border border-transparent hover:bg-white/5 hover:border-white/10 hover:text-white data-[state=active]:text-white data-[state=active]:bg-primary data-[state=active]:border-primary data-[state=active]:shadow-[0_0_30px_rgba(214,88,250,0.3)] transition-all duration-500 z-10"
+            className="relative flex-1 h-full rounded-[3px] font-bold uppercase tracking-[0.15em] text-[11px] text-white/40 border border-transparent hover:bg-white/5 hover:border-white/10 hover:text-white data-[state=active]:text-white data-[state=active]:bg-primary data-[state=active]:border-primary data-[state=active]:shadow-[0_0_30px_rgba(214,88,250,0.3)] transition-all duration-500 z-10"
           >
             <Store className="h-4 w-4 mr-2" /> Mis Ventas
           </TabsTrigger>
           <TabsTrigger
             value="settings"
-            className="relative flex-1 h-full rounded-[1.2rem] font-bold uppercase tracking-[0.15em] text-[11px] text-white/40 border border-transparent hover:bg-white/5 hover:border-white/10 hover:text-white data-[state=active]:text-white data-[state=active]:bg-primary data-[state=active]:border-primary data-[state=active]:shadow-[0_0_30px_rgba(214,88,250,0.3)] transition-all duration-500 z-10"
+            className="relative flex-1 h-full rounded-[3px] font-bold uppercase tracking-[0.15em] text-[11px] text-white/40 border border-transparent hover:bg-white/5 hover:border-white/10 hover:text-white data-[state=active]:text-white data-[state=active]:bg-primary data-[state=active]:border-primary data-[state=active]:shadow-[0_0_30px_rgba(214,88,250,0.3)] transition-all duration-500 z-10"
           >
             <Settings className="h-4 w-4 mr-2" /> Configuración
           </TabsTrigger>
@@ -348,7 +348,7 @@ export default function AccountPage() {
                   </p>
                 </div>
               ) : vm.orders.length === 0 ? (
-                <Card className="border-none bg-white/[0.03] backdrop-blur-3xl py-24 text-center rounded-[3rem] ring-1 ring-white/5 shadow-2xl">
+                <Card className="border-none bg-white/[0.03] backdrop-blur-3xl py-24 text-center rounded-[4px] ring-1 ring-white/5 shadow-2xl">
                   <CardContent className="space-y-6">
                     <div className="h-20 w-20 bg-white/[0.05] rounded-full mx-auto flex items-center justify-center border border-white/5 shadow-inner">
                       <Package className="h-10 w-10 text-muted-foreground opacity-20" />
@@ -374,7 +374,7 @@ export default function AccountPage() {
                   {vm.orders.map((order: any) => (
                     <Card
                       key={order.id || order._id}
-                      className="overflow-hidden border-none bg-gradient-to-br from-white/[0.05] to-white/[0.02] backdrop-blur-3xl rounded-[2.5rem] group hover:from-white/[0.08] hover:to-white/[0.04] transition-all duration-500 shadow-xl ring-1 ring-white/10 hover:ring-primary/30 hover:shadow-[0_10px_50px_rgba(214,88,250,0.1)]"
+                      className="overflow-hidden border-none bg-gradient-to-br from-white/[0.05] to-white/[0.02] backdrop-blur-3xl rounded-[4px] group hover:from-white/[0.08] hover:to-white/[0.04] transition-all duration-500 shadow-xl ring-1 ring-white/10 hover:ring-primary/30 hover:shadow-[0_10px_50px_rgba(214,88,250,0.1)]"
                     >
                       <div className="bg-primary/5 px-8 py-6 border-b border-white/5 flex flex-col md:flex-row justify-between items-center gap-4">
                         <div className="flex flex-col md:flex-row items-center gap-6">
@@ -507,7 +507,7 @@ export default function AccountPage() {
               {vm.user.role === 'SELLER' || vm.user.role === 'ADMIN' ? (
                 /* Vista del Vendedor Activo */
                 <div className="flex justify-center">
-                  <div className="border text-card-foreground border-none bg-gradient-to-br from-primary/20 to-white/[0.02] backdrop-blur-3xl rounded-[3rem] p-10 ring-1 ring-primary/30 shadow-2xl shadow-primary/10 max-w-md w-full flex flex-col items-center text-center">
+                  <div className="border text-card-foreground border-none bg-gradient-to-br from-primary/20 to-white/[0.02] backdrop-blur-3xl rounded-[4px] p-10 ring-1 ring-primary/30 shadow-2xl shadow-primary/10 max-w-md w-full flex flex-col items-center text-center">
                     <div className="flex flex-col items-center space-y-1.5 p-0 mb-6">
                       <div className="h-12 w-12 bg-primary/20 rounded-2xl flex items-center justify-center mb-4">
                         <Store className="h-6 w-6 text-primary" />
@@ -536,14 +536,14 @@ export default function AccountPage() {
                 </div>
               ) : (
                 /* Banner Hero para Convertirse en Vendedor (Simplificado) */
-                <Card className="relative border-none bg-gradient-to-br from-card/60 to-black/40 backdrop-blur-3xl rounded-[3rem] overflow-hidden ring-1 ring-white/10 shadow-2xl min-h-[500px] flex items-center">
+                <Card className="relative border-none bg-gradient-to-br from-card/60 to-black/40 backdrop-blur-3xl rounded-[4px] overflow-hidden ring-1 ring-white/10 shadow-2xl min-h-[500px] flex items-center">
                   {/* Decoración de fondo */}
                   <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-primary/20 blur-[120px] rounded-full -translate-y-1/2 translate-x-1/2" />
 
                   <div className="relative z-10 grid grid-cols-1 lg:grid-cols-2 w-full">
                     <div className="p-12 lg:p-20 space-y-10">
                       <div className="space-y-6">
-                        <div className="h-20 w-20 bg-primary rounded-[2rem] flex items-center justify-center shadow-[0_0_50px_rgba(214,88,250,0.5)] rotate-3">
+                        <div className="h-20 w-20 bg-primary rounded-[4px] flex items-center justify-center shadow-[0_0_50px_rgba(214,88,250,0.5)] rotate-3">
                           <Rocket className="h-10 w-10 text-black animate-bounce" />
                         </div>
                         <h2 className="text-5xl lg:text-6xl font-black font-headline tracking-tighter italic leading-[0.9] text-white">
@@ -631,7 +631,7 @@ export default function AccountPage() {
         <TabsContent value="settings" className="space-y-12">
           {/* Avatar y Datos Personales */}
           <section className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-            <Card className="flex flex-col border-none bg-gradient-to-br from-white/[0.08] to-white/[0.03] backdrop-blur-3xl rounded-[2.5rem] overflow-hidden group/card shadow-xl ring-1 ring-white/10 hover:ring-primary/20 hover:shadow-[0_10px_40px_rgba(214,88,250,0.1)] transition-all">
+            <Card className="flex flex-col border-none bg-gradient-to-br from-white/[0.08] to-white/[0.03] backdrop-blur-3xl rounded-[4px] overflow-hidden group/card shadow-xl ring-1 ring-white/10 hover:ring-primary/20 hover:shadow-[0_10px_40px_rgba(214,88,250,0.1)] transition-all">
               <CardHeader className="p-10 pb-6 border-b border-white/5">
                 <CardTitle className="flex items-center gap-4 text-2xl font-black text-white italic">
                   <Camera className="h-6 w-6 text-primary" /> Tu Avatar
@@ -683,7 +683,7 @@ export default function AccountPage() {
             </Card>
 
             {/* Datos Personales */}
-            <Card className="border-none bg-gradient-to-br from-white/[0.08] to-white/[0.03] backdrop-blur-3xl rounded-[2.5rem] overflow-hidden shadow-xl ring-1 ring-white/10 hover:ring-primary/20 hover:shadow-[0_10px_40px_rgba(214,88,250,0.1)] transition-all">
+            <Card className="border-none bg-gradient-to-br from-white/[0.08] to-white/[0.03] backdrop-blur-3xl rounded-[4px] overflow-hidden shadow-xl ring-1 ring-white/10 hover:ring-primary/20 hover:shadow-[0_10px_40px_rgba(214,88,250,0.1)] transition-all">
               <CardHeader className="p-10 pb-6 border-b border-white/5">
                 <CardTitle className="flex items-center gap-4 text-2xl font-black text-white italic">
                   <UserIcon className="h-6 w-6 text-primary" /> Datos Personales
@@ -776,7 +776,7 @@ export default function AccountPage() {
           </section>
 
           {/* Cambiar Contraseña */}
-          <Card className="border-none bg-gradient-to-br from-destructive/8 to-destructive/3 backdrop-blur-3xl rounded-[2.5rem] overflow-hidden ring-1 ring-destructive/15 hover:ring-destructive/25 hover:shadow-[0_10px_40px_rgba(239,68,68,0.1)] transition-all">
+          <Card className="border-none bg-gradient-to-br from-destructive/8 to-destructive/3 backdrop-blur-3xl rounded-[4px] overflow-hidden ring-1 ring-destructive/15 hover:ring-destructive/25 hover:shadow-[0_10px_40px_rgba(239,68,68,0.1)] transition-all">
             <CardHeader className="p-10 pb-6 border-b border-destructive/10">
               <CardTitle className="flex items-center gap-4 text-2xl font-black text-white italic">
                 <Lock className="h-6 w-6 text-destructive" /> Cambiar Contraseña

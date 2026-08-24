@@ -198,12 +198,12 @@ export default function AdminDashboardPage() {
         </div>
         <div className="grid gap-5 md:grid-cols-2 lg:grid-cols-4">
           {[...Array(4)].map((_, i) => (
-            <Skeleton key={i} className="h-32 rounded-[2rem] bg-white/5" />
+            <Skeleton key={i} className="h-32 rounded-[4px] bg-white/5" />
           ))}
         </div>
         <div className="grid gap-5 lg:grid-cols-7">
-          <Skeleton className="lg:col-span-4 h-96 rounded-[3rem] bg-white/5" />
-          <Skeleton className="lg:col-span-3 h-96 rounded-[3rem] bg-white/5" />
+          <Skeleton className="lg:col-span-4 h-96 rounded-[4px] bg-white/5" />
+          <Skeleton className="lg:col-span-3 h-96 rounded-[4px] bg-white/5" />
         </div>
       </div>
     );
@@ -273,7 +273,7 @@ export default function AdminDashboardPage() {
       {/* GRÁFICOS Y RANKINGS */}
       <div className="grid gap-6 lg:grid-cols-7">
         {/* TENDENCIA DE VENTAS */}
-        <Card className="lg:col-span-4 border-none bg-white/[0.03] backdrop-blur-3xl rounded-[3rem] ring-1 ring-white/5 shadow-2xl overflow-hidden">
+        <Card className="lg:col-span-4 border-none bg-white/[0.03] backdrop-blur-3xl rounded-[4px] ring-1 ring-white/5 shadow-2xl overflow-hidden">
           <CardHeader className="p-8 pb-4 border-b border-white/5">
             <div className="flex items-center justify-between">
               <div className="space-y-1">
@@ -367,7 +367,7 @@ export default function AdminDashboardPage() {
         </Card>
 
         {/* TOP PRODUCTOS */}
-        <Card className="lg:col-span-3 border-none bg-white/[0.03] backdrop-blur-3xl rounded-[3rem] ring-1 ring-white/5 shadow-2xl flex flex-col">
+        <Card className="lg:col-span-3 border-none bg-white/[0.03] backdrop-blur-3xl rounded-[4px] ring-1 ring-white/5 shadow-2xl flex flex-col">
           <CardHeader className="p-8 pb-4 border-b border-white/5">
             <CardTitle className="text-xl font-bold flex items-center gap-2 italic text-white/90">
               <Eye className="h-5 w-5 text-primary/60" /> Más Vendidos
@@ -396,7 +396,7 @@ export default function AdminDashboardPage() {
       </div>
 
       {/* ACTIVIDAD RECIENTE (AUDITORÍA) */}
-      <Card className="border-none bg-white/[0.03] backdrop-blur-3xl rounded-[3rem] ring-1 ring-white/5 shadow-2xl overflow-hidden">
+      <Card className="border-none bg-white/[0.03] backdrop-blur-3xl rounded-[4px] ring-1 ring-white/5 shadow-2xl overflow-hidden">
         <CardHeader className="p-8 pb-4 border-b border-white/5">
           <div className="flex items-center justify-between">
             <div className="space-y-1">

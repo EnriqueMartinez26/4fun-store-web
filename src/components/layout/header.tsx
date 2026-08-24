@@ -1,4 +1,4 @@
-"use client";
+'use client';
 
 /**
  * Capa de Presentación: Cabecera Global de Navegación Profesional
@@ -8,11 +8,22 @@
  * (MVC - View)
  */
 
-import Link from "next/link";
-import Image from "next/image";
-import { Heart, Search, ShoppingCart, User, LogOut, Settings, Store, Menu, X, ChevronDown } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { motion, AnimatePresence } from "framer-motion";
+import Link from 'next/link';
+import Image from 'next/image';
+import {
+  Heart,
+  Search,
+  ShoppingCart,
+  User,
+  LogOut,
+  Settings,
+  Store,
+  Menu,
+  X,
+  ChevronDown,
+} from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { motion, AnimatePresence } from 'framer-motion';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -20,10 +31,10 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import { SearchDialog } from "@/components/search-dialog";
-import { useHeaderViewModel } from "@/hooks/use-header-view-model";
-import { useState } from "react";
+} from '@/components/ui/dropdown-menu';
+import { SearchDialog } from '@/components/search-dialog';
+import { useHeaderViewModel } from '@/hooks/use-header-view-model';
+import { useState } from 'react';
 
 /**
  * ATÓMICO: NavLink Mejorado con Indicador de Estado
@@ -47,19 +58,19 @@ function NavLink({
     <Link
       href={href}
       className={`relative px-1 py-2 text-base font-semibold transition-all duration-300 flex items-center gap-2 group ${
-        isActive
-          ? "text-primary"
-          : "text-gray-400 hover:text-white"
+        isActive ? 'text-primary' : 'text-gray-400 hover:text-white'
       }`}
     >
       {Icon && (
-        <Icon className={`h-5 w-5 transition-all duration-300 ${isActive ? "scale-110" : "group-hover:scale-110"}`} />
+        <Icon
+          className={`h-5 w-5 transition-all duration-300 ${isActive ? 'scale-110' : 'group-hover:scale-110'}`}
+        />
       )}
       <span className="relative">
         {label}
         <span
           className={`absolute -bottom-1 left-0 h-0.5 bg-gradient-to-r from-primary via-primary/80 to-transparent rounded-full transition-all duration-300 ${
-            isActive ? "w-full" : "w-0 group-hover:w-full"
+            isActive ? 'w-full' : 'w-0 group-hover:w-full'
           }`}
         />
       </span>
@@ -85,12 +96,7 @@ function UserAvatar({
     <div className="relative">
       {userAvatar ? (
         <div className="relative h-14 w-14 rounded-full overflow-hidden ring-2 ring-primary/20 hover:ring-primary/40 transition-all duration-300">
-          <Image
-            src={userAvatar}
-            alt={userName}
-            fill
-            className="object-cover"
-          />
+          <Image src={userAvatar} alt={userName} fill className="object-cover" />
         </div>
       ) : (
         <div className="h-14 w-14 rounded-full bg-gradient-to-br from-primary to-primary/60 flex items-center justify-center text-white font-bold text-lg ring-2 ring-primary/20 hover:ring-primary/40 transition-all duration-300">
@@ -203,7 +209,7 @@ function IconWithBadge({
   href,
   label,
   onClick,
-  className = "",
+  className = '',
 }: {
   icon: React.ComponentType<{ className?: string }>;
   badge?: number | boolean;
@@ -216,16 +222,16 @@ function IconWithBadge({
     <div className="relative group">
       <Icon className="h-8 w-8 transition-all duration-300 group-hover:scale-110 group-hover:text-primary" />
       <AnimatePresence mode="popLayout">
-        {badge && typeof badge === "number" && badge > 0 && (
+        {badge && typeof badge === 'number' && badge > 0 && (
           <motion.span
             key={badge}
             initial={{ scale: 0.5, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
             exit={{ scale: 0.5, opacity: 0 }}
-            transition={{ type: "spring", stiffness: 500, damping: 15 }}
+            transition={{ type: 'spring', stiffness: 500, damping: 15 }}
             className="absolute -top-4 -right-4 h-5 w-5 rounded-full bg-gradient-to-br from-primary to-primary/80 text-white text-[9px] font-bold flex items-center justify-center shadow-lg ring-1 ring-background z-10"
           >
-            {badge > 9 ? "9+" : badge}
+            {badge > 9 ? '9+' : badge}
           </motion.span>
         )}
       </AnimatePresence>
@@ -237,7 +243,7 @@ function IconWithBadge({
       <Button
         variant="ghost"
         size="icon"
-        className={`h-14 w-14 text-gray-400 hover:text-white hover:bg-white/5 rounded-lg transition-all duration-300 ${className}`}
+        className={`h-14 w-14 [&_svg]:size-8 text-gray-400 hover:text-white hover:bg-white/5 rounded-lg transition-all duration-300 ${className}`}
       >
         {content}
       </Button>
@@ -247,7 +253,7 @@ function IconWithBadge({
       variant="ghost"
       size="icon"
       onClick={onClick}
-      className={`h-14 w-14 text-gray-400 hover:text-white hover:bg-white/5 rounded-lg transition-all duration-300 ${className}`}
+      className={`h-14 w-14 [&_svg]:size-8 text-gray-400 hover:text-white hover:bg-white/5 rounded-lg transition-all duration-300 ${className}`}
       aria-label={label}
     >
       {content}
@@ -272,13 +278,7 @@ export function Header() {
           {/* LOGO */}
           <Link href={vm.logo.href} className="group flex items-center flex-shrink-0">
             <div className="relative h-14 w-14 transition-all duration-300 group-hover:scale-110">
-              <Image
-                src="/logo.png"
-                alt="4Fun Logo"
-                fill
-                className="object-contain"
-                priority
-              />
+              <Image src="/logo.png" alt="4Fun Logo" fill className="object-contain" priority />
             </div>
           </Link>
 
@@ -308,7 +308,7 @@ export function Header() {
                 trigger={
                   <Button
                     variant="outline"
-                    className="w-80 justify-start text-gray-400 relative h-12 px-5 bg-white/5 border-white/10 hover:bg-white/10 hover:border-white/20 shadow-none transition-all rounded-xl group"
+                    className="w-80 justify-start text-gray-400 relative h-12 px-5 bg-white/5 border-white/10 hover:bg-white/10 hover:border-white/20 shadow-none transition-all rounded-search group"
                   >
                     <Search className="mr-3 h-5 w-5 text-primary/60 group-hover:text-primary transition-colors" />
                     <span className="text-base">{vm.search.placeholder}</span>
@@ -327,7 +327,7 @@ export function Header() {
                   <Button
                     variant="ghost"
                     size="icon"
-                    className="h-12 w-12 text-gray-400 hover:text-white hover:bg-white/5 rounded-lg transition-all"
+                    className="h-12 w-12 text-gray-400 hover:text-white hover:bg-white/5 rounded-search transition-all"
                   >
                     <Search className="h-5 w-5" />
                   </Button>
