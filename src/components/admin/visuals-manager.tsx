@@ -296,7 +296,7 @@ function VisualTable({
                     <Image
                       src={getImageUrl(
                         item.imageId,
-                        'https://placehold.co/200x120/222/FFF?text=Sin+Imagen'
+                        'https://res.cloudinary.com/dxlbwdqop/image/upload/4fun/fallback.png'
                       )}
                       alt={item.name}
                       fill

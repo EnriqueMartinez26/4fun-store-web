@@ -3,8 +3,7 @@ import { ProductApiService } from '@/lib/services/ProductApiService';
 import type { Product } from '@/lib/schemas';
 
 // Constante de imagen genérica si falta la del servidor
-const DEFAULT_IMAGE =
-  'https://images.unsplash.com/photo-1519608487953-e999c86e7455?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1080';
+const DEFAULT_IMAGE = 'https://res.cloudinary.com/dxlbwdqop/image/upload/4fun/hero.png';
 
 export function useHeroViewModel() {
   const [games, setGames] = useState<Product[]>([]);

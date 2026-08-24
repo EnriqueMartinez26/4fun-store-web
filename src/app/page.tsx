@@ -13,12 +13,12 @@ import { TaxonomyApiService } from '@/lib/services/TaxonomyApiService';
  */
 
 // RN - Infraestructura: Forzamos renderizado dinámico para que las
-// actualizaciones de taxonomías (géneros/plataformas) se reflejen 
+// actualizaciones de taxonomías (géneros/plataformas) se reflejen
 // en tiempo real sin depender del ciclo de caché de Next.js.
 export const dynamic = 'force-dynamic';
 
 // RN - Infraestructura: Imagen de respaldo en caso de fallo de sincronización de assets.
-const defaultImage = "https://images.unsplash.com/photo-1550745165-9bc0b252726f?q=80&w=600";
+const defaultImage = 'https://res.cloudinary.com/dxlbwdqop/image/upload/4fun/hero.png';
 
 export default async function Home() {
   /**
@@ -32,14 +32,14 @@ export default async function Home() {
   try {
     const [pData, gData] = await Promise.all([
       TaxonomyApiService.getPlatforms().catch(() => []),
-      TaxonomyApiService.getGenres().catch(() => [])
+      TaxonomyApiService.getGenres().catch(() => []),
     ]);
 
     // RN - Resiliencia: Maneja la variabilidad en la estructura de respuesta del Backend.
-    platformsData = Array.isArray(pData) ? pData : (pData?.data || []);
-    genresData = Array.isArray(gData) ? gData : (gData?.data || []);
+    platformsData = Array.isArray(pData) ? pData : pData?.data || [];
+    genresData = Array.isArray(gData) ? gData : gData?.data || [];
   } catch (error) {
-    console.error("[Home] Error en carga de visuales:", error);
+    console.error('[Home] Error en carga de visuales:', error);
   }
 
   /**
@@ -49,13 +49,19 @@ export default async function Home() {
   const platforms = platformsData.map((p: any) => ({
     id: p.id,
     name: p.name,
-    image: (p.imageId && (p.imageId.startsWith('http') || p.imageId.startsWith('/'))) ? p.imageId : defaultImage
+    image:
+      p.imageId && (p.imageId.startsWith('http') || p.imageId.startsWith('/'))
+        ? p.imageId
+        : defaultImage,
   }));
 
   const genres = genresData.map((g: any) => ({
     id: g.id,
     name: g.name,
-    image: (g.imageId && (g.imageId.startsWith('http') || g.imageId.startsWith('/'))) ? g.imageId : defaultImage
+    image:
+      g.imageId && (g.imageId.startsWith('http') || g.imageId.startsWith('/'))
+        ? g.imageId
+        : defaultImage,
   }));
 
   return (
@@ -66,24 +72,28 @@ export default async function Home() {
       {/* Sección: Explorar por Plataforma (RN - Taxonomía de Productos) */}
       <section className="relative w-full overflow-hidden bg-background py-12 md:py-16">
         {/* RN - Estética TFI: Fondo decorativo con grid geométrico. */}
-        <div className="absolute inset-0 z-0 opacity-[0.03]"
+        <div
+          className="absolute inset-0 z-0 opacity-[0.03]"
           style={{
-            backgroundImage: 'linear-gradient(to right, currentColor 1px, transparent 1px), linear-gradient(to bottom, currentColor 1px, transparent 1px)',
-            backgroundSize: '40px 40px'
+            backgroundImage:
+              'linear-gradient(to right, currentColor 1px, transparent 1px), linear-gradient(to bottom, currentColor 1px, transparent 1px)',
+            backgroundSize: '40px 40px',
           }}
         />
         <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-b from-background via-transparent to-background z-0" />
 
         <div className="container relative z-10 mx-auto px-4">
           <div className="flex justify-between items-center mb-8">
-            <h2 className="font-headline text-3xl font-semibold md:text-4xl text-center md:text-left">Explorar por Plataforma</h2>
+            <h2 className="font-headline text-3xl font-semibold md:text-4xl text-center md:text-left">
+              Explorar por Plataforma
+            </h2>
             <Button variant="outline" asChild className="hidden md:flex">
               <Link href="/productos">Ver todo</Link>
             </Button>
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            {platforms.map(platform => (
+            {platforms.map((platform) => (
               <CategoryCard
                 key={platform.id}
                 title={platform.name}
@@ -104,24 +114,28 @@ export default async function Home() {
 
       {/* Sección: Explorar por Género (RN - Categorización de Mercado) */}
       <section className="relative w-full overflow-hidden bg-background py-12 md:py-16">
-        <div className="absolute inset-0 z-0 opacity-[0.03]"
+        <div
+          className="absolute inset-0 z-0 opacity-[0.03]"
           style={{
-            backgroundImage: 'linear-gradient(to right, currentColor 1px, transparent 1px), linear-gradient(to bottom, currentColor 1px, transparent 1px)',
-            backgroundSize: '40px 40px'
+            backgroundImage:
+              'linear-gradient(to right, currentColor 1px, transparent 1px), linear-gradient(to bottom, currentColor 1px, transparent 1px)',
+            backgroundSize: '40px 40px',
           }}
         />
         <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-b from-background via-transparent to-background z-0" />
 
         <div className="container relative z-10 mx-auto px-4">
           <div className="flex justify-between items-center mb-8">
-            <h2 className="font-headline text-3xl font-semibold md:text-4xl text-center md:text-left">Explorar por Género</h2>
+            <h2 className="font-headline text-3xl font-semibold md:text-4xl text-center md:text-left">
+              Explorar por Género
+            </h2>
             <Button variant="outline" asChild className="hidden md:flex">
               <Link href="/productos">Ver todo</Link>
             </Button>
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-            {genres.map(genre => (
+            {genres.map((genre) => (
               <CategoryCard
                 key={genre.id}
                 title={genre.name}

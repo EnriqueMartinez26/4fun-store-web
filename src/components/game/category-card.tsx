@@ -1,6 +1,6 @@
-import Link from "next/link";
-import Image from "next/image";
-import { cn } from "@/lib/utils";
+import Link from 'next/link';
+import Image from 'next/image';
+import { cn } from '@/lib/utils';
 
 interface CategoryCardProps {
   title: string;
@@ -9,27 +9,15 @@ interface CategoryCardProps {
   className?: string;
 }
 
-export function CategoryCard({
-  title,
-  image,
-  href,
-  className,
-}: CategoryCardProps) {
+export function CategoryCard({ title, image, href, className }: CategoryCardProps) {
   const imageUrl =
-    image && (image.startsWith("http") || image.startsWith("/"))
+    image && (image.startsWith('http') || image.startsWith('/'))
       ? image
-      : "https://placehold.co/600x400/png?text=Categoria";
+      : 'https://res.cloudinary.com/dxlbwdqop/image/upload/4fun/fallback.png';
 
   return (
-    <Link
-      href={href}
-      className={cn(
-        "group relative block overflow-hidden rounded-xl",
-        className
-      )}
-    >
+    <Link href={href} className={cn('group relative block overflow-hidden rounded-xl', className)}>
       <div className="relative w-full h-48 sm:h-56 md:h-60 overflow-hidden rounded-xl bg-transparent flex items-center justify-center">
-
         <Image
           src={imageUrl}
           alt={title}
@@ -37,8 +25,6 @@ export function CategoryCard({
           className="object-contain transition-transform duration-500 ease-out group-hover:scale-105"
           sizes="(max-width: 768px) 100vw, 25vw"
         />
-
-
       </div>
     </Link>
   );

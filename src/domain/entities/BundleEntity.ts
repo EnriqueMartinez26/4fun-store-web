@@ -41,7 +41,9 @@ export class BundleEntity implements IProductComponent {
     if (!id) throw new Error('[BundleEntity] Contract violation: id is required');
     if (!name) throw new Error('[BundleEntity] Contract violation: name is required');
     if (components.length === 0) {
-      throw new Error('[BundleEntity] Contract violation: a bundle must have at least one component');
+      throw new Error(
+        '[BundleEntity] Contract violation: a bundle must have at least one component'
+      );
     }
     if (discountPercentage < 0 || discountPercentage > 100) {
       throw new Error(
@@ -74,15 +76,23 @@ export class BundleEntity implements IProductComponent {
   }
 
   /** Retorna copia del array de componentes (protección de encapsulamiento). */
-  getChildren(): IProductComponent[] { return [...this._components]; }
+  getChildren(): IProductComponent[] {
+    return [...this._components];
+  }
 
-  getComponentCount(): number { return this._components.length; }
+  getComponentCount(): number {
+    return this._components.length;
+  }
 
   // ─── IProductComponent — Contrato Composite ───
 
-  getId(): string { return this._id; }
+  getId(): string {
+    return this._id;
+  }
 
-  getDisplayName(): string { return this._name; }
+  getDisplayName(): string {
+    return this._name;
+  }
 
   /**
    * Precio total del bundle con descuento de paquete aplicado.
@@ -99,11 +109,14 @@ export class BundleEntity implements IProductComponent {
   }
 
   getDisplayPrice(): string {
-    return new Intl.NumberFormat('es-AR', { style: 'currency', currency: 'ARS' })
-      .format(this.getDiscountedPrice());
+    return new Intl.NumberFormat('es-AR', { style: 'currency', currency: 'ARS' }).format(
+      this.getDiscountedPrice()
+    );
   }
 
-  isOnDiscount(): boolean { return this._discountPercentage > 0; }
+  isOnDiscount(): boolean {
+    return this._discountPercentage > 0;
+  }
 
   /**
    * El bundle está disponible SOLO si TODOS sus componentes están disponibles.
@@ -111,17 +124,21 @@ export class BundleEntity implements IProductComponent {
    * @postcondition true → todos los componentes isAvailable() === true
    */
   isAvailable(): boolean {
-    return this._components.every(component => component.isAvailable());
+    return this._components.every((component) => component.isAvailable());
   }
 
   /** Usa la imagen del primer componente como representación visual del bundle. */
   getImageUrl(): string {
     if (this._imageUrl) return this._imageUrl;
-    return this._components[0]?.getImageUrl()
-      ?? 'https://placehold.co/600x400/png?text=Bundle';
+    return (
+      this._components[0]?.getImageUrl() ??
+      'https://res.cloudinary.com/dxlbwdqop/image/upload/4fun/fallback.png'
+    );
   }
 
-  getDisplayType(): string { return 'Bundle'; }
+  getDisplayType(): string {
+    return 'Bundle';
+  }
 
   toReportRow(): string[] {
     return [
@@ -136,15 +153,13 @@ export class BundleEntity implements IProductComponent {
 
   // ─── Display Helpers adicionales ───
 
-  getDiscountBadge(): string { return `-${this._discountPercentage}%`; }
+  getDiscountBadge(): string {
+    return `-${this._discountPercentage}%`;
+  }
 
   /** Precio total sin el descuento del bundle (suma de precios individuales). */
   getOriginalPrice(): string {
-    const subtotal = this._components.reduce(
-      (sum, c) => sum + c.getDiscountedPrice(),
-      0
-    );
-    return new Intl.NumberFormat('es-AR', { style: 'currency', currency: 'ARS' })
-      .format(subtotal);
+    const subtotal = this._components.reduce((sum, c) => sum + c.getDiscountedPrice(), 0);
+    return new Intl.NumberFormat('es-AR', { style: 'currency', currency: 'ARS' }).format(subtotal);
   }
 }

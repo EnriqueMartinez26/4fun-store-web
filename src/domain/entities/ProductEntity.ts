@@ -2,7 +2,7 @@ import type { IProductComponent } from '@/domain/interfaces/IProductComponent';
 import type { Product } from '@/lib/schemas';
 
 /** Fallback de imagen absorbido desde constants.ts. */
-export const FALLBACK_IMAGE = 'https://placehold.co/600x400/png?text=4Fun';
+export const FALLBACK_IMAGE = 'https://res.cloudinary.com/dxlbwdqop/image/upload/4fun/fallback.png';
 
 /**
  * Clase de Entidad: Producto (Composite — Leaf)
@@ -38,9 +38,13 @@ export class ProductEntity implements IProductComponent {
 
   // ─── IProductComponent — Contrato Composite ───
 
-  getId(): string { return this._data.id; }
+  getId(): string {
+    return this._data.id;
+  }
 
-  getDisplayName(): string { return this._data.name; }
+  getDisplayName(): string {
+    return this._data.name;
+  }
 
   /**
    * Calcula el precio con descuento aplicado.
@@ -57,8 +61,9 @@ export class ProductEntity implements IProductComponent {
   }
 
   getDisplayPrice(): string {
-    return new Intl.NumberFormat('es-AR', { style: 'currency', currency: 'ARS' })
-      .format(this.getDiscountedPrice());
+    return new Intl.NumberFormat('es-AR', { style: 'currency', currency: 'ARS' }).format(
+      this.getDiscountedPrice()
+    );
   }
 
   isOnDiscount(): boolean {
@@ -74,7 +79,7 @@ export class ProductEntity implements IProductComponent {
     if (this._data.status) {
       return this._data.status === 'ACTIVE';
     }
-    return (this._data.stock ?? 0) > 0 && (this._data.active !== false);
+    return (this._data.stock ?? 0) > 0 && this._data.active !== false;
   }
 
   getStatus(): string {
@@ -85,7 +90,7 @@ export class ProductEntity implements IProductComponent {
   getImageUrl(): string {
     const url = this._data.imageId;
     if (!url) return FALLBACK_IMAGE;
-    return (url.startsWith('http') || url.startsWith('/')) ? url : FALLBACK_IMAGE;
+    return url.startsWith('http') || url.startsWith('/') ? url : FALLBACK_IMAGE;
   }
 
   getDisplayType(): string {
@@ -112,15 +117,14 @@ export class ProductEntity implements IProductComponent {
   }
 
   getGenreName(): string {
-    return typeof this._data.genre === 'object'
-      ? (this._data.genre?.name ?? 'Varios')
-      : 'Varios';
+    return typeof this._data.genre === 'object' ? (this._data.genre?.name ?? 'Varios') : 'Varios';
   }
 
   /** Precio original sin descuento, formateado. */
   getOriginalPrice(): string {
-    return new Intl.NumberFormat('es-AR', { style: 'currency', currency: 'ARS' })
-      .format(this._data.price);
+    return new Intl.NumberFormat('es-AR', { style: 'currency', currency: 'ARS' }).format(
+      this._data.price
+    );
   }
 
   getDiscountBadge(): string {
@@ -139,21 +143,45 @@ export class ProductEntity implements IProductComponent {
     return this._data.developer ?? 'Desconocido';
   }
 
-  get rawPrice(): number { return this._data.price; }
-  get stock(): number { return this._data.stock ?? 0; }
-  get type(): string { return this._data.type; }
-  get discountPercentage(): number { return this._data.discountPercentage ?? 0; }
-  get developer(): string | null | undefined { return this._data.developer; }
-  get sellerId(): string | null | undefined { return this._data.sellerId; }
+  get rawPrice(): number {
+    return this._data.price;
+  }
+  get stock(): number {
+    return this._data.stock ?? 0;
+  }
+  get type(): string {
+    return this._data.type;
+  }
+  get discountPercentage(): number {
+    return this._data.discountPercentage ?? 0;
+  }
+  get developer(): string | null | undefined {
+    return this._data.developer;
+  }
+  get sellerId(): string | null | undefined {
+    return this._data.sellerId;
+  }
 
   /** Acceso controlado al dato raw para compatibilidad con ViewModels legados. */
-  getRawData(): Product { return this._data; }
+  getRawData(): Product {
+    return this._data;
+  }
 
   // ─── ViewModel Aliases (Promoted for Redundancy Elimination) ───
 
-  getDisplayId(): string { return this.getId(); }
-  toDisplayPrice(): string { return this.getDisplayPrice(); }
-  isOnSale(): boolean { return this.isOnDiscount(); }
-  hasStock(): boolean { return this.isAvailable(); }
-  getStockBadge(): 'available' | 'low' | 'out' { return this.getStockStatus(); }
+  getDisplayId(): string {
+    return this.getId();
+  }
+  toDisplayPrice(): string {
+    return this.getDisplayPrice();
+  }
+  isOnSale(): boolean {
+    return this.isOnDiscount();
+  }
+  hasStock(): boolean {
+    return this.isAvailable();
+  }
+  getStockBadge(): 'available' | 'low' | 'out' {
+    return this.getStockStatus();
+  }
 }

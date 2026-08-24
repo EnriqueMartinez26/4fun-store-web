@@ -15,20 +15,11 @@ const nextConfig: NextConfig = {
    * ataques de inyección de recursos no autorizados.
    */
   images: {
-    dangerouslyAllowSVG: true,
     contentSecurityPolicy: "default-src 'self'; script-src 'none'; sandbox;",
     remotePatterns: [
       {
         protocol: 'https',
-        hostname: 'res.cloudinary.com', // Infraestructura de Assets
-      },
-      {
-        protocol: 'https',
-        hostname: 'placehold.co', // Infraestructura de Pruebas
-      },
-      {
-        protocol: 'https',
-        hostname: 'images.unsplash.com', // Stock de imágenes
+        hostname: 'res.cloudinary.com', // Único origen de assets del proyecto
       },
     ],
   },
