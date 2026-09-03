@@ -45,6 +45,10 @@ Este frontend forma parte de una tesis de Tecnicatura en Programación. Su objet
 
 El sistema está enfocado exclusivamente en videojuegos digitales. No contempla productos físicos ni procesamiento real de pagos.
 
+## Decisiones técnicas
+
+El checkout depende de que el stock que se muestra sea real. Antes, el backend guardaba el stock como un campo manual en `Product`; ahora se deriva en tiempo real de las `DigitalKey` disponibles, así que el catálogo y el carrito no muestran algo que ya se vendió. El detalle completo del refactor — esquema normalizado a 3FN, cálculo de totales en tiempo real, eliminación del subsistema de cupones y cobertura de tests — está en el [README del backend](https://github.com/EnriqueMartinez26/4fun-store-api#decisiones-t%C3%A9cnicas).
+
 ## Despliegue académico
 
 - Frontend publicado: [https://4fun-store-web.vercel.app](https://4fun-store-web.vercel.app)
@@ -107,6 +111,16 @@ registro/login
 | `hooks`      | Lógica reutilizable del cliente.                             |
 | `lib`        | Transporte HTTP, servicios, tipos y utilidades.              |
 | `domain`     | Entidades, factories y reglas de representación del dominio. |
+
+```mermaid
+flowchart LR
+    App[app - rutas y páginas] --> Components[components]
+    App --> Context[context - estado global]
+    App --> Hooks[hooks]
+    Hooks --> Lib[lib - HTTP y servicios]
+    Lib --> API[(API backend)]
+    App --> Domain[domain - entidades y reglas]
+```
 
 ## Variables de entorno
 
